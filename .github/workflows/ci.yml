@@ -1,0 +1,42 @@
+name: Windows CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: 获取源码
+        uses: actions/checkout@v4
+
+      - name: 配置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 安装桌面版构建依赖
+        run: python -m pip install -r requirements-desktop.txt
+
+      - name: 检查 Python 语法
+        run: python -m py_compile server.py desktop_app.py
+
+      - name: 载入通用配置并打包
+        shell: pwsh
+        run: |
+          Copy-Item roots.example.json roots.json
+          python -m PyInstaller --noconfirm --clean --onefile --windowed --name SkillShelf --add-data "index.html;." --add-data "roots.json;." --hidden-import webview.platforms.winforms --hidden-import webview.platforms.edgechromium --hidden-import clr_loader --hidden-import pythonnet desktop_app.py
+          if (-not (Test-Path dist/SkillShelf.exe)) { throw "未生成 SkillShelf.exe" }
+
+      - name: 上传 Windows 构建产物
+        uses: actions/upload-artifact@v4
+        with:
+          name: SkillShelf-windows
+          path: dist/SkillShelf.exe
+          if-no-files-found: error
+          retention-days: 7

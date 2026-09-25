@@ -1,0 +1,3125 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skill Shelf · 本地管理控制台</title>
+  <style>
+    :root {
+      /* Warm-toned Theme (暖色调主题：琥珀暖夜 / 沉木纸白) */
+      --bg-canvas: #15120f;
+      --bg-surface: #1e1915;
+      --bg-surface-elevated: #28221c;
+      --bg-surface-hover: #332b23;
+      --bg-surface-active: #3e342b;
+
+      --border-subtle: rgba(240, 220, 195, 0.08);
+      --border-default: rgba(240, 220, 195, 0.13);
+      --border-strong: rgba(240, 220, 195, 0.24);
+
+      --text-main: #fbf5ee;
+      --text-secondary: #d5c8b8;
+      --text-muted: #968878;
+
+      --accent-amber: #f59e0b;
+      --accent-amber-hover: #d97706;
+      --accent-amber-subtle: rgba(245, 158, 11, 0.14);
+
+      --accent-terracotta: #ea580c;
+      --accent-terracotta-subtle: rgba(234, 88, 12, 0.14);
+
+      --accent-emerald: #10b981;
+      --accent-emerald-subtle: rgba(16, 185, 129, 0.14);
+
+      --accent-rose: #ef4444;
+      --accent-rose-subtle: rgba(239, 68, 68, 0.14);
+
+      --accent-sky: #38bdf8;
+      --accent-sky-subtle: rgba(56, 189, 248, 0.14);
+
+      --accent-lavender: #c084fc;
+      --accent-lavender-subtle: rgba(192, 132, 252, 0.14);
+
+      --accent-peach: #fb7185;
+      --accent-peach-subtle: rgba(251, 113, 133, 0.14);
+
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-full: 9999px;
+
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI Variable", "Inter", "Microsoft YaHei", sans-serif;
+      --font-mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Menlo, Consolas, monospace;
+
+      --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out: cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--text-main);
+      background-color: var(--bg-canvas);
+      background-image:
+        radial-gradient(ellipse 75% 45% at 50% -15%, rgba(245, 158, 11, 0.09), transparent 70%),
+        radial-gradient(ellipse 60% 40% at 85% 15%, rgba(234, 88, 12, 0.06), transparent 60%),
+        radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.04), transparent 50%);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    .app-shell {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 24px 32px 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* Header */
+    header.app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding-bottom: 8px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, #d97706, #ea580c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 4px 16px rgba(234, 88, 12, 0.28);
+    }
+
+    .brand-logo svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .brand-text h1 {
+      font-size: 19px;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-text h1 .badge-ver {
+      font-size: 11px;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      padding: 1px 7px;
+      border-radius: var(--radius-full);
+      background: var(--bg-surface-elevated);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .brand-text p {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 1px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-muted);
+    }
+
+    .status-dot.online {
+      background: var(--accent-amber);
+      box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
+      animation: pulse 2.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.15); }
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 550;
+      padding: 7px 14px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.16s var(--ease-out);
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #d97706, #ea580c);
+      color: #fff;
+      box-shadow: 0 2px 10px rgba(217, 119, 6, 0.28);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #b45309, #c2410c);
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.38);
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
+      border-color: var(--border-default);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--bg-surface-hover);
+      border-color: var(--border-strong);
+      color: #fff;
+    }
+
+    .btn-outline-amber {
+      background: var(--accent-amber-subtle);
+      color: #fde68a;
+      border-color: rgba(245, 158, 11, 0.35);
+    }
+
+    .btn-outline-amber:hover:not(:disabled) {
+      background: rgba(245, 158, 11, 0.25);
+      color: #fff;
+    }
+
+    .btn-danger {
+      background: var(--accent-rose-subtle);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.3);
+    }
+
+    .btn-danger:hover:not(:disabled) {
+      background: rgba(239, 68, 68, 0.25);
+      color: #fff;
+    }
+
+    .btn-icon-only {
+      padding: 6px 8px;
+    }
+
+    .btn svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    .spin {
+      animation: spin 0.9s linear infinite;
+    }
+
+    @keyframes spin {
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Metric HUD Cards */
+    .hud-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .hud-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .hud-card:hover {
+      border-color: var(--border-default);
+    }
+
+    .hud-card .hud-label {
+      font-size: 11.5px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .hud-card .hud-value {
+      font-size: 26px;
+      font-family: var(--font-mono);
+      font-weight: 650;
+      letter-spacing: -0.03em;
+      margin-top: 4px;
+      color: #fff;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .hud-card .hud-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .hud-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+    }
+
+    .hud-card.hud-amber::after { background: var(--accent-amber); }
+    .hud-card.hud-terracotta::after { background: var(--accent-terracotta); }
+    .hud-card.hud-emerald::after { background: var(--accent-emerald); }
+    .hud-card.hud-rose::after { background: var(--accent-rose); }
+
+    /* Category Nav Bar (分类设计) */
+    .category-strip {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding: 4px 0;
+    }
+
+    .category-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 12px;
+      font-weight: 550;
+      cursor: pointer;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-secondary);
+      transition: all 0.15s;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .category-pill:hover {
+      background: var(--bg-surface-elevated);
+      color: #fff;
+      border-color: var(--border-default);
+    }
+
+    .category-pill.active {
+      background: var(--accent-amber-subtle);
+      color: #fde68a;
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 2px 8px rgba(245, 158, 11, 0.15);
+    }
+
+    .category-pill .cat-count {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+
+    .category-pill.active .cat-count {
+      background: rgba(245, 158, 11, 0.25);
+      color: #fff;
+    }
+
+    /* Roots Status Bar */
+    .roots-strip {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      overflow-x: auto;
+    }
+
+    .roots-strip-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      font-weight: 600;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    .roots-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: nowrap;
+    }
+
+    .root-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-full);
+      padding: 3px 10px;
+      font-size: 11.5px;
+      white-space: nowrap;
+      color: var(--text-secondary);
+    }
+
+    .root-pill .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+    }
+
+    .root-pill.offline {
+      opacity: 0.6;
+    }
+
+    .root-pill.offline .dot {
+      background: var(--text-muted);
+    }
+
+    .root-pill .count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #fff;
+    }
+
+    /* Workbench Tabs */
+    .workbench-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-top: 4px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-tab {
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 550;
+      padding: 10px 16px;
+      cursor: pointer;
+      position: relative;
+      transition: color 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-tab:hover {
+      color: var(--text-main);
+    }
+
+    .nav-tab.active {
+      color: #fff;
+    }
+
+    .nav-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 10px;
+      right: 10px;
+      height: 2px;
+      background: var(--accent-amber);
+      border-radius: 2px;
+    }
+
+    .nav-tab .tab-badge {
+      font-size: 10.5px;
+      font-family: var(--font-mono);
+      padding: 1px 6px;
+      border-radius: var(--radius-full);
+      background: var(--bg-surface-elevated);
+      color: var(--text-muted);
+    }
+
+    .nav-tab.active .tab-badge {
+      background: var(--accent-amber-subtle);
+      color: #fde68a;
+    }
+
+    /* Filter Toolbar */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 10px 14px;
+    }
+
+    .filter-group-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      width: 320px;
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 6px 32px 6px 32px;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--accent-amber);
+      box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+    }
+
+    .search-box .kbd-hint {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      padding: 2px 5px;
+      border-radius: 4px;
+      pointer-events: none;
+    }
+
+    .filter-select {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 12px;
+      padding: 6px 28px 6px 10px;
+      outline: none;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d5c8b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+    }
+
+    .filter-select:focus {
+      border-color: var(--border-strong);
+    }
+
+    .filter-stats {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+
+    /* Content Views */
+    .tab-content {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .tab-content.active {
+      display: flex;
+    }
+
+    /* Table Component */
+    .table-container {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+    }
+
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    table.data-table th {
+      background: var(--bg-surface-elevated);
+      padding: 10px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-subtle);
+      white-space: nowrap;
+    }
+
+    table.data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      vertical-align: middle;
+      font-size: 12.5px;
+    }
+
+    table.data-table tbody tr {
+      transition: background-color 0.12s;
+      cursor: pointer;
+    }
+
+    table.data-table tbody tr:hover {
+      background-color: var(--bg-surface-hover);
+    }
+
+    table.data-table tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Cell Typography & Tags */
+    .skill-primary {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .skill-name-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .skill-title {
+      font-weight: 650;
+      color: #fff;
+      font-size: 13.5px;
+    }
+
+    .skill-zh-desc {
+      font-size: 12px;
+      color: var(--text-secondary);
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .skill-note-badge {
+      font-size: 10.5px;
+      padding: 1px 5px;
+      border-radius: 4px;
+      background: var(--accent-amber-subtle);
+      color: #fde68a;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      flex-shrink: 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .badge-hash {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+      cursor: copy;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: all 0.12s;
+    }
+
+    .badge-hash:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    /* Category Badges */
+    .badge-category {
+      font-size: 11px;
+      font-weight: 550;
+      padding: 2px 8px;
+      border-radius: var(--radius-full);
+      border: 1px solid transparent;
+    }
+
+    .cat-frontend { background: rgba(245, 158, 11, 0.15); color: #fde68a; border-color: rgba(245, 158, 11, 0.3); }
+    .cat-dev { background: rgba(56, 189, 248, 0.15); color: #bae6fd; border-color: rgba(56, 189, 248, 0.3); }
+    .cat-ops { background: rgba(234, 88, 12, 0.15); color: #fed7aa; border-color: rgba(234, 88, 12, 0.3); }
+    .cat-docs { background: rgba(16, 185, 129, 0.15); color: #a7f3d0; border-color: rgba(16, 185, 129, 0.3); }
+    .cat-ai { background: rgba(192, 132, 252, 0.15); color: #e9d5ff; border-color: rgba(192, 132, 252, 0.3); }
+    .cat-security { background: rgba(251, 113, 133, 0.15); color: #fecdd3; border-color: rgba(251, 113, 133, 0.3); }
+    .cat-other { background: rgba(255, 255, 255, 0.08); color: #e5e7eb; border-color: var(--border-default); }
+
+    /* Agent Tag Chips */
+    .agent-chips {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+
+    .chip-agent {
+      font-size: 10.5px;
+      font-weight: 550;
+      padding: 2px 7px;
+      border-radius: var(--radius-full);
+      border: 1px solid transparent;
+    }
+
+    .chip-codex { background: var(--accent-sky-subtle); color: #bae6fd; border-color: rgba(56, 189, 248, 0.3); }
+    .chip-claude { background: var(--accent-amber-subtle); color: #fde68a; border-color: rgba(245, 158, 11, 0.3); }
+    .chip-gemini { background: var(--accent-lavender-subtle); color: #e9d5ff; border-color: rgba(192, 132, 252, 0.3); }
+    .chip-dsh { background: var(--accent-peach-subtle); color: #fecdd3; border-color: rgba(251, 113, 133, 0.3); }
+    .chip-success { background: var(--accent-emerald-subtle); color: #a7f3d0; border-color: rgba(16, 185, 129, 0.3); }
+    .chip-shelf { background: rgba(255, 255, 255, 0.08); color: #e5e7eb; border-color: var(--border-default); }
+
+    .tag-conflict {
+      background: var(--accent-amber-subtle);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.4);
+    }
+
+    .tag-dup {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text-secondary);
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* Deploy Cards */
+    .deploy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .deploy-target-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .deploy-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .deploy-card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .deploy-card-title h3 {
+      font-size: 15px;
+      font-weight: 650;
+      color: #fff;
+    }
+
+    .deploy-card-path {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      overflow-wrap: anywhere;
+      background: var(--bg-surface-elevated);
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .deploy-stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      text-align: center;
+    }
+
+    .deploy-stat-col .num {
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 650;
+      color: #fff;
+    }
+
+    .deploy-stat-col .lbl {
+      font-size: 10.5px;
+      color: var(--text-muted);
+      margin-top: 1px;
+    }
+
+    .deploy-stat-col.linked .num { color: var(--accent-emerald); }
+    .deploy-stat-col.backup .num { color: var(--accent-amber); }
+    .deploy-stat-col.blocked .num { color: var(--accent-rose); }
+    .deploy-stat-col.skip .num { color: var(--accent-terracotta); }
+
+    /* Conflict Comparison Cards */
+    .conflict-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .conflict-card {
+      background: var(--bg-surface);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .conflict-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .conflict-header h3 {
+      font-size: 16px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .conflict-reason {
+      background: var(--accent-amber-subtle);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 8px 12px;
+      font-size: 12px;
+      color: #fde68a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .variants-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    .variants-table th {
+      text-align: left;
+      font-size: 11px;
+      color: var(--text-muted);
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .variants-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .variants-table tr.selected {
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .conflict-variant-summary { display: flex; flex-direction: column; gap: 5px; min-width: 240px; }
+    .conflict-variant-description { color: var(--text-secondary); line-height: 1.55; max-width: 480px; }
+    .conflict-location { color: var(--text-muted); font-size: 11px; overflow-wrap: anywhere; }
+    .conflict-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .conflict-recommendation { color: #fde68a; }
+    .merge-collision-list { display: flex; flex-direction: column; gap: 10px; }
+    .merge-collision { display: grid; grid-template-columns: minmax(160px, 1fr) minmax(240px, 1.15fr); gap: 12px; align-items: center; padding: 10px 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface-elevated); }
+    .merge-collision-path { color: #fff; font-family: var(--font-mono); font-size: 11px; overflow-wrap: anywhere; }
+    .merge-choice { width: 100%; }
+    .conflict-confirm-list { max-height: 190px; overflow: auto; display: flex; flex-direction: column; gap: 6px; padding: 10px 12px; border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); background: var(--bg-surface-elevated); }
+    .conflict-confirm-path { font-size: 11px; color: var(--text-muted); overflow-wrap: anywhere; }
+
+    .modal.wide { width: min(760px, 100%); max-height: 92vh; display: flex; flex-direction: column; }
+    .modal.wide .modal-body { overflow: auto; min-height: 0; }
+
+    /* Slide-out Drawer (Inspector) */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.22s var(--ease-out);
+    }
+
+    .drawer-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 540px;
+      max-width: 92vw;
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border-default);
+      box-shadow: -8px 0 32px rgba(0, 0, 0, 0.7);
+      z-index: 101;
+      transform: translateX(100%);
+      transition: transform 0.26s var(--ease-spring);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawer-overlay.open .drawer {
+      transform: translateX(0);
+    }
+
+    .drawer-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .drawer-header h2 {
+      font-size: 16px;
+      font-weight: 650;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .drawer-close {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      transition: color 0.15s;
+    }
+
+    .drawer-close:hover {
+      color: #fff;
+      background: var(--bg-surface-elevated);
+    }
+
+    .drawer-body {
+      padding: 24px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+    }
+
+    .drawer-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .drawer-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Note Editor in Drawer */
+    .drawer-note-card {
+      background: var(--bg-surface-elevated);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .drawer-note-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .drawer-note-label {
+      font-size: 11.5px;
+      font-weight: 550;
+      color: var(--text-secondary);
+    }
+
+    .drawer-note-input {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-sm);
+      padding: 8px 10px;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      color: #fff;
+      outline: none;
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .drawer-note-input:focus {
+      border-color: var(--accent-amber);
+    }
+
+    .drawer-meta-box {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .drawer-meta-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      gap: 12px;
+    }
+
+    .drawer-meta-row .label {
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .drawer-meta-row .val {
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      text-align: right;
+      overflow-wrap: anywhere;
+    }
+
+    .drawer-locations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .drawer-location-item {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .drawer-location-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11.5px;
+      font-weight: 550;
+    }
+
+    .drawer-location-path {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-secondary);
+      overflow-wrap: anywhere;
+    }
+
+    .drawer-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 150;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-default);
+      border-radius: var(--radius-md);
+      width: 520px;
+      max-width: 100%;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.75);
+      animation: modalIn 0.2s var(--ease-spring);
+      overflow: hidden;
+    }
+
+    @keyframes modalIn {
+      from { opacity: 0; transform: scale(0.95) translateY(6px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 15px;
+      color: #fff;
+    }
+
+    .modal-body {
+      padding: 20px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      line-height: 1.6;
+    }
+
+    .modal-footer {
+      padding: 14px 20px;
+      border-top: 1px solid var(--border-subtle);
+      background: var(--bg-surface-elevated);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Sonner Toast */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 28px;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-default);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.55);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 12.5px;
+      color: #fff;
+      min-width: 280px;
+      max-width: 420px;
+      animation: toastIn 0.22s var(--ease-spring);
+      transition: all 0.2s;
+    }
+
+    .toast.out {
+      opacity: 0;
+      transform: translateY(10px) scale(0.95);
+    }
+
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .toast-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .toast.success .toast-icon { color: var(--accent-emerald); }
+    .toast.error .toast-icon { color: var(--accent-rose); }
+    .toast.info .toast-icon { color: var(--accent-amber); }
+    .toast.loading .toast-icon { color: var(--text-secondary); animation: spin 0.8s linear infinite; }
+
+    /* Empty state */
+    .empty-state {
+      padding: 48px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .empty-state svg {
+      width: 36px;
+      height: 36px;
+      color: var(--text-muted);
+      opacity: 0.6;
+    }
+
+    @media (max-width: 1024px) {
+      .hud-grid { grid-template-columns: repeat(2, 1fr); }
+      .deploy-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- App Header -->
+    <header class="app-header">
+      <div class="brand-wrap">
+        <div class="brand-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m16 6 4 14"/>
+            <path d="M12 6v14"/>
+            <path d="M8 8v12"/>
+            <path d="M4 4v16"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>
+            Skill Shelf
+            <span class="badge-ver">Console v0.3</span>
+          </h1>
+          <p>跨 Agent 统一技能中枢 · 暖色雅致控制台与分类备注管理</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="status-pill">
+          <span id="daemonDot" class="status-dot online"></span>
+          <span id="daemonText">守护监听活跃 (10s)</span>
+        </div>
+        <button id="btnReconcile" class="btn btn-outline-amber" title="补建缺失的 Agent 目录联接">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+          一键协调补链
+        </button>
+        <button id="btnScan" class="btn btn-primary" title="重新读取已登记根目录并计算指纹">
+          <svg id="scanIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          <span id="scanBtnText">扫描并对比</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Metrics HUD -->
+    <section class="hud-grid">
+      <div class="hud-card hud-amber">
+        <div class="hud-label">
+          <span>统一库托管</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-7L10 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/></svg>
+        </div>
+        <div class="hud-value"><span id="metricManaged">—</span><span style="font-size:13px;font-weight:400;color:var(--text-muted)">/ <span id="metricTotal">—</span></span></div>
+        <div class="hud-sub">~/.skill-shelf/skills 唯一定义源</div>
+      </div>
+      <div class="hud-card hud-emerald">
+        <div class="hud-label">
+          <span>活跃 Junction 软链</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </div>
+        <div class="hud-value" id="metricJunctions">—</div>
+        <div class="hud-sub">跨 Agent 零拷贝极速分发</div>
+      </div>
+      <div class="hud-card hud-terracotta">
+        <div class="hud-label">
+          <span>物理重复副本</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        </div>
+        <div class="hud-value" id="metricDuplicates">—</div>
+        <div class="hud-sub">内容一致 · 可优化为软链</div>
+      </div>
+      <div class="hud-card hud-rose">
+        <div class="hud-label">
+          <span>同名内容冲突</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+        <div class="hud-value" id="metricConflicts">—</div>
+        <div class="hud-sub">同名不同 SHA-256 冲突项</div>
+      </div>
+    </section>
+
+    <!-- Roots Explorer Strip -->
+    <section class="roots-strip">
+      <span class="roots-strip-title">已登记根目录</span>
+      <div class="roots-pills" id="rootsPills">
+        <span class="root-pill"><span class="dot"></span> 加载根目录状态…</span>
+      </div>
+    </section>
+
+    <!-- Category Design Strip (全景分类标签栏) -->
+    <section class="category-strip" id="categoryStrip">
+      <div class="category-pill active" data-cat="all">
+        <span>全部技能</span>
+        <span class="cat-count" id="catCountAll">0</span>
+      </div>
+      <div class="category-pill" data-cat="前端与动效">
+        <span>🎨 前端与动效</span>
+        <span class="cat-count" id="catCountFrontend">0</span>
+      </div>
+      <div class="category-pill" data-cat="开发与调试">
+        <span>💻 开发与调试</span>
+        <span class="cat-count" id="catCountDev">0</span>
+      </div>
+      <div class="category-pill" data-cat="系统与运维">
+        <span>🛠️ 系统与运维</span>
+        <span class="cat-count" id="catCountOps">0</span>
+      </div>
+      <div class="category-pill" data-cat="文档与办公">
+        <span>📄 文档与办公</span>
+        <span class="cat-count" id="catCountDocs">0</span>
+      </div>
+      <div class="category-pill" data-cat="AI与写作规范">
+        <span>🤖 AI与写作规范</span>
+        <span class="cat-count" id="catCountAi">0</span>
+      </div>
+      <div class="category-pill" data-cat="安全与规范">
+        <span>🔒 安全与规范</span>
+        <span class="cat-count" id="catCountSec">0</span>
+      </div>
+      <div class="category-pill" data-cat="其他工具">
+        <span>📦 其他工具</span>
+        <span class="cat-count" id="catCountOther">0</span>
+      </div>
+    </section>
+
+    <!-- Workbench Nav Tabs -->
+    <div class="workbench-nav">
+      <div class="nav-tabs">
+        <button class="nav-tab active" data-tab="catalog">
+          技能全景看板
+          <span class="tab-badge" id="badgeCatalogCount">0</span>
+        </button>
+        <button class="nav-tab" data-tab="deploy">
+          Agent 部署大盘
+          <span class="tab-badge" id="badgeDeployCount">4</span>
+        </button>
+        <button class="nav-tab" data-tab="import">
+          统一库导入规划
+          <span class="tab-badge" id="badgeImportCount">0</span>
+        </button>
+        <button class="nav-tab" data-tab="conflicts">
+          冲突与例外仲裁
+          <span class="tab-badge" id="badgeConflictCount">0</span>
+        </button>
+      </div>
+      <div class="workbench-controls">
+        <span class="filter-stats" id="quickSummaryText">准备就绪</span>
+      </div>
+    </div>
+
+    <!-- TAB 1: 技能全景看板 -->
+    <section class="tab-content active" id="tabCatalog">
+      <!-- Search & Filters -->
+      <div class="filter-bar">
+        <div class="filter-group-left">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="searchInput" placeholder="搜索技能名称、中文描述、备注或路径...">
+            <span class="kbd-hint">/</span>
+          </div>
+          <select id="filterCategorySelect" class="filter-select">
+            <option value="all">全部分类</option>
+            <option value="前端与动效">前端与动效</option>
+            <option value="开发与调试">开发与调试</option>
+            <option value="系统与运维">系统与运维</option>
+            <option value="文档与办公">文档与办公</option>
+            <option value="AI与写作规范">AI与写作规范</option>
+            <option value="安全与规范">安全与规范</option>
+            <option value="其他工具">其他工具</option>
+          </select>
+          <select id="filterAgent" class="filter-select">
+            <option value="all">所有 Agent 来源</option>
+            <option value="Antigravity IDE">Antigravity IDE</option>
+            <option value="Codex">Codex</option>
+            <option value="Claude Code">Claude Code</option>
+            <option value="DSH">DSH</option>
+          </select>
+          <select id="filterStatus" class="filter-select">
+            <option value="all">全部状态</option>
+            <option value="managed">已汇入统一库</option>
+            <option value="has_note">已有自定义备注</option>
+            <option value="duplicates">存在物理冗余副本</option>
+            <option value="conflicts">存在同名内容冲突</option>
+            <option value="unmanaged">未入统一库</option>
+            <option value="source_github">GitHub 下载</option>
+            <option value="source_unregistered">来源待登记</option>
+          </select>
+        </div>
+        <div class="filter-stats">
+          显示 <b id="filteredCount">0</b> / <span id="totalSkillsCount">0</span> 项
+        </div>
+      </div>
+
+      <!-- Skills Table -->
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 34%">技能 / 自动中文简介与备注</th>
+              <th style="width: 13%">所属分类</th>
+              <th style="width: 13%">SHA-256 指纹</th>
+              <th style="width: 20%">已分发 Agent / 状态</th>
+              <th style="width: 10%">副本分布</th>
+              <th style="width: 10%; text-align: right">操作</th>
+            </tr>
+          </thead>
+          <tbody id="skillsTableBody">
+            <tr>
+              <td colspan="6" class="empty-state">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+                <span>正在加载技能列表…</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 2: Agent 部署大盘 -->
+    <section class="tab-content" id="tabDeploy">
+      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
+        <div>
+          <div style="font-weight:600; font-size:14px; color:#fff">Windows 目录联接 (Junctions) 部署拓扑</div>
+          <div style="font-size:12px; color:var(--text-secondary); margin-top:2px">统一库源目录：<code id="deployLibraryPath" style="font-family:var(--font-mono); color:#fde68a">~/.skill-shelf/skills</code> · 独立 Junction 不影响各 Agent 自身文件</div>
+        </div>
+        <div style="display:flex; gap:10px">
+          <button id="btnDeployPlanPreview" class="btn btn-secondary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+            预览部署计划
+          </button>
+          <button id="btnDeployApply" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            执行全量联接部署
+          </button>
+        </div>
+      </div>
+
+      <div class="deploy-grid" id="deployTargetsGrid">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- TAB 3: 统一库导入规划 -->
+    <section class="tab-content" id="tabImport">
+      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
+        <div>
+          <div style="font-weight:600; font-size:14px; color:#fff">统一库安全导入计划 (Dry Run)</div>
+          <div style="font-size:12px; color:var(--text-secondary); margin-top:2px">遵循 source_priority 优先级，复制后先校验 SHA-256 再重命名，绝不覆盖已有项。</div>
+        </div>
+        <div style="display:flex; gap:10px">
+          <button id="btnRefreshImportPlan" class="btn btn-secondary">刷新计划</button>
+          <button id="btnApplyImport" class="btn btn-primary">执行安全导入</button>
+        </div>
+      </div>
+
+      <div style="margin:14px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px">
+        <div style="background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md); display:flex; flex-direction:column; gap:9px">
+          <b style="color:#fff">从 Git 下载</b>
+          <input id="gitRepoUrl" class="filter-select" type="url" placeholder="https://github.com/owner/repo.git" autocomplete="url">
+          <div style="display:flex;gap:8px">
+            <input id="gitBranch" class="filter-select" placeholder="分支（留空使用默认分支）">
+            <button id="btnGitPreview" class="btn btn-secondary">读取仓库</button>
+          </div>
+        </div>
+        <div style="background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md); display:flex; flex-direction:column; gap:9px">
+          <b style="color:#fff">导入本地压缩包</b>
+          <div style="font-size:12px;color:var(--text-secondary)">支持 ZIP 和 .skill 文件，导入前会检查内容并列出候选。</div>
+          <input id="archiveFile" type="file" accept=".zip,.skill,application/zip" class="filter-select">
+          <button id="btnArchivePreview" class="btn btn-secondary" style="align-self:flex-start">检查压缩包</button>
+        </div>
+        <form id="localSkillForm" style="background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md); display:flex; flex-direction:column; gap:9px">
+          <b style="color:#fff">本地创建 Skill</b>
+          <input id="localSkillName" class="filter-select" placeholder="目录名，例如 my-skill" required maxlength="120">
+          <input id="localSkillDescription" class="filter-select" placeholder="用途说明（必填）" required maxlength="1000">
+          <textarea id="localSkillInstructions" class="drawer-note-input" rows="3" placeholder="技能指令内容（可留空）"></textarea>
+          <button class="btn btn-primary" type="submit" style="align-self:flex-start">创建到统一库</button>
+        </form>
+      </div>
+      <div id="sourcePreviewPanel" style="display:none; margin-bottom:14px; background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md)">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px">
+          <div><b style="color:#fff">来源预览</b><div id="sourcePreviewLabel" style="font-size:12px;color:var(--text-secondary);margin-top:3px"></div></div>
+          <button id="btnApplySourcePreview" class="btn btn-primary" disabled>导入所选项</button>
+        </div>
+        <div id="sourcePreviewList" style="display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+
+      <div class="table-container">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>技能名称</th>
+              <th>决策状态</th>
+              <th>规范来源根目录</th>
+              <th>目标统一库路径</th>
+              <th>冗余清理候选</th>
+            </tr>
+          </thead>
+          <tbody id="importPlanTableBody">
+            <!-- Rendered by JS -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 4: 冲突与例外仲裁 -->
+    <section class="tab-content" id="tabConflicts">
+      <div style="background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
+        <div style="font-weight:600; font-size:14px; color:#fff">同名不同内容冲突 (Name Conflicts) 仲裁中心</div>
+        <div style="font-size:12px; color:var(--text-secondary); margin-top:2px">检查每个同名 Skill 的内容版本和位置。你可以选择一个版本全局统一，或预览融合并逐项选择冲突文件；确认后多余的物理副本会移入 Windows 回收站，Agent 入口统一指向技能库。</div>
+      </div>
+
+      <div class="conflict-cards" id="conflictCardsContainer">
+        <!-- Rendered by JS -->
+      </div>
+    </section>
+  </div>
+
+  <!-- Slide-out Drawer: Skill Inspector -->
+  <div class="drawer-overlay" id="drawerOverlay">
+    <div class="drawer" id="skillDrawer">
+      <div class="drawer-header">
+        <h2>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
+          <span id="drawerTitle">技能详情与管理</span>
+        </h2>
+        <button class="drawer-close" id="btnDrawerClose" title="关闭 (Esc)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="drawer-body">
+        <!-- Interactive Note Setting Port (备注与分类交互端口) -->
+        <div class="drawer-section">
+          <div class="drawer-section-title">
+            <span>我的中文备注与分类 (自定义设置端口)</span>
+            <span style="font-size:10px; color:var(--accent-amber)">支持云端/本地实时同步</span>
+          </div>
+          <div class="drawer-note-card">
+            <div class="drawer-note-row">
+              <label class="drawer-note-label">技能分类：</label>
+              <select id="drawerCategorySelect" class="filter-select" style="width:100%">
+                <option value="">自动分类</option>
+                <option value="前端与动效">🎨 前端与动效</option>
+                <option value="开发与调试">💻 开发与调试</option>
+                <option value="系统与运维">🛠️ 系统与运维</option>
+                <option value="文档与办公">📄 文档与办公</option>
+                <option value="AI与写作规范">🤖 AI与写作规范</option>
+                <option value="安全与规范">🔒 安全与规范</option>
+                <option value="其他工具">📦 其他工具</option>
+              </select>
+            </div>
+            <div class="drawer-note-row">
+              <label class="drawer-note-label">自定义中文描述 / 备注：</label>
+              <textarea id="drawerNoteText" class="drawer-note-input" placeholder="输入该 Skill 的自定义用途备注与心得..."></textarea>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:8px">
+              <button id="btnSaveDrawerNote" class="btn btn-primary" style="padding:6px 12px; font-size:12px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                保存备注与分类
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-section-title">基本信息与元数据</div>
+          <div class="drawer-meta-box">
+            <div class="drawer-meta-row">
+              <span class="label">技能标识:</span>
+              <span class="val" id="drawerSkillName" style="color:#fff; font-weight:600">—</span>
+            </div>
+            <div class="drawer-meta-row">
+              <span class="label">自动中文简介:</span>
+              <span class="val" id="drawerSkillZhDesc" style="font-family:var(--font-sans); text-align:left; font-size:11.5px">—</span>
+            </div>
+            <div class="drawer-meta-row">
+              <span class="label">原始用途描述:</span>
+              <span class="val" id="drawerSkillDesc" style="font-family:var(--font-sans); text-align:left; color:var(--text-muted); font-size:11.5px">—</span>
+            </div>
+            <div class="drawer-meta-row">
+              <span class="label">别名 aliases:</span>
+              <span class="val" id="drawerSkillAliases">—</span>
+            </div>
+            <div class="drawer-meta-row">
+              <span class="label">最近修改:</span>
+              <span class="val" id="drawerSkillModified">—</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-section-title">完整内容 SHA-256 指纹</div>
+          <div style="background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:10px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
+            <code id="drawerSkillHash" style="font-family:var(--font-mono); font-size:11.5px; color:#fde68a; overflow-wrap:anywhere;">—</code>
+            <button id="btnCopyHash" class="btn btn-secondary btn-icon-only" title="复制完整哈希">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-section-title">发现位置与副本类型 (<span id="drawerLocCount">0</span> 处)</div>
+          <div class="drawer-locations-list" id="drawerLocationsList">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+
+        <div class="drawer-section" id="drawerSourceSection">
+          <div class="drawer-section-title">来源与更新</div>
+          <div id="drawerSkillSource" style="font-size:12px;color:var(--text-secondary);overflow-wrap:anywhere;margin-bottom:8px">未记录来源</div>
+          <button id="btnCheckGitUpdate" class="btn btn-secondary" style="display:none">检查 Git 更新</button>
+          <button id="btnRegisterGitSource" class="btn btn-secondary" style="display:none;margin-top:8px">登记 GitHub 来源</button>
+        </div>
+
+        <div class="drawer-section">
+          <div class="drawer-section-title">危险操作区</div>
+          <div style="background:rgba(239, 68, 68, 0.05); border:1px solid rgba(239, 68, 68, 0.2); border-radius:var(--radius-sm); padding:12px; display:flex; flex-direction:column; gap:8px;">
+            <div style="font-size:11.5px; color:#fca5a5">移入 Windows 回收站将首先自动卸载所有指向该 Skill 的 Junction 软链，随后将统一库源文件夹移入回收站。</div>
+            <button id="btnDeleteSkill" class="btn btn-danger" style="align-self:flex-start;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+              移入回收站
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="drawer-footer">
+        <button id="btnRefreshSingle" class="btn btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          重新校验哈希
+        </button>
+        <button id="btnDrawerCloseBottom" class="btn btn-primary">完成并关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Edit Remark Modal (快捷备注端口弹窗) -->
+  <div class="modal-overlay" id="quickRemarkModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3>编辑技能备注与分类</h3>
+        <button class="drawer-close" id="btnQuickRemarkClose">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div style="display:flex; flex-direction:column; gap:4px">
+          <span style="font-size:11.5px; color:var(--text-muted)">当前技能：</span>
+          <b id="quickRemarkSkillName" style="color:#fff; font-size:14px">—</b>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:5px">
+          <label style="font-size:12px; font-weight:550; color:var(--text-secondary)">归属分类：</label>
+          <select id="quickRemarkCatSelect" class="filter-select" style="width:100%">
+            <option value="">自动分类</option>
+            <option value="前端与动效">🎨 前端与动效</option>
+            <option value="开发与调试">💻 开发与调试</option>
+            <option value="系统与运维">🛠️ 系统与运维</option>
+            <option value="文档与办公">📄 文档与办公</option>
+            <option value="AI与写作规范">🤖 AI与写作规范</option>
+            <option value="安全与规范">🔒 安全与规范</option>
+            <option value="其他工具">📦 其他工具</option>
+          </select>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:5px">
+          <label style="font-size:12px; font-weight:550; color:var(--text-secondary)">中文描述 / 备注：</label>
+          <textarea id="quickRemarkText" class="drawer-note-input" rows="3" placeholder="在此输入自定义中文备注..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnQuickRemarkCancel">取消</button>
+        <button class="btn btn-primary" id="btnQuickRemarkSave">保存备注</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm / Generic Modal -->
+  <div class="modal-overlay" id="genericModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modalTitle">确认操作</h3>
+        <button class="drawer-close" id="btnModalClose">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        操作确认内容
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btnModalCancel">取消</button>
+        <button class="btn btn-primary" id="btnModalConfirm">确定执行</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sonner Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // State Store
+    const state = {
+      scan: null,
+      deployStatus: null,
+      deployPlan: null,
+      importPlan: null,
+      notes: {},
+      categories: {},
+      conflicts: { groups: [] },
+      activeTab: 'catalog',
+      activeCategory: 'all',
+      selectedSkill: null,
+      searchQuery: '',
+      filterAgent: 'all',
+      filterStatus: 'all',
+      editingSkillName: null,
+      sources: {},
+      sourcePreview: null,
+      pollBusy: false,
+    };
+
+    // DOM Helpers
+    const $ = id => document.getElementById(id);
+    const esc = str => String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+    // Sonner-style Toast Manager
+    const toast = {
+      show(message, type = 'info', duration = 3200) {
+        const container = $('toastContainer');
+        const el = document.createElement('div');
+        el.className = `toast ${type}`;
+
+        let iconSvg = '';
+        if (type === 'success') {
+          iconSvg = `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
+        } else if (type === 'error') {
+          iconSvg = `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+        } else if (type === 'loading') {
+          iconSvg = `<svg class="toast-icon spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>`;
+        } else {
+          iconSvg = `<svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>`;
+        }
+
+        el.innerHTML = `${iconSvg}<span>${esc(message)}</span>`;
+        container.appendChild(el);
+
+        const dismiss = () => {
+          el.classList.add('out');
+          setTimeout(() => el.remove(), 220);
+        };
+
+        if (duration > 0) {
+          setTimeout(dismiss, duration);
+        }
+        return { el, dismiss };
+      },
+      success(msg, dur) { return this.show(msg, 'success', dur); },
+      error(msg, dur = 5000) { return this.show(msg, 'error', dur); },
+      loading(msg) { return this.show(msg, 'loading', 0); }
+    };
+
+    // Generic Modal Manager
+    let modalConfirmHandler = null;
+    function showModal({ title, bodyHtml, confirmText = '确定', confirmType = 'primary', onConfirm, wide = false }) {
+      $('modalTitle').textContent = title;
+      $('modalBody').innerHTML = bodyHtml;
+      $('genericModal').querySelector('.modal').classList.toggle('wide', wide);
+      const confirmBtn = $('btnModalConfirm');
+      confirmBtn.textContent = confirmText;
+      confirmBtn.className = `btn btn-${confirmType}`;
+      modalConfirmHandler = onConfirm;
+      $('genericModal').classList.add('open');
+    }
+    function closeModal() {
+      $('genericModal').classList.remove('open');
+      modalConfirmHandler = null;
+    }
+    $('btnModalClose').onclick = closeModal;
+    $('btnModalCancel').onclick = closeModal;
+    $('btnModalConfirm').onclick = async () => {
+      if (modalConfirmHandler) {
+        const button = $('btnModalConfirm');
+        button.disabled = true;
+        try {
+          const keepOpen = await modalConfirmHandler();
+          if (keepOpen === false) return;
+        } catch (err) {
+          toast.error(err.message || '操作失败');
+          return;
+        } finally {
+          button.disabled = false;
+        }
+      }
+      closeModal();
+    };
+
+    // Quick Remark Modal Manager (备注交互端口)
+    function openQuickRemarkModal(skillName, contentHash) {
+      state.editingSkillName = skillName;
+      $('quickRemarkSkillName').textContent = skillName;
+      const skill = state.scan?.skills?.find(item => item.name === skillName && item.content_hash === contentHash);
+      setCategorySelect($('quickRemarkCatSelect'), skillName, skill);
+      $('quickRemarkText').value = state.notes[skillName] || '';
+      $('quickRemarkModal').classList.add('open');
+    }
+    function closeQuickRemarkModal() {
+      $('quickRemarkModal').classList.remove('open');
+      state.editingSkillName = null;
+    }
+    $('btnQuickRemarkClose').onclick = closeQuickRemarkModal;
+    $('btnQuickRemarkCancel').onclick = closeQuickRemarkModal;
+    $('btnQuickRemarkSave').onclick = async () => {
+      const name = state.editingSkillName;
+      if (!name) return;
+      const note = $('quickRemarkText').value.trim();
+      const cat = $('quickRemarkCatSelect').value;
+      if (await saveSkillNote(name, note, cat)) closeQuickRemarkModal();
+    };
+
+    // API fetch wrapper
+    async function apiFetch(url, options = {}) {
+      const res = await fetch(url, options);
+      if (!res.ok) {
+        let errDetail = `HTTP ${res.status}`;
+        try {
+          const body = await res.json();
+          if (body.error) errDetail = body.error;
+        } catch (_) {}
+        throw new Error(errDetail);
+      }
+      return await res.json();
+    }
+
+    // Save Skill Note & Category (持久化备注交互端口)
+    async function saveSkillNote(name, note, category) {
+      const t = toast.loading(`正在保存 ${name} 的备注…`);
+      try {
+        const res = await apiFetch('/api/skills/notes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, note, category })
+        });
+        state.notes = res.notes || {};
+        state.categories = res.categories || {};
+        t.dismiss();
+        toast.success(`已成功更新 ${name} 的备注与分类`);
+        updateCategoryCounts();
+        renderSkillsTable();
+        if (state.selectedSkill && state.selectedSkill.name === name) {
+          $('drawerNoteText').value = note;
+          setCategorySelect($('drawerCategorySelect'), name, state.selectedSkill);
+        }
+        return true;
+      } catch (err) {
+        t.dismiss();
+        toast.error(`保存失败: ${err.message}`);
+        return false;
+      }
+    }
+
+    // Category Color & Badge Helper
+    function getSkillCategory(skill) {
+      const manualCategory = state.categories[skill.name];
+      return {
+        category: manualCategory || skill.auto_category || '其他工具',
+        isAutomatic: !manualCategory
+      };
+    }
+
+    function setCategorySelect(select, skillName, skill = null) {
+      skill = skill || state.scan?.skills?.find(item => item.name === skillName);
+      select.options[0].textContent = `自动分类（${skill?.auto_category || '其他工具'}）`;
+      select.value = state.categories[skillName] || '';
+    }
+
+    function getCategoryBadge(cat, isAutomatic = false) {
+      const c = cat || '其他工具';
+      let cssClass = 'cat-other';
+      if (c.includes('前端') || c.includes('动效')) cssClass = 'cat-frontend';
+      else if (c.includes('开发') || c.includes('调试')) cssClass = 'cat-dev';
+      else if (c.includes('系统') || c.includes('运维')) cssClass = 'cat-ops';
+      else if (c.includes('文档') || c.includes('办公')) cssClass = 'cat-docs';
+      else if (c.includes('AI') || c.includes('写作')) cssClass = 'cat-ai';
+      else if (c.includes('安全') || c.includes('规范')) cssClass = 'cat-security';
+      const source = isAutomatic ? '自动' : '手动';
+      return `<span class="badge badge-category ${cssClass}" title="${source}分类">${esc(c)}${isAutomatic ? '<small style="margin-left:5px;opacity:.75">自动</small>' : ''}</span>`;
+    }
+
+    // Agent Color Helper
+    function getAgentChip(agent) {
+      const a = (agent || '').toLowerCase();
+      if (a.includes('codex')) return `<span class="chip-agent chip-codex">Codex</span>`;
+      if (a.includes('claude')) return `<span class="chip-agent chip-claude">Claude Code</span>`;
+      if (a.includes('antigravity') || a.includes('gemini')) return `<span class="chip-agent chip-gemini">Antigravity</span>`;
+      if (a.includes('dsh')) return `<span class="chip-agent chip-dsh">DSH</span>`;
+      return `<span class="chip-agent chip-shelf">${esc(agent)}</span>`;
+    }
+
+    // Update Category Pill Counts
+    function updateCategoryCounts() {
+      if (!state.scan || !state.scan.skills) return;
+      const skills = state.scan.skills;
+      const counts = {
+        all: skills.length,
+        '前端与动效': 0,
+        '开发与调试': 0,
+        '系统与运维': 0,
+        '文档与办公': 0,
+        'AI与写作规范': 0,
+        '安全与规范': 0,
+        '其他工具': 0
+      };
+
+      skills.forEach(s => {
+        const cat = getSkillCategory(s).category;
+        if (counts[cat] !== undefined) counts[cat]++;
+        else counts['其他工具']++;
+      });
+
+      $('catCountAll').textContent = counts.all;
+      $('catCountFrontend').textContent = counts['前端与动效'];
+      $('catCountDev').textContent = counts['开发与调试'];
+      $('catCountOps').textContent = counts['系统与运维'];
+      $('catCountDocs').textContent = counts['文档与办公'];
+      $('catCountAi').textContent = counts['AI与写作规范'];
+      $('catCountSec').textContent = counts['安全与规范'];
+      $('catCountOther').textContent = counts['其他工具'];
+    }
+
+    // Render Metrics HUD
+    function renderHUD(data) {
+      if (!data) return;
+      const s = data.summary || {};
+      $('metricTotal').textContent = s.unique_contents ?? '—';
+      $('metricDuplicates').textContent = s.duplicates ?? '—';
+      $('metricConflicts').textContent = s.name_conflicts ?? '—';
+      $('badgeCatalogCount').textContent = s.unique_contents ?? '0';
+      $('badgeConflictCount').textContent = s.name_conflicts ?? '0';
+
+      const managedCount = data.skills?.filter(sk =>
+        sk.locations?.some(loc => loc.root_id === 'skill-shelf-library')
+      ).length ?? 0;
+      $('metricManaged').textContent = managedCount;
+
+      const junctions = data.skills?.reduce((acc, sk) =>
+        acc + (sk.locations?.filter(loc => loc.is_symlink).length || 0), 0
+      ) ?? 0;
+      $('metricJunctions').textContent = junctions;
+    }
+
+    // Render Roots Pills
+    function renderRoots(roots) {
+      const el = $('rootsPills');
+      if (!roots || !roots.length) {
+        el.innerHTML = '<span class="root-pill offline">未发现登记目录</span>';
+        return;
+      }
+      el.innerHTML = roots.map(r => `
+        <span class="root-pill ${r.exists ? '' : 'offline'}" title="${esc(r.path)}">
+          <span class="dot"></span>
+          <span>${esc(r.label)}</span>
+          <span class="count">${r.exists ? (r.skill_count ?? '0') : '缺失'}</span>
+        </span>
+      `).join('');
+    }
+
+    // Render Skills Catalog Table
+    function renderSkillsTable() {
+      const tbody = $('skillsTableBody');
+      if (!state.scan || !state.scan.skills) {
+        tbody.innerHTML = '<tr><td colspan="6" class="empty-state">暂无数据</td></tr>';
+        return;
+      }
+
+      let skills = state.scan.skills;
+
+      // Filter Category
+      if (state.activeCategory !== 'all') {
+        skills = skills.filter(s => getSkillCategory(s).category === state.activeCategory);
+      }
+
+      // Filter Query
+      const q = state.searchQuery.trim().toLowerCase();
+      if (q) {
+        skills = skills.filter(s => {
+          const zhNote = (state.notes[s.name] || '').toLowerCase();
+          const cat = getSkillCategory(s).category.toLowerCase();
+          return s.name.toLowerCase().includes(q) ||
+            zhNote.includes(q) ||
+            cat.includes(q) ||
+            (s.auto_description_zh && s.auto_description_zh.toLowerCase().includes(q)) ||
+            (s.description && s.description.toLowerCase().includes(q)) ||
+            s.aliases?.some(a => a.toLowerCase().includes(q)) ||
+            s.locations?.some(l => l.path.toLowerCase().includes(q));
+        });
+      }
+
+      // Filter Agent
+      if (state.filterAgent !== 'all') {
+        skills = skills.filter(s =>
+          s.locations?.some(l => l.agents?.includes(state.filterAgent) || l.root_label?.includes(state.filterAgent))
+        );
+      }
+
+      // Filter Status
+      if (state.filterStatus === 'managed') {
+        skills = skills.filter(s => s.locations?.some(l => l.root_id === 'skill-shelf-library'));
+      } else if (state.filterStatus === 'has_note') {
+        skills = skills.filter(s => Boolean(state.notes[s.name]));
+      } else if (state.filterStatus === 'duplicates') {
+        skills = skills.filter(s => s.duplicate);
+      } else if (state.filterStatus === 'conflicts') {
+        skills = skills.filter(s => s.name_conflict);
+      } else if (state.filterStatus === 'unmanaged') {
+        skills = skills.filter(s => !s.locations?.some(l => l.root_id === 'skill-shelf-library'));
+      } else if (state.filterStatus === 'source_github') {
+        skills = skills.filter(s => isGithubSource(sourceForSkill(s)));
+      } else if (state.filterStatus === 'source_unregistered') {
+        skills = skills.filter(s => s.locations?.some(l => l.root_id === 'skill-shelf-library') && !sourceForSkill(s));
+      }
+
+      $('filteredCount').textContent = skills.length;
+      $('totalSkillsCount').textContent = state.scan.skills.length;
+
+      if (!skills.length) {
+        tbody.innerHTML = `<tr><td colspan="6" class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span>没有匹配的技能项</span>
+        </td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = skills.map((sk, index) => {
+        const isManaged = sk.locations?.some(l => l.root_id === 'skill-shelf-library');
+        const shortHash = (sk.content_hash || '').substring(0, 8);
+        const agents = Array.from(new Set(sk.locations?.flatMap(l => l.agents || []) || []));
+        const customNote = state.notes[sk.name] || '';
+        const { category: cat, isAutomatic: isAutoCategory } = getSkillCategory(sk);
+        const displayZhDesc = sk.auto_description_zh || '暂无简介';
+        const source = sourceForSkill(sk);
+        const sourceBadge = isGithubSource(source)
+          ? '<span class="badge chip-success" style="font-size:10px">GitHub 下载</span>'
+          : source?.type === 'git'
+            ? '<span class="badge chip-shelf" style="font-size:10px">Git 下载</span>'
+            : source?.type === 'archive'
+              ? '<span class="badge chip-shelf" style="font-size:10px">压缩包导入</span>'
+              : source?.type === 'local'
+              ? '<span class="badge tag-dup" style="font-size:10px">本地创建</span>'
+                : isManaged
+                  ? '<span class="badge tag-dup" style="font-size:10px">来源待登记</span>'
+                  : '';
+
+        return `
+          <tr data-index="${index}">
+            <td>
+              <div class="skill-primary">
+                <div class="skill-name-row">
+                  <span class="skill-title">${esc(sk.name)}</span>
+                  ${sk.name_conflict ? '<span class="badge tag-conflict">同名冲突</span>' : ''}
+                  ${isManaged ? '<span class="badge chip-success" style="font-size:10px">已纳管</span>' : ''}
+                  ${sourceBadge}
+                </div>
+                <div class="skill-zh-desc" title="${esc(displayZhDesc)}">
+                  <span>${esc(displayZhDesc)}</span>
+                </div>
+                ${customNote ? `<div class="skill-zh-desc"><span class="skill-note-badge">备注</span><span>${esc(customNote)}</span></div>` : ''}
+              </div>
+            </td>
+            <td>
+              ${getCategoryBadge(cat, isAutoCategory)}
+            </td>
+            <td>
+              <span class="badge-hash" data-copy="${esc(sk.content_hash)}" title="点击复制完整哈希">${shortHash}…</span>
+            </td>
+            <td>
+              <div class="agent-chips">
+                ${agents.length ? agents.map(getAgentChip).join('') : '<span style="color:var(--text-muted);font-size:11px">仅统一库</span>'}
+              </div>
+            </td>
+            <td>
+              <span class="badge tag-dup">
+                ${sk.locations?.length || 0} 处副本
+                ${sk.linked_location_count ? `(${sk.linked_location_count} 软链)` : ''}
+              </span>
+            </td>
+            <td style="text-align: right">
+              <div style="display:inline-flex; gap:6px; align-items:center;">
+                <button class="btn btn-secondary btn-icon-only btn-edit-note" data-name="${esc(sk.name)}" data-hash="${esc(sk.content_hash)}" title="设置 / 编辑备注与分类">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                </button>
+                <button class="btn btn-secondary btn-icon-only btn-inspect" data-name="${esc(sk.name)}" data-hash="${esc(sk.content_hash)}" title="展开详情抽屉">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Bind row clicks
+      tbody.querySelectorAll('tr').forEach(row => {
+        row.addEventListener('click', (e) => {
+          if (e.target.closest('.badge-hash')) {
+            const h = e.target.closest('.badge-hash').getAttribute('data-copy');
+            navigator.clipboard.writeText(h);
+            toast.success(`已复制哈希: ${h.slice(0, 10)}…`);
+            return;
+          }
+          if (e.target.closest('.btn-edit-note')) {
+            const button = e.target.closest('.btn-edit-note');
+            openQuickRemarkModal(button.getAttribute('data-name'), button.getAttribute('data-hash'));
+            return;
+          }
+          const btn = row.querySelector('.btn-inspect');
+          if (btn) {
+            openDrawer(btn.getAttribute('data-name'), btn.getAttribute('data-hash'));
+          }
+        });
+      });
+    }
+
+    // Render Deploy Dashboard
+    function renderDeployTab(data) {
+      if (!data) return;
+      const targets = data.targets || [];
+      const grid = $('deployTargetsGrid');
+      $('deployLibraryPath').textContent = data.library_path || '~/.skill-shelf/skills';
+      $('badgeDeployCount').textContent = targets.length;
+
+      grid.innerHTML = targets.map(t => {
+        return `
+          <div class="deploy-target-card">
+            <div class="deploy-card-header">
+              <div class="deploy-card-title">
+                ${getAgentChip(t.label || t.id)}
+                <h3>${esc(t.label || t.id)}</h3>
+              </div>
+              <span class="badge ${t.exists ? 'chip-success' : 'tag-conflict'}">
+                ${t.exists ? '目录就绪' : '目标目录不存在'}
+              </span>
+            </div>
+            <div class="deploy-card-path">${esc(t.path)}</div>
+            <div class="deploy-stats-row">
+              <div class="deploy-stat-col linked">
+                <div class="num">${t.summary?.already_linked ?? 0}</div>
+                <div class="lbl">已建 Junction</div>
+              </div>
+              <div class="deploy-stat-col backup">
+                <div class="num">${t.summary?.backup_and_link ?? 0}</div>
+                <div class="lbl">待备份并联接</div>
+              </div>
+              <div class="deploy-stat-col blocked">
+                <div class="num">${t.summary?.blocked ?? 0}</div>
+                <div class="lbl">内容冲突阻断</div>
+              </div>
+              <div class="deploy-stat-col skip">
+                <div class="num">${t.summary?.skipped_incompatible ?? 0}</div>
+                <div class="lbl">跳过/不兼容</div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Render Import Plan
+    function renderImportTab(plan) {
+      const tbody = $('importPlanTableBody');
+      if (!plan || !plan.decisions) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">尚未生成导入计划</td></tr>';
+        return;
+      }
+      $('badgeImportCount').textContent = plan.summary?.ready_to_import ?? 0;
+
+      const decisions = plan.decisions || [];
+      if (!decisions.length) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-state">统一库已同步，无需导入</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = decisions.map(d => {
+        let statusBadge = '<span class="badge chip-success">统一库已有</span>';
+        if (d.action === 'import_to_library') {
+          statusBadge = '<span class="badge chip-claude">准备导入</span>';
+        } else if (d.action === 'review_conflict') {
+          statusBadge = '<span class="badge tag-conflict">冲突需核对</span>';
+        } else if (d.action === 'skip_conflict_variant') {
+          statusBadge = '<span class="badge" style="background:rgba(255,255,255,0.06);color:var(--text-muted)">跳过冲突副本</span>';
+        }
+
+        return `
+          <tr>
+            <td><b style="color:#fff">${esc(d.name)}</b></td>
+            <td>${statusBadge}</td>
+            <td><span class="badge chip-shelf">${esc(d.canonical_source?.root_label || '—')}</span></td>
+            <td><code style="font-family:var(--font-mono);font-size:11px;color:var(--text-secondary)">${esc(d.target_path)}</code></td>
+            <td>${d.cleanup_candidates?.length ? `${d.cleanup_candidates.length} 处物理副本` : '<span style="color:var(--text-muted)">无</span>'}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function conflictGroupFor(name) {
+      const key = String(name).normalize('NFKC').trim().toLocaleLowerCase();
+      return (state.conflicts?.groups || []).find(group => group.key === key);
+    }
+
+    function renderConflictsTab() {
+      const container = $('conflictCardsContainer');
+      if (!state.conflicts) return;
+      const groups = state.conflicts.groups || [];
+      if (!groups.length) {
+        container.innerHTML = `<div class="empty-state">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>当前未检测到任何同名内容冲突</span>
+        </div>`;
+        return;
+      }
+
+      container.innerHTML = groups.map(group => {
+        const recommendedHash = group.recommendation?.content_hash;
+        const variants = group.variants || [];
+        return `
+          <div class="conflict-card">
+            <div class="conflict-header">
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                ${esc(group.name)}
+                <span class="badge tag-conflict">${variants.length} 个内容版本</span>
+              </h3>
+            </div>
+            <div class="conflict-reason">
+              <span class="conflict-recommendation">推荐：${esc(recommendedHash?.slice(0, 12) || '待选择')}</span>
+              <span>${esc(group.recommendation?.reason || '请比较各版本后决定。')}</span>
+            </div>
+            ${group.resolution_supported === false ? `<div class="conflict-reason">${esc(group.resolution_block_reason || '该冲突暂不能自动统一。')}</div>` : ''}
+            <div style="overflow-x:auto">
+              <table class="variants-table">
+                <thead><tr><th>版本与用途</th><th>所在位置</th><th>统一操作</th></tr></thead>
+                <tbody>
+                  ${variants.map(variant => {
+                    const recommended = variant.content_hash === recommendedHash;
+                    const locations = variant.locations || [];
+                    return `
+                      <tr class="${recommended ? 'selected' : ''}">
+                        <td>
+                          <div class="conflict-variant-summary">
+                            <div><code style="font-family:var(--font-mono);font-size:11px;color:#fff">${esc(variant.content_hash.slice(0, 16))}…</code>
+                              ${recommended ? '<span class="badge tag-conflict">推荐</span>' : ''}
+                              ${variant.is_library_version ? '<span class="badge chip-success">统一库版本</span>' : ''}
+                            </div>
+                            <div class="conflict-variant-description">${esc(variant.auto_description_zh || variant.description || '暂无用途说明')}</div>
+                          </div>
+                        </td>
+                        <td>${locations.map(location => `<div class="conflict-location">${esc(location.root_label)} · ${esc(location.path)}</div>`).join('')}</td>
+                        <td>
+                          <button class="btn btn-secondary" data-conflict-keep="${esc(variant.content_hash)}" data-conflict-name="${esc(group.name)}" ${group.resolution_supported === false ? 'disabled title="暂不支持该来源格式"' : ''}>保留此版本并统一</button>
+                        </td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+            <div class="conflict-actions">
+              <button class="btn btn-primary" data-conflict-merge="${esc(group.name)}" ${group.resolution_supported === false ? 'disabled title="暂不支持该来源格式"' : ''}>预览融合方案</button>
+              <span style="font-size:11px;color:var(--text-muted)">确认后统一库和各 Agent 入口只保留所选结果；多余物理版本移入回收站。</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('[data-conflict-keep]').forEach(button => {
+        button.onclick = () => openKeepConflictConfirmation(button.dataset.conflictName, button.dataset.conflictKeep);
+      });
+      container.querySelectorAll('[data-conflict-merge]').forEach(button => {
+        button.onclick = () => openMergeConflictPreview(button.dataset.conflictMerge);
+      });
+    }
+
+    function conflictConfirmationHtml(group, variant, mode) {
+      const allLocations = (group.variants || []).flatMap(item => item.locations || []);
+      const paths = [...new Set(allLocations.map(location => location.path))];
+      const choiceText = mode === 'merge' ? '按预览中的文件选项融合所有版本' : `保留 ${variant.content_hash.slice(0, 16)}…`;
+      return `
+        <div><b style="color:#fff">${esc(group.name)}</b>：${esc(choiceText)}</div>
+        <div>将把统一库内容更新为所选结果，并把 Agent 入口改为指向统一库。其他物理版本会移入 Windows 回收站，可以从回收站恢复；现有链接目标会随统一库更新。</div>
+        <div><b style="color:#fff">将检查并整理这些位置：</b></div>
+        <div class="conflict-confirm-list">${paths.map(path => `<div class="conflict-confirm-path">${esc(path)}</div>`).join('')}</div>
+      `;
+    }
+
+    function openKeepConflictConfirmation(name, selectedHash) {
+      const group = conflictGroupFor(name);
+      const variant = group?.variants?.find(item => item.content_hash === selectedHash);
+      if (!group || !variant) return toast.error('冲突信息已变化，请重新扫描');
+      showModal({
+        title: '确认统一同名 Skill',
+        bodyHtml: conflictConfirmationHtml(group, variant, 'keep'),
+        confirmText: '确认统一并回收多余副本',
+        confirmType: 'primary',
+        wide: true,
+        onConfirm: () => applyConflictResolution({
+          confirm: 'RESOLVE_SKILL_CONFLICT', name: group.name, mode: 'keep',
+          selected_hash: selectedHash, expected_hashes: group.expected_hashes,
+        }),
+      });
+    }
+
+    async function openMergeConflictPreview(name) {
+      const group = conflictGroupFor(name);
+      if (!group) return toast.error('冲突信息已变化，请重新扫描');
+      const loading = toast.loading(`正在分析 ${group.name} 的文件差异…`);
+      try {
+        const preview = await apiFetch('/api/conflicts/preview', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: group.name, expected_hashes: group.expected_hashes }),
+        });
+        loading.dismiss();
+        if (!preview.merge_supported) return toast.error(preview.reason || '当前版本无法融合');
+        const collisions = preview.collisions || [];
+        const collisionHtml = collisions.length ? `
+          <div><b style="color:#fff">同路径内容不同的文件（${collisions.length} 个）</b>。每项可选择保留的版本，默认值是系统推荐。</div>
+          <div class="merge-collision-list">${collisions.map((collision, index) => `
+            <label class="merge-collision" for="merge-choice-${index}">
+              <span class="merge-collision-path">${esc(collision.path)}</span>
+              <select id="merge-choice-${index}" class="filter-select merge-choice" data-merge-path="${esc(collision.path)}">
+                ${collision.variants.map(option => `<option value="${esc(option.content_hash)}" ${option.content_hash === collision.recommended_hash ? 'selected' : ''}>${esc(option.source_label)} · ${esc(option.hash_prefix)}</option>`).join('')}
+              </select>
+            </label>
+          `).join('')}</div>
+        ` : '<div>没有同路径但内容不同的文件；融合会合并所有独立文件，并合并内容相同的文件。</div>';
+        const mergeVariant = { content_hash: preview.expected_hashes[0] };
+        showModal({
+          title: `预览融合：${group.name}`,
+          bodyHtml: `
+            <div>共 ${preview.file_count} 个文件，其中 ${preview.collision_count || 0} 个需要选择保留版本。系统不会自动拼接同一个文件的文本内容。</div>
+            ${collisionHtml}
+            <div class="conflict-reason">确定后会用融合结果替换统一库版本，并把多余物理版本移入回收站。</div>
+            ${conflictConfirmationHtml(group, mergeVariant, 'merge')}
+          `,
+          confirmText: '确认融合并回收多余副本',
+          confirmType: 'primary',
+          wide: true,
+          onConfirm: () => {
+            const fileChoices = Object.fromEntries(
+              [...$('modalBody').querySelectorAll('[data-merge-path]')]
+                .map(select => [select.dataset.mergePath, select.value])
+            );
+            return applyConflictResolution({
+              confirm: 'RESOLVE_SKILL_CONFLICT', name: group.name, mode: 'merge',
+              file_choices: fileChoices, expected_hashes: group.expected_hashes,
+            });
+          },
+        });
+      } catch (err) {
+        loading.dismiss();
+        toast.error(`融合预览失败：${err.message}`);
+      }
+    }
+
+    async function applyConflictResolution(request) {
+      const loading = toast.loading('正在统一 Skill 并整理多余副本…');
+      try {
+        const result = await apiFetch('/api/conflicts/resolve', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(request),
+        });
+        loading.dismiss();
+        await loadAllData();
+        const summary = result.summary || {};
+        if (summary.failed_recycles) {
+          toast.show(`已统一入口，但有 ${summary.failed_recycles} 个旧副本未能移入回收站，请检查处理结果。`, 'error', 6500);
+        } else if (summary.remaining_conflict) {
+          toast.show('统一操作已完成，但扫描仍发现同名冲突，请检查异常位置。', 'error', 6500);
+        } else {
+          toast.success(`已统一 ${result.name}：${summary.linked_locations || 0} 个 Agent 入口已指向统一版本。`);
+        }
+      } catch (err) {
+        loading.dismiss();
+        throw err;
+      }
+    }
+
+    // Open Inspector Drawer
+    function openDrawer(skillName, contentHash) {
+      if (!state.scan) return;
+      const skill = state.scan.skills?.find(s => s.name === skillName && s.content_hash === contentHash);
+      if (!skill) return;
+
+      state.selectedSkill = skill;
+      $('drawerTitle').textContent = skill.name;
+      $('drawerSkillName').textContent = skill.name;
+      $('drawerSkillZhDesc').textContent = skill.auto_description_zh || '暂无简介';
+      $('drawerSkillDesc').textContent = skill.description || '无原始描述';
+      $('drawerSkillAliases').textContent = skill.aliases?.length ? skill.aliases.join(', ') : '无';
+      $('drawerSkillModified').textContent = skill.modified_at || '—';
+      $('drawerSkillHash').textContent = skill.content_hash;
+      $('drawerLocCount').textContent = skill.locations?.length || 0;
+      const libraryDirectory = selectedLibraryDirectory(skill);
+      const source = sourceForSkill(skill);
+      const sourceType = source?.type === 'git' ? `${isGithubSource(source) ? 'GitHub 下载' : 'Git 下载'} · ${source.repository_url}${source.branch ? ` · ${source.branch}` : ''}${source.relative_path && source.relative_path !== '.' ? ` · ${source.relative_path}` : ''}` : source?.type === 'archive' ? `压缩包 · ${source.file_name || '本地文件'}` : source?.type === 'local' ? '本地创建' : '历史 Skill（来源待登记）';
+      $('drawerSkillSource').textContent = sourceType;
+      $('btnCheckGitUpdate').style.display = source?.type === 'git' ? '' : 'none';
+      $('btnRegisterGitSource').style.display = libraryDirectory ? '' : 'none';
+      $('btnRegisterGitSource').textContent = source?.type === 'git' ? '修改 GitHub 关联' : '登记 GitHub 来源';
+
+      // Note & Category editor in drawer
+      setCategorySelect($('drawerCategorySelect'), skill.name, skill);
+      $('drawerNoteText').value = state.notes[skill.name] || '';
+
+      const locList = $('drawerLocationsList');
+      locList.innerHTML = (skill.locations || []).map(loc => `
+        <div class="drawer-location-item">
+          <div class="drawer-location-header">
+            <span>${esc(loc.root_label)}</span>
+            <span class="badge ${loc.is_symlink ? 'chip-codex' : 'tag-dup'}">${loc.is_symlink ? 'Junction 软链' : '物理副本'}</span>
+          </div>
+          <div class="drawer-location-path">${esc(loc.path)}</div>
+        </div>
+      `).join('');
+
+      $('drawerOverlay').classList.add('open');
+    }
+
+    function closeDrawer() {
+      $('drawerOverlay').classList.remove('open');
+      state.selectedSkill = null;
+    }
+
+    $('btnDrawerClose').onclick = closeDrawer;
+    $('btnDrawerCloseBottom').onclick = closeDrawer;
+    $('drawerOverlay').onclick = (e) => {
+      if (e.target === $('drawerOverlay')) closeDrawer();
+    };
+
+    // Save note in drawer
+    $('btnSaveDrawerNote').onclick = async () => {
+      if (!state.selectedSkill) return;
+      const name = state.selectedSkill.name;
+      const note = $('drawerNoteText').value.trim();
+      const cat = $('drawerCategorySelect').value;
+      await saveSkillNote(name, note, cat);
+    };
+
+    // Copy hash in drawer
+    $('btnCopyHash').onclick = () => {
+      if (!state.selectedSkill) return;
+      navigator.clipboard.writeText(state.selectedSkill.content_hash);
+      toast.success('已复制完整 SHA-256 哈希');
+    };
+
+    // Single Skill Refresh in drawer
+    $('btnRefreshSingle').onclick = async () => {
+      if (!state.selectedSkill) return;
+      const t = toast.loading(`正在重新校验 ${state.selectedSkill.name}…`);
+      try {
+        await apiFetch('/api/skills/refresh', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ directory: state.selectedSkill.name })
+        });
+        t.dismiss();
+        toast.success(`刷新成功: 指纹一致性已确认`);
+        await loadAllData();
+      } catch (err) {
+        t.dismiss();
+        toast.error(`刷新失败: ${err.message}`);
+      }
+    };
+
+    // Single Skill Delete to Recycle Bin
+    $('btnDeleteSkill').onclick = () => {
+      if (!state.selectedSkill) return;
+      const sName = state.selectedSkill.name;
+      showModal({
+        title: `移入回收站确认`,
+        bodyHtml: `
+          <p>您确定要将 <b>${esc(sName)}</b> 移入 Windows 回收站吗？</p>
+          <p style="color:#fca5a5; font-size:12px; margin-top:8px;">
+            此操作将自动先撤销所有 Agent 中指向该统一库 Skill 的 Junction 软链，随后将源文件夹移入回收站。
+          </p>
+        `,
+        confirmText: '移入回收站',
+        confirmType: 'danger',
+        onConfirm: async () => {
+          const t = toast.loading(`正在将 ${sName} 移入回收站…`);
+          try {
+            await apiFetch('/api/skills/delete', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                directory: sName,
+                confirm: 'MOVE_SKILL_TO_RECYCLE_BIN'
+              })
+            });
+            t.dismiss();
+            toast.success(`已成功将 ${sName} 送入回收站`);
+            closeDrawer();
+            await loadAllData();
+          } catch (err) {
+            t.dismiss();
+            toast.error(`删除失败: ${err.message}`);
+          }
+        }
+      });
+    };
+
+    // Global Action: Scan
+    async function doScan() {
+      const btn = $('btnScan');
+      const icon = $('scanIcon');
+      btn.disabled = true;
+      $('scanBtnText').textContent = '正在扫描…';
+      icon.classList.add('spin');
+      const t = toast.loading('正在扫描根目录并计算 SHA-256…');
+
+      try {
+        state.scan = await apiFetch('/api/scan', { method: 'POST' });
+        state.conflicts = await apiFetch('/api/conflicts');
+        t.dismiss();
+        toast.success(`扫描完成！共发现 ${state.scan.summary?.unique_contents || 0} 个独立 Skill`);
+        renderHUD(state.scan);
+        renderRoots(state.scan.roots);
+        updateCategoryCounts();
+        renderSkillsTable();
+        renderConflictsTab();
+        $('quickSummaryText').textContent = `扫描耗时完成 · ${new Date().toLocaleTimeString()}`;
+      } catch (err) {
+        t.dismiss();
+        toast.error(`扫描失败: ${err.message}`);
+      } finally {
+        btn.disabled = false;
+        $('scanBtnText').textContent = '扫描并对比';
+        icon.classList.remove('spin');
+      }
+    }
+    $('btnScan').onclick = doScan;
+
+    // Global Action: Reconcile Links
+    $('btnReconcile').onclick = async () => {
+      const btn = $('btnReconcile');
+      btn.disabled = true;
+      const t = toast.loading('正在协调与补建缺失的 Agent 软链接…');
+      try {
+        const res = await apiFetch('/api/reconcile-links', { method: 'POST' });
+        t.dismiss();
+        const s = res.summary || {};
+        toast.success(`协调完成：新建 ${s.linked || 0} 处软链，清理 ${s.orphan_links_removed || 0} 处孤立联接`);
+        await loadAllData();
+      } catch (err) {
+        t.dismiss();
+        toast.error(`协调失败: ${err.message}`);
+      } finally {
+        btn.disabled = false;
+      }
+    };
+
+    // Deploy Actions
+    $('btnDeployPlanPreview').onclick = async () => {
+      const t = toast.loading('生成部署计划…');
+      try {
+        const plan = await apiFetch('/api/deploy-plan', { method: 'POST' });
+        t.dismiss();
+        showModal({
+          title: 'Agent 部署计划预览 (Dry Run)',
+          bodyHtml: `
+            <p>本次全量部署目标共 <b>${plan.summary?.target_count || 4}</b> 个 Agent 目录，覆盖 <b>${plan.summary?.managed_skills || 0}</b> 个统一库技能：</p>
+            <ul style="padding-left:20px;margin-top:8px;font-size:12px;display:flex;flex-direction:column;gap:4px">
+              <li>新建 Junction：<b>${plan.summary?.create_links || 0}</b> 处</li>
+              <li>备份并建立 Junction：<b>${plan.summary?.backup_and_link || 0}</b> 处</li>
+              <li>已联接（无需改动）：<b>${plan.summary?.already_linked || 0}</b> 处</li>
+              <li>内容冲突阻断：<b>${plan.summary?.blocked || 0}</b> 处</li>
+            </ul>
+          `,
+          confirmText: '确认部署',
+          onConfirm: doApplyDeploy
+        });
+      } catch (err) {
+        t.dismiss();
+        toast.error(`生成部署计划失败: ${err.message}`);
+      }
+    };
+
+    async function doApplyDeploy() {
+      const t = toast.loading('正在执行全量部署并建立 Junction 联接…');
+      try {
+        const res = await apiFetch('/api/deploy/apply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ confirm: 'DEPLOY_AGENT_LINKS' })
+        });
+        t.dismiss();
+        toast.success(`部署完成！成功部署 ${res.summary?.applied_links || 0} 处联接`);
+        await loadAllData();
+      } catch (err) {
+        t.dismiss();
+        toast.error(`部署失败: ${err.message}`);
+      }
+    }
+    $('btnDeployApply').onclick = () => {
+      showModal({
+        title: '执行全量部署确认',
+        bodyHtml: '<p>此操作将检查所有目标 Agent（Codex、Claude Code、Antigravity、DSH）的目录，安全备份重复副本并建立至统一库的 Windows Junction 软链接。是否继续？</p>',
+        confirmText: '立即执行部署',
+        onConfirm: doApplyDeploy
+      });
+    };
+
+    function renderSourcePreview(preview) {
+      state.sourcePreview = preview;
+      const panel = $('sourcePreviewPanel');
+      const source = preview.source || {};
+      const label = source.type === 'git'
+        ? `${source.repository_url}${source.branch ? ` · ${source.branch}` : ''}`
+        : `压缩包 · ${source.file_name || '本地文件'}`;
+      $('sourcePreviewLabel').textContent = `${label} · 检测到 ${preview.candidates.length} 个候选 Skill`;
+      $('sourcePreviewList').innerHTML = preview.candidates.map(candidate => {
+        const checked = candidate.existing_status === 'new' ? 'checked' : '';
+        const status = candidate.existing_status === 'same_content'
+          ? `内容已由 ${esc(candidate.existing_name)} 管理`
+          : candidate.existing_status === 'name_conflict'
+            ? '统一库已有同名不同内容，可改目录名后导入'
+            : '新技能';
+        return `<label style="display:grid;grid-template-columns:auto minmax(120px,1fr) minmax(180px,1.5fr);align-items:center;gap:10px;background:var(--bg-surface-elevated);padding:9px 11px;border-radius:var(--radius-sm)">
+          <input class="source-candidate-select" type="checkbox" data-candidate-id="${esc(candidate.candidate_id)}" ${checked}>
+          <span><b style="color:#fff">${esc(candidate.name)}</b><small style="display:block;color:var(--text-muted);margin-top:3px">${esc(status)}</small></span>
+          <input class="filter-select source-candidate-name" data-candidate-id="${esc(candidate.candidate_id)}" value="${esc(candidate.name)}" maxlength="120" aria-label="统一库目录名">
+          <span style="grid-column:2 / -1;color:var(--text-secondary);font-size:11px">${esc(candidate.description || candidate.relative_path)}</span>
+        </label>`;
+      }).join('');
+      $('btnApplySourcePreview').disabled = false;
+      panel.style.display = '';
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    $('btnGitPreview').onclick = async () => {
+      const url = $('gitRepoUrl').value.trim();
+      if (!url) return toast.error('请填写 Git 仓库 HTTPS 地址');
+      const button = $('btnGitPreview');
+      button.disabled = true;
+      const loading = toast.loading('正在浅克隆仓库并检查 Skill…');
+      try {
+        const preview = await apiFetch('/api/sources/git/preview', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ repository_url: url, branch: $('gitBranch').value.trim() })
+        });
+        renderSourcePreview(preview);
+        loading.dismiss();
+        toast.success(`找到 ${preview.candidates.length} 个候选 Skill，请核对后导入`);
+      } catch (err) {
+        loading.dismiss();
+        toast.error(`Git 预览失败：${err.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    };
+
+    $('btnArchivePreview').onclick = async () => {
+      const file = $('archiveFile').files?.[0];
+      if (!file) return toast.error('请先选择 ZIP 或 .skill 文件');
+      const button = $('btnArchivePreview');
+      button.disabled = true;
+      const loading = toast.loading('正在检查压缩包结构…');
+      try {
+        const preview = await apiFetch('/api/sources/archive/preview', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/zip', 'X-File-Name': encodeURIComponent(file.name) },
+          body: file
+        });
+        renderSourcePreview(preview);
+        loading.dismiss();
+        toast.success(`找到 ${preview.candidates.length} 个候选 Skill，请核对后导入`);
+      } catch (err) {
+        loading.dismiss();
+        toast.error(`压缩包检查失败：${err.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    };
+
+    $('btnApplySourcePreview').onclick = () => {
+      const selected = Array.from(document.querySelectorAll('.source-candidate-select:checked')).map(checkbox => {
+        const id = checkbox.dataset.candidateId;
+        const nameInput = document.querySelector(`.source-candidate-name[data-candidate-id="${CSS.escape(id)}"]`);
+        return { candidate_id: id, target_name: nameInput?.value.trim() || '' };
+      });
+      if (!selected.length) return toast.error('请至少勾选一个 Skill');
+      showModal({
+        title: '导入所选 Skill',
+        bodyHtml: `<p>即将把 <b>${selected.length}</b> 个候选复制到统一库。系统会校验哈希，已有目录不会被覆盖。</p>`,
+        confirmText: '确认导入',
+        onConfirm: async () => {
+          const loading = toast.loading('正在复制、校验并接入统一库…');
+          try {
+            const result = await apiFetch('/api/sources/apply', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ confirm: 'IMPORT_SOURCE_SKILLS', preview_id: state.sourcePreview?.preview_id, selected })
+            });
+            loading.dismiss();
+            toast.success(`导入完成：新增 ${result.summary?.imported || 0} 项`);
+            state.sourcePreview = null;
+            $('sourcePreviewPanel').style.display = 'none';
+            await loadAllData();
+          } catch (err) {
+            loading.dismiss();
+            toast.error(`来源导入失败：${err.message}`);
+          }
+        }
+      });
+    };
+
+    $('localSkillForm').addEventListener('submit', async event => {
+      event.preventDefault();
+      const button = event.currentTarget.querySelector('button[type="submit"]');
+      button.disabled = true;
+      const loading = toast.loading('正在创建本地 Skill…');
+      try {
+        const result = await apiFetch('/api/sources/create', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: $('localSkillName').value,
+            description: $('localSkillDescription').value,
+            instructions: $('localSkillInstructions').value
+          })
+        });
+        loading.dismiss();
+        toast.success(`已创建 ${result.name} 并接入 Agent 目录`);
+        event.currentTarget.reset();
+        await loadAllData();
+      } catch (err) {
+        loading.dismiss();
+        toast.error(`创建失败：${err.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    function selectedLibraryDirectory(skill) {
+      const location = skill?.locations?.find(item => item.root_id === 'skill-shelf-library');
+      return location?.relative_path?.split(/[\\/]/)[0] || null;
+    }
+
+    function sourceForSkill(skill) {
+      const directory = selectedLibraryDirectory(skill);
+      return directory ? state.sources[directory] || null : null;
+    }
+
+    function isGithubSource(source) {
+      if (source?.type !== 'git') return false;
+      try {
+        return ['github.com', 'www.github.com'].includes(new URL(source.repository_url).hostname.toLowerCase());
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function openGitSourceAssociation(skill) {
+      const directory = selectedLibraryDirectory(skill);
+      if (!directory) return toast.error('该 Skill 尚未进入统一库');
+      const currentSource = state.sources[directory] || {};
+      showModal({
+        title: `${currentSource.type === 'git' ? '修改' : '登记'} ${directory} 的 GitHub 来源`,
+        bodyHtml: `
+          <div style="display:flex;flex-direction:column;gap:12px">
+            <p style="font-size:12px;color:var(--text-secondary)">填写 GitHub 仓库地址或 Skill 的 tree/blob 链接。程序会先拉取仓库并比对 Skill 内容，确认来源后才登记。</p>
+            <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text-secondary)">GitHub 仓库地址
+              <input id="githubAssociationUrl" class="filter-select" style="width:100%" placeholder="https://github.com/owner/repository" value="${esc(currentSource.repository_url || '')}">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text-secondary)">分支（留空使用仓库默认分支）
+              <input id="githubAssociationBranch" class="filter-select" style="width:100%" placeholder="main" value="${esc(currentSource.branch || '')}">
+            </label>
+            <label style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text-secondary)">Skill 在仓库内的相对路径（可留空自动匹配）
+              <input id="githubAssociationPath" class="filter-select" style="width:100%" placeholder="例如 skills/${esc(directory)}" value="${esc(currentSource.relative_path && currentSource.relative_path !== '.' ? currentSource.relative_path : '')}">
+            </label>
+          </div>`,
+        confirmText: '检查来源',
+        onConfirm: async () => {
+          const loading = toast.loading('正在拉取 GitHub 仓库并比对 Skill…');
+          try {
+            const preview = await apiFetch('/api/sources/git/association/preview', {
+              method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                directory,
+                repository_url: $('githubAssociationUrl').value.trim(),
+                branch: $('githubAssociationBranch').value.trim(),
+                relative_path: $('githubAssociationPath').value.trim(),
+              }),
+            });
+            loading.dismiss();
+            const comparison = preview.local_changes
+              ? `<p style="color:#fca5a5">远端与统一库内容不同。登记后会归入“GitHub 下载”，但更新检查会保护本地改写并阻止自动覆盖。</p>`
+              : `<p style="color:#86efac">远端与统一库内容完全一致，可以安全启用后续更新检查。</p>`;
+            showModal({
+              title: `确认关联 ${directory}`,
+              bodyHtml: `<p>仓库：<code>${esc(preview.source.repository_url)}</code></p><p>分支：<code>${esc(preview.source.branch || '默认分支')}</code></p><p>仓库路径：<code>${esc(preview.source.relative_path)}</code></p><p>本地指纹：<code>${esc(preview.current_hash.slice(0, 16))}…</code></p><p>远端指纹：<code>${esc(preview.latest_hash.slice(0, 16))}…</code></p>${comparison}`,
+              confirmText: '确认登记 GitHub 来源',
+              onConfirm: async () => {
+                await apiFetch('/api/sources/git/association/apply', {
+                  method: 'POST', headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ confirm: 'REGISTER_GIT_SOURCE', preview_id: preview.preview_id }),
+                });
+                toast.success(preview.local_changes
+                  ? `已将 ${directory} 归入 GitHub 下载；本地改写保护已启用`
+                  : `已将 ${directory} 归入 GitHub 下载，可检查更新`);
+                await loadAllData();
+                const updated = state.scan?.skills?.find(item => selectedLibraryDirectory(item) === directory);
+                if (updated) openDrawer(updated.name, updated.content_hash);
+              },
+            });
+            return false;
+          } catch (err) {
+            loading.dismiss();
+            throw err;
+          }
+        },
+      });
+    }
+
+    $('btnRegisterGitSource').onclick = () => {
+      if (state.selectedSkill) openGitSourceAssociation(state.selectedSkill);
+    };
+
+    $('btnCheckGitUpdate').onclick = async () => {
+      const directory = selectedLibraryDirectory(state.selectedSkill);
+      if (!directory) return toast.error('该 Skill 尚未进入统一库');
+      const button = $('btnCheckGitUpdate');
+      button.disabled = true;
+      const loading = toast.loading('正在检查 Git 远端版本…');
+      try {
+        const result = await apiFetch('/api/skills/update/check', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ directory })
+        });
+        loading.dismiss();
+        if (result.status === 'up_to_date') {
+          toast.success('当前已是 Git 仓库最新内容');
+          return;
+        }
+        if (result.local_changes) {
+          toast.error('检测到统一库中的本地改动；为保护改写内容，自动更新已停用。请在抽屉中复制哈希并人工比对。', 7000);
+          return;
+        }
+        showModal({
+          title: `检查到 ${esc(directory)} 有 Git 更新`,
+          bodyHtml: `<p>本地：<code>${esc(result.current_hash.slice(0, 16))}…</code></p><p>远端：<code>${esc(result.latest_hash.slice(0, 16))}…</code></p><p style="margin-top:8px">${esc(result.latest_description || result.latest_name || '远端内容已变化')}</p><p style="color:var(--text-secondary);font-size:12px;margin-top:8px">应用更新前会把当前版本备份到统一库旁的 backups 目录。</p>`,
+          confirmText: '备份并更新',
+          onConfirm: async () => {
+            const applyLoading = toast.loading('正在备份并替换 Skill…');
+            try {
+              await apiFetch('/api/skills/update/apply', {
+                method: 'POST', headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ confirm: 'APPLY_GIT_UPDATE', preview_id: result.preview_id })
+              });
+              applyLoading.dismiss();
+              toast.success('Git 更新完成，旧版本已备份');
+              await loadAllData();
+              const updated = state.scan?.skills?.find(item => selectedLibraryDirectory(item) === directory);
+              if (updated) openDrawer(updated.name, updated.content_hash);
+            } catch (err) {
+              applyLoading.dismiss();
+              toast.error(`更新失败：${err.message}`);
+            }
+          }
+        });
+      } catch (err) {
+        loading.dismiss();
+        toast.error(`更新检查失败：${err.message}`);
+      } finally {
+        button.disabled = false;
+      }
+    };
+
+    // Import Actions
+    $('btnRefreshImportPlan').onclick = async () => {
+      const t = toast.loading('重新生成导入计划…');
+      try {
+        state.importPlan = await apiFetch('/api/import-plan', { method: 'POST' });
+        t.dismiss();
+        renderImportTab(state.importPlan);
+        toast.success('导入计划已更新');
+      } catch (err) {
+        t.dismiss();
+        toast.error(err.message);
+      }
+    };
+
+    $('btnApplyImport').onclick = () => {
+      showModal({
+        title: '执行统一库安全导入',
+        bodyHtml: '<p>系统将把准备导入的 Skill 复制到 ~/.skill-shelf/skills，校验 SHA-256 无误后纳入统一库。已有项绝不覆盖。是否确认？</p>',
+        confirmText: '开始导入',
+        onConfirm: async () => {
+          const t = toast.loading('正在复制并校验哈希导入统一库…');
+          try {
+            const res = await apiFetch('/api/import/apply', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ confirm: 'IMPORT_TO_LIBRARY' })
+            });
+            t.dismiss();
+            toast.success(`导入完成！已成功汇入 ${res.summary?.imported || 0} 项 Skill`);
+            await loadAllData();
+          } catch (err) {
+            t.dismiss();
+            toast.error(`导入失败: ${err.message}`);
+          }
+        }
+      });
+    };
+
+    // Category Pill Click Listeners
+    document.querySelectorAll('.category-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        document.querySelectorAll('.category-pill').forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        const cat = pill.getAttribute('data-cat');
+        state.activeCategory = cat;
+        $('filterCategorySelect').value = cat;
+        renderSkillsTable();
+      });
+    });
+
+    $('filterCategorySelect').addEventListener('change', (e) => {
+      const cat = e.target.value;
+      state.activeCategory = cat;
+      document.querySelectorAll('.category-pill').forEach(p => {
+        p.classList.toggle('active', p.getAttribute('data-cat') === cat);
+      });
+      renderSkillsTable();
+    });
+
+    // Filter event listeners
+    $('searchInput').addEventListener('input', (e) => {
+      state.searchQuery = e.target.value;
+      renderSkillsTable();
+    });
+    $('filterAgent').addEventListener('change', (e) => {
+      state.filterAgent = e.target.value;
+      renderSkillsTable();
+    });
+    $('filterStatus').addEventListener('change', (e) => {
+      state.filterStatus = e.target.value;
+      renderSkillsTable();
+    });
+
+    // Tab Navigation
+    document.querySelectorAll('.nav-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+        tab.classList.add('active');
+        const tabId = tab.getAttribute('data-tab');
+        state.activeTab = tabId;
+
+        if (tabId === 'catalog') $('tabCatalog').classList.add('active');
+        if (tabId === 'deploy') $('tabDeploy').classList.add('active');
+        if (tabId === 'import') $('tabImport').classList.add('active');
+        if (tabId === 'conflicts') $('tabConflicts').classList.add('active');
+      });
+    });
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+        if (e.key === 'Escape') {
+          document.activeElement.blur();
+        }
+        return;
+      }
+      if (e.key === '/') {
+        e.preventDefault();
+        $('searchInput').focus();
+      } else if (e.key.toLowerCase() === 'r' && !e.ctrlKey && !e.metaKey) {
+        e.preventDefault();
+        doScan();
+      } else if (e.key === 'Escape') {
+        closeDrawer();
+        closeModal();
+        closeQuickRemarkModal();
+      }
+    });
+
+    // Initial Data Loader
+    async function loadAllData() {
+      try {
+        await apiFetch('/api/health');
+        $('daemonDot').className = 'status-dot online';
+        $('daemonText').textContent = '守护监听活跃 (10s)';
+
+        // Load notes & categories
+        try {
+          const notesData = await apiFetch('/api/skills/notes');
+          if (notesData.notes) state.notes = notesData.notes;
+          if (notesData.categories) state.categories = notesData.categories;
+        } catch (_) {}
+
+        // Load skills and provenance from the local service.
+        state.sources = (await apiFetch('/api/sources')).sources || {};
+        state.scan = await apiFetch('/api/skills');
+        state.conflicts = await apiFetch('/api/conflicts');
+        renderHUD(state.scan);
+        renderRoots(state.scan.roots);
+        updateCategoryCounts();
+        renderSkillsTable();
+        renderConflictsTab();
+
+        // Load deploy status
+        state.deployStatus = await apiFetch('/api/deploy-status');
+        renderDeployTab(state.deployStatus);
+
+        // Load import plan
+        state.importPlan = await apiFetch('/api/import-plan');
+        renderImportTab(state.importPlan);
+
+        $('quickSummaryText').textContent = state.scan.errors?.length ? `已就绪 · ${state.scan.skills?.length || 0} 项 · ${state.scan.errors.length} 处读取失败` : `已就绪 · ${state.scan.skills?.length || 0} 个技能已归类`;
+      } catch (err) {
+        $('daemonDot').className = 'status-dot';
+        $('daemonText').textContent = '服务离线';
+        toast.error(`无法连接本地 API 服务: ${err.message}。请运行 start-app.ps1（桌面版）或 start.ps1（本地端口版）。`);
+      }
+    }
+
+    async function pollForScanUpdates() {
+      if (state.pollBusy || document.hidden || !state.scan) return;
+      state.pollBusy = true;
+      try {
+        const latest = await apiFetch('/api/skills');
+        if (latest.scanned_at && latest.scanned_at !== state.scan.scanned_at) await loadAllData();
+        $('daemonDot').className = 'status-dot online';
+        $('daemonText').textContent = '本地服务在线';
+      } catch (_) {
+        $('daemonDot').className = 'status-dot';
+        $('daemonText').textContent = '服务离线';
+      } finally {
+        state.pollBusy = false;
+      }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) pollForScanUpdates();
+    });
+    window.setInterval(pollForScanUpdates, 10000);
+
+    // Auto-boot
+    loadAllData();
+  </script>
+</body>
+</html>

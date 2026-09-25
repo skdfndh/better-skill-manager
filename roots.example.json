@@ -1,0 +1,90 @@
+{
+  "library_path": "${USERPROFILE}/.skill-shelf/skills",
+  "auto_link_new_skills": true,
+  "auto_link_poll_seconds": 10,
+  "source_priority": [
+    "skill-shelf-library",
+    "agents-shared",
+    "codex-legacy",
+    "claude-code",
+    "antigravity-ide",
+    "gemini-shared",
+    "dsh"
+  ],
+  "conflict_resolutions": {},
+  "deploy_targets": [
+    {
+      "id": "codex",
+      "label": "Codex",
+      "path": "${USERPROFILE}/.codex/skills",
+      "link_type": "junction",
+      "preserve_names": [".system"]
+    },
+    {
+      "id": "claude-code",
+      "label": "Claude Code",
+      "path": "${USERPROFILE}/.claude/skills",
+      "link_type": "junction",
+      "preserve_names": []
+    },
+    {
+      "id": "antigravity-ide",
+      "label": "Antigravity IDE",
+      "path": "${USERPROFILE}/.gemini/config/skills",
+      "link_type": "junction",
+      "preserve_names": []
+    },
+    {
+      "id": "dsh",
+      "label": "DSH",
+      "path": "${USERPROFILE}/.dsh/skills",
+      "link_type": "junction",
+      "preserve_names": [],
+      "name_pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    }
+  ],
+  "roots": [
+    {
+      "id": "skill-shelf-library",
+      "label": "Skill Shelf 统一库",
+      "agents": [],
+      "path": "${USERPROFILE}/.skill-shelf/skills"
+    },
+    {
+      "id": "agents-shared",
+      "label": "共享 Agent Skills",
+      "agents": ["Codex", "DSH"],
+      "path": "${USERPROFILE}/.agents/skills"
+    },
+    {
+      "id": "codex-legacy",
+      "label": "Codex 兼容目录",
+      "agents": ["Codex"],
+      "path": "${USERPROFILE}/.codex/skills"
+    },
+    {
+      "id": "claude-code",
+      "label": "Claude Code",
+      "agents": ["Claude Code"],
+      "path": "${USERPROFILE}/.claude/skills"
+    },
+    {
+      "id": "antigravity-ide",
+      "label": "Antigravity IDE",
+      "agents": ["Antigravity IDE"],
+      "path": "${USERPROFILE}/.gemini/config/skills"
+    },
+    {
+      "id": "gemini-shared",
+      "label": "Gemini 共享兼容目录",
+      "agents": ["Antigravity IDE"],
+      "path": "${USERPROFILE}/.gemini/skills"
+    },
+    {
+      "id": "dsh",
+      "label": "DSH",
+      "agents": ["DSH"],
+      "path": "${USERPROFILE}/.dsh/skills"
+    }
+  ]
+}

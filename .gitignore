@@ -1,0 +1,40 @@
+# Python 环境、缓存与临时文件
+.venv/
+.venv-*/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# 本机配置和运行状态（可能包含技能清单、备注及绝对路径）
+roots.json
+.managed-links.json
+.scan-cache.json
+latest-*.json
+skills-notes.json
+skills-sources.json
+.staging/
+backups/
+
+# 桌面应用和打包产物
+build/
+build-*/
+dist/
+dist-*/
+*.spec
+*.exe
+*.lnk
+
+# 本机凭据
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# 编辑器和操作系统文件
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
