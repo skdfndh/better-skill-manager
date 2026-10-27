@@ -79,8 +79,16 @@ Copy-Item roots.example.json roots.json
 - [界面优化与实测记录](docs/ui-design-real-world-evaluation.md)：前后截图、22 项浏览器回归、9 项原生桌面检查及未验证范围。
 - [ui-design](skills/ui-design/SKILL.md)：按任务分派的 UI 总入口，[emil-frontend](skills/emil-frontend/SKILL.md) 保留旧名称兼容；24 个第三方专长需另外安装，本仓库不包含其全文。
 - [skill-curator](skills/skill-curator/SKILL.md)：复用本次技能评价、整理、入口整合与实测的方法，包含评分口径及验证指导。
+- [整理后的总入口](skills/README.md)：文档、开发、写作和技能管理入口；独立专长按需安装，通用调试原则已并入开发入口。
+- [本轮整理与精简记录](docs/skill-curation-and-cleanup.md)：中文简介修复、入口精简、依赖与清理边界，以及可复现检查。
 
 `skills/` 保存自有入口源文件，不会随管理器启动自动安装。使用时按各 Agent 的技能目录约定安装相应文件夹；统一库的安装和联接可由 Skill Shelf 管理。UI 优化没有给前端新增评分面板。
+
+中文简介和入口依赖的回归不需要第三方测试框架，GitHub CI 也运行同一命令：
+
+```powershell
+python -m unittest discover -s experiments/skill-curation -p "test_*.py" -v
+```
 
 ## 许可证
 

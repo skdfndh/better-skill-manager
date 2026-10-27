@@ -1,0 +1,4 @@
+interface:
+  display_name: "写作整理总入口"
+  short_description: "按中文、英文和目标文体选择润色专长，检查事实与语气并保留作者立场"
+  default_prompt: "请使用 $writing-workflow 分析本次任务，按需选择专长并在已授权范围内执行和验证。"

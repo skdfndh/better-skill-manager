@@ -1,0 +1,63 @@
+{
+  "date": "2026-10-28",
+  "structure": "4个入口quick_validate通过",
+  "routing_review": {
+    "count": 21,
+    "kind": "作者静态审阅，非独立行为实验"
+  },
+  "deployment_aggregate": {
+    "skills": 59,
+    "locations": 316,
+    "duplicates": 0,
+    "name_conflicts": 0,
+    "scan_errors": 0,
+    "recycled_packages": 3,
+    "removed_agent_junctions": 12,
+    "unchanged_other_packages": 58
+  },
+  "excluded_from_publication": [
+    "本机配置及来源备注记录",
+    "完整真实技能清单",
+    "项目专用原文及恢复快照",
+    "原始运行日志和桌面EXE"
+  ],
+  "limits": [
+    "真实OCR、Office及外部业务未验证",
+    "外部安全扫描器未完整执行",
+    "这些汇总不是其他用户机器的配置要求"
+  ],
+  "regression_checks": {
+    "passed": 4,
+    "total": 4,
+    "scope": "中文简介和声明的运行依赖契约"
+  },
+  "ocr_patch": {
+    "git_apply_check": "passed",
+    "matches_installed_modification": true,
+    "offline_initialization_checks": 6,
+    "original_source_sha256_normalized": "bef2630a2a688ceba112faeae366711bd637dc08d0a0131a22d971a1af523883",
+    "patched_sha256": "731282ec6bb0047b211ea16ea5116503178e486a572403c0c3debaeca0c77ebd",
+    "real_ocr": "未验证"
+  },
+  "source_matches_installed_utf8_lf": {
+    "document-workflow": {
+      "SKILL.md": "e6640207521087e55373eccf51f580789fe0f9f92b4bc32508e7b1e590e487a2",
+      "agents/openai.yaml": "1537b89d77a9ba28619df7f854676f3afbff557f9d78b4a7c92fa54fa59c3de3",
+      "references/specialists.md": "7f41d3d0772bebebb304e3e67956cd289dd66748c9f2c6d68c0ba7bb63aec62e"
+    },
+    "development-workflow": {
+      "SKILL.md": "11423c9e0aca5a8200744110631b47112b94312a49e1bd9cdd0b3e205f79634d",
+      "agents/openai.yaml": "cd1c92619fa4d1ade5963e75f678dbdf4f7b20a351c9b3966757f2dd065f5b45",
+      "references/specialists.md": "2bd7ffa587e709dc06abd414ec6dda6a061154cf520ca4160ffee5f9fdf556d7"
+    },
+    "writing-workflow": {
+      "SKILL.md": "3765f7f40375e114ca19c87671ecd758a8c1a2b56d2874eb820004d754156578",
+      "agents/openai.yaml": "69dff88cbaa5dc223107bf22621876361b11cb709cf1be8de4f671d648b58d45",
+      "references/validation.md": "742a3803eade12fd694c6fb162057d0ea70877e918892b6be1fbb2d4e9e1174b"
+    },
+    "f-d-u-d": {
+      "SKILL.md": "6969303eb77f2c650556c6ebd6069eeb6b06c02294058d3d112e019e3413ccb6",
+      "agents/openai.yaml": "1f3cb6c8740702701e2e3a26710cfe55a35021dcb88a5a04fe33d94ab7f67122"
+    }
+  }
+}

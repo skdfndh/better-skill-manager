@@ -26,6 +26,9 @@ jobs:
       - name: 检查 Python 语法
         run: python -m py_compile server.py desktop_app.py
 
+      - name: 检查中文简介与整合入口
+        run: python -m unittest discover -s experiments/skill-curation -p "test_*.py" -v
+
       - name: 载入通用配置并打包
         shell: pwsh
         run: |

@@ -1,0 +1,209 @@
+{
+  "scope": "21个场景的作者静态路由审阅，不是真实任务成功率或独立盲测",
+  "cases": [
+    {
+      "id": 1,
+      "request": "提取有文字层PDF的表格",
+      "entry": "document-workflow",
+      "author_selected_specialists": [
+        "pdf"
+      ],
+      "boundary": "只读提取，不无条件OCR",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 2,
+      "request": "扫描PDF，仅本地识别",
+      "entry": "document-workflow",
+      "author_selected_specialists": [
+        "pdf-ocr-skill"
+      ],
+      "boundary": "本地失败停止，不自动上传",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 3,
+      "request": "修订现有PPTX模板文字",
+      "entry": "document-workflow",
+      "author_selected_specialists": [
+        "pptx"
+      ],
+      "boundary": "沿用已选样式，不强制再选三套方案",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 4,
+      "request": "从材料制作SVG版演示稿并导出",
+      "entry": "document-workflow",
+      "author_selected_specialists": [
+        "ppt-master"
+      ],
+      "boundary": "完整SVG链路，不叠加第二制作引擎",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 5,
+      "request": "编辑Obsidian的.canvas文件",
+      "entry": "document-workflow",
+      "author_selected_specialists": [
+        "json-canvas"
+      ],
+      "boundary": "保持Canvas格式",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 6,
+      "request": "制作可交互架构HTML",
+      "entry": "document-workflow",
+      "author_selected_specialists": [
+        "archify"
+      ],
+      "boundary": "结构图，不虚构数值图能力",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 7,
+      "request": "普通网页正文整理为Markdown",
+      "entry": "document-workflow",
+      "author_selected_specialists": [
+        "defuddle"
+      ],
+      "boundary": "先检查CLI，不自动全局安装",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 8,
+      "request": "处理Word修订文档",
+      "entry": "document-workflow",
+      "author_selected_specialists": [
+        "host:documents"
+      ],
+      "boundary": "检查宿主对应能力，不错误分给PDF",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 9,
+      "request": "修一个Python报错",
+      "entry": "development-workflow",
+      "author_selected_specialists": [],
+      "boundary": "开发总入口内置最小调试；不额外加载独立调试技能，不强制OpenSpec",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 10,
+      "request": "先讨论OpenSpec方案，不改代码",
+      "entry": "development-workflow",
+      "author_selected_specialists": [
+        "openspec-explore"
+      ],
+      "boundary": "探索不实施",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 11,
+      "request": "实施明确给出的OpenSpec变更",
+      "entry": "development-workflow",
+      "author_selected_specialists": [
+        "openspec-apply-change"
+      ],
+      "boundary": "遵守CLI的编辑根范围",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 12,
+      "request": "同步已有增量规格，不归档",
+      "entry": "development-workflow",
+      "author_selected_specialists": [
+        "openspec-sync-specs"
+      ],
+      "boundary": "同步不自动归档",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 13,
+      "request": "归档明确选定的已完成变更",
+      "entry": "development-workflow",
+      "author_selected_specialists": [
+        "openspec-archive-change"
+      ],
+      "boundary": "检查任务、规格同步及归档位置",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 14,
+      "request": "明确要求TDD开发",
+      "entry": "development-workflow",
+      "author_selected_specialists": [
+        "tdd"
+      ],
+      "boundary": "逐项行为检查，不堆积全部测试",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 15,
+      "request": "只改README的一段文字",
+      "entry": "development-workflow",
+      "author_selected_specialists": [],
+      "boundary": "不无条件更新AGENTS.md或全库扫描",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 16,
+      "request": "修Swift服务层并发",
+      "entry": "development-workflow",
+      "author_selected_specialists": [
+        "write-swift"
+      ],
+      "boundary": "不分给UI审美规范",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 17,
+      "request": "中文段落去模板化",
+      "entry": "writing-workflow",
+      "author_selected_specialists": [
+        "humanize-chinese"
+      ],
+      "boundary": "保留事实，缺CLI走人工路径",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 18,
+      "request": "英文段落润色",
+      "entry": "writing-workflow",
+      "author_selected_specialists": [
+        "writing-anti-ai"
+      ],
+      "boundary": "只加载英文资源，不伪造作者观点",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 19,
+      "request": "评估现有技能，不安装",
+      "entry": "f-d-u-d",
+      "author_selected_specialists": [
+        "skill-curator"
+      ],
+      "boundary": "评价不自动安装或删除",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 20,
+      "request": "查找可用技能",
+      "entry": "f-d-u-d",
+      "author_selected_specialists": [
+        "find-skills"
+      ],
+      "boundary": "先检查已有能力，候选热度不等同质量",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    },
+    {
+      "id": 21,
+      "request": "已经装好技能，任务完成",
+      "entry": "f-d-u-d",
+      "author_selected_specialists": [],
+      "boundary": "不自动删除技能、联接或指南",
+      "review": "作者按现有入口逐例静态推演，未调用独立模型或实际执行专长"
+    }
+  ]
+}

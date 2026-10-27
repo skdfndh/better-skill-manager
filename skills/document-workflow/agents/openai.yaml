@@ -1,0 +1,4 @@
+interface:
+  display_name: "文档处理总入口"
+  short_description: "根据文件类型分派PDF、文字识别、演示稿、网页提取与图解专长"
+  default_prompt: "请使用 $document-workflow 分析本次任务，按需选择专长并在已授权范围内执行和验证。"

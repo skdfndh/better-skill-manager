@@ -376,6 +376,8 @@ SUMMARY_RULES_ZH = (
 
 
 def summarize_skill_zh(name: str, description: str, category: str | None = None) -> str:
+    if re.search(r"[\u4e00-\u9fff]", description or "") and len(description.strip()) <= 35:
+        return description.strip()
     name_text = normalized_name(name)
     description_text = normalized_name(description)
     for keywords, summary in SUMMARY_RULES_ZH:
@@ -384,8 +386,6 @@ def summarize_skill_zh(name: str, description: str, category: str | None = None)
     for keywords, summary in SUMMARY_RULES_ZH:
         if any(_contains_category_keyword(description_text, keyword) for keyword in keywords):
             return summary
-    if re.search(r"[\u4e00-\u9fff]", description or "") and len(description.strip()) <= 35:
-        return description.strip()
     resolved_category = category or classify_skill(name, description)
     category_summaries = {
         "前端与动效": "用于设计、实现或改进前端界面与交互体验。",

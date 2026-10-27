@@ -1,0 +1,4 @@
+interface:
+  display_name: "技能管理总入口"
+  short_description: "按需查找、审查、创建和整理技能，沿用统一库与各Agent的目录联接"
+  default_prompt: "请使用 $f-d-u-d 分析本次任务，按需选择专长并在已授权范围内执行和验证。"

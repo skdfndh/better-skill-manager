@@ -1,0 +1,6 @@
+{
+  "document-workflow": ["pdf", "pdf-ocr-skill", "pptx", "ppt-master", "defuddle", "archify", "json-canvas"],
+  "development-workflow": ["openspec-explore", "openspec-propose", "openspec-apply-change", "openspec-sync-specs", "openspec-archive-change", "tdd", "project-context-maintainer", "grill-with-docs", "write-swift", "karpathy-guidelines", "ui-design"],
+  "writing-workflow": ["humanize-chinese", "writing-anti-ai"],
+  "f-d-u-d": ["find-skills", "skill-creator", "skill-curator", "skill-vetter"]
+}

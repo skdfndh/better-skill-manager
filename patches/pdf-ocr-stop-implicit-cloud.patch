@@ -1,0 +1,14 @@
+--- a/scripts/pdf_ocr_processor.py
++++ b/scripts/pdf_ocr_processor.py
+@@ -271,10 +271,7 @@
+             try:
+                 self.rapid_engine = RapidOCREngine()
+             except Exception as e:
+-                print(f"RapidOCR初始化失败: {e}")
+-                print("将尝试使用硅基流动API引擎...")
+-                self.engine_type = "siliconflow"
+-                self.siliconflow_engine = SiliconFlowOCREngine()
++                raise RuntimeError("RapidOCR 初始化失败，已停止本地处理；如需云端 OCR，请在获得用户授权后显式选择 siliconflow。") from e
+         elif self.engine_type == "rapidoc":
+             try:
+                 self.rapidoc_engine = RapidDocEngine()
