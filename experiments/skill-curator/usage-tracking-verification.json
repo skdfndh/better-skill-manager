@@ -1,0 +1,33 @@
+{
+  "date": "2026-10-28",
+  "scope": "标准库使用日志与周复盘游标，合成隔离样本",
+  "command": "python -m unittest discover -s experiments/skill-curation -p test_*.py -v",
+  "tests": {"usage": 11, "existing": 12, "yaml": 2, "total": 25, "passed": 25},
+  "yaml_validation": {
+    "initial_error": "ModuleNotFoundError: No module named 'yaml'",
+    "resolution": "在项目桌面虚拟环境安装 requirements-dev.txt，实际 PyYAML 版本为 6.0.3",
+    "official_quick_validate_source": "passed",
+    "official_quick_validate_installed": "passed",
+    "regression_scope": "公开技能的 SKILL.md frontmatter 和 agents/openai.yaml",
+    "pip_check": "No broken requirements found."
+  },
+  "covered": [
+    "相同使用与事件的幂等重试及不同版本分离",
+    "明确满意评价与修改幅度、归因分别记录",
+    "拒绝推断满意度或把 Agent 自检冒充用户返工",
+    "跨周晚到反馈不新增使用次数",
+    "未完成复盘不消费事件，并发复盘拒绝覆盖游标",
+    "复盘期间新事件留给下一轮",
+    "确认前校验报告与复盘标识，确认重试幂等",
+    "交付成功不等于满意，总入口与专长不重复算任务",
+    "输入约束与隔离 CLI 写入",
+    "公开技能的 YAML 解析和关键字段类型"
+  ],
+  "limitations": [
+    "记录依赖 Agent 遵循全局指令，未实现宿主强制审计",
+    "未逐一验证四个 Agent 的新会话真实任务记录覆盖",
+    "未等待首次周日定时复盘执行",
+    "证据及归因的真实性由审阅者核对，脚本不自动核实或授权删除",
+    "真实日志与个人定时配置不包含于此文件"
+  ]
+}

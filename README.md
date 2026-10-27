@@ -71,22 +71,24 @@ Copy-Item roots.example.json roots.json
 
 ## 开发与持续集成
 
-依赖清单为 `requirements-app.txt` 和 `requirements-desktop.txt`。贡献方式见 [CONTRIBUTING.md](CONTRIBUTING.md)。GitHub Actions 会在 Windows 环境检查 Python 语法并打包桌面程序，生成的 EXE 作为短期构建产物提供下载。另外提供使用合成隔离数据的界面回归脚本，以及技能整合的文件与路由检查；复现方法和验证边界见下方实验记录。
+依赖清单为 `requirements-app.txt`、`requirements-desktop.txt` 和开发验证用的 `requirements-dev.txt`。贡献方式见 [CONTRIBUTING.md](CONTRIBUTING.md)。GitHub Actions 会在 Windows 环境检查 Python 语法并打包桌面程序，生成的 EXE 作为短期构建产物提供下载。另外提供使用合成隔离数据的界面回归脚本，以及技能整合的文件与路由检查；复现方法和验证边界见下方实验记录。
 
 ## 技能整合与验证记录
 
 - [UI 设计技能评价与整合方案](docs/skill-evaluation-and-ui-integration.md)：25 个原始入口的初评、专长关系和 20 条路由对照。
 - [界面优化与实测记录](docs/ui-design-real-world-evaluation.md)：前后截图、22 项浏览器回归、9 项原生桌面检查及未验证范围。
 - [ui-design](skills/ui-design/SKILL.md)：按任务分派的 UI 总入口，[emil-frontend](skills/emil-frontend/SKILL.md) 保留旧名称兼容；24 个第三方专长需另外安装，本仓库不包含其全文。
-- [skill-curator](skills/skill-curator/SKILL.md)：复用本次技能评价、整理、入口整合与实测的方法，包含评分口径及验证指导。
+- [skill-curator](skills/skill-curator/SKILL.md)：分别评价质量、全局价值与蒸馏潜力，核对回收门槛，支持保留、蒸馏、迁移和删除建议。
+- [使用记录与周复盘](skills/skill-curator/references/usage-tracking.md)：本地记录真实调用、产出与用户反馈，支持晚到反馈、成功复盘游标和有证据的定期修订；真实日志不入库。
 - [整理后的总入口](skills/README.md)：文档、开发、写作和技能管理入口；独立专长按需安装，通用调试原则已并入开发入口。
 - [本轮整理与精简记录](docs/skill-curation-and-cleanup.md)：中文简介修复、入口精简、依赖与清理边界，以及可复现检查。
 
 `skills/` 保存自有入口源文件，不会随管理器启动自动安装。使用时按各 Agent 的技能目录约定安装相应文件夹；统一库的安装和联接可由 Skill Shelf 管理。UI 优化没有给前端新增评分面板。
 
-中文简介和入口依赖的回归不需要第三方测试框架，GitHub CI 也运行同一命令：
+技能 YAML、评分、使用记录、中文简介和入口依赖的回归使用标准库 unittest；先安装 YAML 解析依赖，GitHub CI 也运行同一组检查：
 
 ```powershell
+python -m pip install -r requirements-dev.txt
 python -m unittest discover -s experiments/skill-curation -p "test_*.py" -v
 ```
 

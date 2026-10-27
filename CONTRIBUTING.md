@@ -15,6 +15,13 @@
 
     python -m py_compile server.py desktop_app.py
 
+技能评分、使用记录和入口元数据的回归使用独立开发依赖，先安装再验证：
+
+    python -m pip install -r requirements-dev.txt
+    python -m unittest discover -s experiments/skill-curation -p "test_*.py" -v
+
+PyYAML 用于解析技能的 YAML 元数据，评分和使用记录脚本本身只需 Python 标准库。测试使用隔离合成数据，不写入真实使用日志。GitHub CI 运行同一组回归并构建桌面程序。
+
 ## 提交内容
 
 - 保持改动聚焦，并说明用户可见的行为变化。

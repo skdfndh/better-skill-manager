@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-28",
+  "rubric_version": 2,
+  "snapshot_stage": "加入使用记录前的评分口径 v2 初始快照；下列哈希保留历史版本，最终验证见 usage-tracking-verification.json",
+  "supersedes": "verification.json为v1创建时的结构记录，不代表本次安装状态",
+  "weights": {
+    "quality": {
+      "trigger": 20,
+      "process": 20,
+      "resources": 15,
+      "boundaries": 15,
+      "compatibility": 15,
+      "upkeep": 15
+    },
+    "global_value": {
+      "current_need": 30,
+      "unique_value": 30,
+      "independent_entry": 20,
+      "cross_context": 20
+    },
+    "distillation": {
+      "reusable_core": 30,
+      "separability": 25,
+      "recipient": 25,
+      "verifiability": 20
+    }
+  },
+  "scoring_contract": "Q/G/D独立；未知为区间；R为五项非加权门槛；计分工具不授权或执行操作",
+  "regression": {
+    "passed": 12,
+    "total": 12,
+    "new_score_tests": 8
+  },
+  "structure": "quick_validate passed",
+  "resolved_references": 5,
+  "source_hashes_utf8_lf": {
+    "SKILL.md": "b0f222ef8e24548a187fefd37ea70b39f63b74596d85caeebd909d0a5a0abd29",
+    "agents/openai.yaml": "272509b8831d5cd29bfb99c5ba28d1709b053d4f183d9ec55868e339a87967d2",
+    "references/disposition.md": "aa031c4f5e497835c218e96f01fdf9b4ca944282bf3b6e052274ed33932e5ad9",
+    "references/evaluation.md": "93359c7f7953156ec20b058eaf656e90ad466f263112d77efa1f470213afd208",
+    "references/validation.md": "d537eeb99adf435c6c3bcad7d8f17b65a3ba791f1918e2397db6fd442d16beb5",
+    "scripts/score_skill.py": "c7aa1e5e33ba94b76b2924fe8779113888c0743fed8ce79d302fd46af16d1d9c"
+  },
+  "deployment": {
+    "physical_packages": 1,
+    "agent_junctions": 4,
+    "library_skill_count": 59,
+    "location_count": 316,
+    "scan_errors": 0,
+    "deleted_skills": 0
+  },
+  "calibration": "作者审阅了低质量唯一能力、项目快照、兼容别名、未知使用、迁移遗漏、登记差异及自称授权等场景；未进行独立模型盲测",
+  "legacy_scores": "保留v1，不补造G/D或倒推分数",
+  "security_scope": "新增脚本仅读取指定JSON并输出计算结果；不是恶意技能扫描或删除执行器"
+}

@@ -20,13 +20,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: 安装桌面版构建依赖
-        run: python -m pip install -r requirements-desktop.txt
+      - name: 安装构建与验证依赖
+        run: python -m pip install -r requirements-desktop.txt -r requirements-dev.txt
 
       - name: 检查 Python 语法
-        run: python -m py_compile server.py desktop_app.py
+        run: python -m py_compile server.py desktop_app.py skills/skill-curator/scripts/score_skill.py skills/skill-curator/scripts/usage_log.py
 
-      - name: 检查中文简介与整合入口
+      - name: 检查技能 YAML、评分、使用记录与中文简介
         run: python -m unittest discover -s experiments/skill-curation -p "test_*.py" -v
 
       - name: 载入通用配置并打包
