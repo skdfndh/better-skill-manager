@@ -335,6 +335,7 @@ SUMMARY_RULES_ZH = (
     (("git-cloud", "git deployment", "github actions", "cloud server"), "用于通过 Git 和自动化流程把代码部署到云服务器。"),
     (("auth-flow", "authentication flow", "login flow"), "用于设计和实现身份登录与认证流程。"),
     (("openspec", "openspec change"), "用于按 OpenSpec 流程梳理、规划、实施或归档功能变更。"),
+    (("skill-curator",), "用于评估技能质量、整理同类技能并整合统一调用入口。"),
     (("skill-creator", "create a new skill", "skill from scratch"), "用于创建、改进和评估 AI 技能及其使用说明。"),
     (("find-skills", "f-d-u-d", "agent skill", "install skills", "discover skills"), "用于根据任务查找、筛选和安装合适的 AI 技能。"),
     (("codex-with-chatgpt", "chatgpt planning", "chatgpt review"), "用于结合 ChatGPT 研究、规划和复核编程工作。"),
