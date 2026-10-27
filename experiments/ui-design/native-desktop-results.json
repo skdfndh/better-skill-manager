@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-28",
+  "environment": "Windows 桌面EXE、原生WebView2；合成隔离数据",
+  "checks": [
+    {
+      "name": "真实EXE启动并显示本地服务在线",
+      "passed": true
+    },
+    {
+      "name": "重复启动保持一个窗口及原窗口标识",
+      "passed": true
+    },
+    {
+      "name": "搜索筛选得到预期技能",
+      "passed": true
+    },
+    {
+      "name": "备注保存到隔离数据目录",
+      "passed": true
+    },
+    {
+      "name": "详情与删除确认分层且显示目录和指纹",
+      "passed": true
+    },
+    {
+      "name": "Escape逐层关闭确认与抽屉",
+      "passed": true
+    },
+    {
+      "name": "关闭抽屉不进入辅助技术树且分类栏无竖滚动条",
+      "passed": true
+    },
+    {
+      "name": "新建成功、表单重置、15项统计及四个Agent联接",
+      "passed": true
+    },
+    {
+      "name": "退出后窗口与本地服务关闭",
+      "passed": true
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "total": 9
+  },
+  "new_skill_deployment": {
+    "linked_agent_roots": 4,
+    "reconcile_failed": 0
+  },
+  "excluded": [
+    "最终回收站删除",
+    "真实用户技能变更",
+    "真实读屏用户与实体设备",
+    "外网Git更新",
+    "大规模压力测试"
+  ],
+  "tool_observations": [
+    "UIA可能短暂返回操作前状态，重新观察后再判定",
+    "屏外控件需先滚动至可见；定位失败未作为业务失败"
+  ],
+  "temporary_services_stopped": true
+}

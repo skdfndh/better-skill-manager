@@ -1028,7 +1028,7 @@ def refresh_skill(directory: str) -> dict:
     }
 
 
-def delete_skill_to_recycle_bin(directory: str) -> dict:
+def delete_skill_to_recycle_bin(directory: str, expected_hash: str | None = None) -> dict:
     safe_name = Path(directory).name
     if safe_name != directory or safe_name.startswith("."):
         raise ValueError("Skill 目录名不合法")
@@ -1036,6 +1036,12 @@ def delete_skill_to_recycle_bin(directory: str) -> dict:
     source = library / safe_name
     if source.parent.resolve() != library or not source.is_dir() or source.is_symlink():
         raise FileNotFoundError("统一库中不存在可删除的普通 Skill 目录")
+    if expected_hash is not None:
+        if not isinstance(expected_hash, str) or not re.fullmatch(r"[0-9a-f]{64}", expected_hash):
+            raise ValueError("待删除版本的内容指纹无效")
+        current = fingerprint(source, [library], {}, {})
+        if not current or current[0] != expected_hash:
+            raise ValueError("统一库中的内容已经变化，请重新扫描并确认要删除的版本")
 
     removed_links = []
     retained_links = []
@@ -2917,6 +2923,9 @@ class Handler(BaseHTTPRequestHandler):
             except json.JSONDecodeError:
                 self.send_json(400, {"error": "invalid_json"})
                 return
+            if not isinstance(request, dict):
+                self.send_json(400, {"error": "invalid_request"})
+                return
             directory = request.get("directory")
             if not isinstance(directory, str) or not directory:
                 self.send_json(400, {"error": "directory_required"})
@@ -2926,7 +2935,7 @@ class Handler(BaseHTTPRequestHandler):
                 return
             try:
                 with SCAN_LOCK:
-                    payload = refresh_skill(directory) if route.endswith("refresh") else delete_skill_to_recycle_bin(directory)
+                    payload = refresh_skill(directory) if route.endswith("refresh") else delete_skill_to_recycle_bin(directory, request.get("expected_hash"))
                 self.send_json(200, payload)
             except (ValueError, FileNotFoundError) as exc:
                 self.send_json(409, {"error": str(exc)})

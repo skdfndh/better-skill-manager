@@ -1,0 +1,22 @@
+{
+  "date": "2026-10-28",
+  "skill": "skill-curator",
+  "quick_validate": "passed",
+  "local_markdown_references": 2,
+  "ui_metadata": "passed",
+  "executable_files": 0,
+  "files": {
+    "agents/openai.yaml": "0296211ffb362911fecbe15de00976eb5dd9aea119e3da9429c4fe7de847362f",
+    "references/evaluation.md": "364ee95abe91a85b63ae55afa8b0ac8b3a01fdffce1460a8eb0d658a02a63e1b",
+    "references/validation.md": "cdc921cd49ac4864cd8257459192938df362ba62208bb0fe7d791476d51e893e",
+    "SKILL.md": "dd8d0f2a10b71344790c72db7de5b654b6d3e044f9248be601adfdf7ce17c78c"
+  },
+  "review_scope": [
+    "结构、引用和UI元数据",
+    "人工检查范围、显式调用政策和证据层次",
+    "人工检查不强制安装、删除、依赖或外部发布"
+  ],
+  "behavioral_evaluation": "尚未在第二个技能家族独立行为评测",
+  "security_scanners": "aguara、skill-scanner、jq 缺失，未执行完整 skill-vetter；未报告 SAFE",
+  "deployment": "仓库源文件，未自动安装到全局目录"
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill 评价与整合"
+  short_description: "评估已有技能的可用性与互补关系，整理统一入口，并通过路由与真实任务验证"
+  default_prompt: "请用 $skill-curator 评估这组技能，说明证据与整理建议，再按已授权范围整合并验证。"

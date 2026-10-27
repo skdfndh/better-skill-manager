@@ -1,0 +1,278 @@
+{
+  "date": "2026-10-28",
+  "environment": "Chromium，Windows，合成技能隔离目录",
+  "checks": [
+    {
+      "name": "控件名称、标签和对话框语义",
+      "passed": true
+    },
+    {
+      "name": "关闭的抽屉不暴露给焦点或辅助技术，标签栏不产生竖向滚动",
+      "passed": true
+    },
+    {
+      "name": "主按钮文字对比度",
+      "passed": true
+    },
+    {
+      "name": "分类可用键盘选择并同步筛选",
+      "passed": true
+    },
+    {
+      "name": "搜索、空结果提示和清除筛选",
+      "passed": true
+    },
+    {
+      "name": "GitHub 来源与 Agent 筛选",
+      "passed": true
+    },
+    {
+      "name": "标签页方向键与选中状态",
+      "passed": true
+    },
+    {
+      "name": "抽屉焦点循环、嵌套确认和 Escape 返回",
+      "passed": true
+    },
+    {
+      "name": "备注和分类通过真实 API 保存，文本安全显示",
+      "passed": true
+    },
+    {
+      "name": "外部同名版本禁止删除或重新部署统一库内容",
+      "passed": true
+    },
+    {
+      "name": "后端拒绝已变化版本的删除，源文件保持存在",
+      "passed": true
+    },
+    {
+      "name": "冲突保留和融合预览可取消",
+      "passed": true
+    },
+    {
+      "name": "部署预览与真实部署完成数量一致",
+      "passed": true
+    },
+    {
+      "name": "旧异步部署回调不关闭后来打开的确认框（受控响应）",
+      "passed": true
+    },
+    {
+      "name": "本地创建使用真实隔离后端",
+      "passed": true
+    },
+    {
+      "name": "压缩包预览、选择与导入",
+      "passed": true
+    },
+    {
+      "name": "320 至 1440px 四个工作区均无页面横向溢出",
+      "passed": true
+    },
+    {
+      "name": "移动端主要操作触控尺寸",
+      "passed": true
+    },
+    {
+      "name": "减少动态效果设置生效",
+      "passed": true
+    },
+    {
+      "name": "服务异常有持久提示并可重新连接",
+      "passed": true
+    },
+    {
+      "name": "扫描时间不变时轮询恢复也清除失败状态",
+      "passed": true
+    },
+    {
+      "name": "无未处理的页面 JavaScript 异常",
+      "passed": true
+    }
+  ],
+  "metrics": {
+    "beforeDesktop": {
+      "viewport": 1440,
+      "documentWidth": 1440,
+      "unlabelledControls": [
+        "searchInput",
+        "filterCategorySelect",
+        "filterAgent",
+        "filterStatus",
+        "gitRepoUrl",
+        "gitBranch",
+        "archiveFile",
+        "localSkillName",
+        "localSkillDescription",
+        "localSkillInstructions",
+        "drawerCategorySelect",
+        "drawerNoteText",
+        "quickRemarkCatSelect",
+        "quickRemarkText"
+      ],
+      "categoryButtons": 0,
+      "dialogRole": null,
+      "serviceText": "守护监听活跃 (10s)",
+      "primaryColor": "rgb(255, 255, 255)",
+      "primaryBackground": "rgba(0, 0, 0, 0)",
+      "primaryGradient": "linear-gradient(135deg, rgb(217, 119, 6), rgb(234, 88, 12))"
+    },
+    "beforeMobile": {
+      "viewport": 390,
+      "documentWidth": 547,
+      "unlabelledControls": [
+        "searchInput",
+        "filterCategorySelect",
+        "filterAgent",
+        "filterStatus",
+        "gitRepoUrl",
+        "gitBranch",
+        "archiveFile",
+        "localSkillName",
+        "localSkillDescription",
+        "localSkillInstructions",
+        "drawerCategorySelect",
+        "drawerNoteText",
+        "quickRemarkCatSelect",
+        "quickRemarkText"
+      ],
+      "categoryButtons": 0,
+      "dialogRole": null,
+      "serviceText": "守护监听活跃 (10s)",
+      "primaryColor": "rgb(255, 255, 255)",
+      "primaryBackground": "rgba(0, 0, 0, 0)",
+      "primaryGradient": "linear-gradient(135deg, rgb(217, 119, 6), rgb(234, 88, 12))"
+    },
+    "afterDesktop": {
+      "viewport": 1440,
+      "documentWidth": 1440,
+      "unlabelledControls": [],
+      "categoryButtons": 8,
+      "dialogRole": "dialog",
+      "serviceText": "本地服务在线",
+      "primaryColor": "rgb(21, 18, 15)",
+      "primaryBackground": "rgb(245, 158, 11)",
+      "primaryGradient": "none"
+    },
+    "afterMobile": {
+      "viewport": 390,
+      "documentWidth": 390,
+      "unlabelledControls": [],
+      "categoryButtons": 8,
+      "dialogRole": "dialog",
+      "serviceText": "本地服务在线",
+      "primaryColor": "rgb(21, 18, 15)",
+      "primaryBackground": "rgb(245, 158, 11)",
+      "primaryGradient": "none"
+    },
+    "primaryContrast": 8.69,
+    "beforePrimaryContrast": 3.19,
+    "viewportChecks": [
+      {
+        "width": 1440,
+        "documentWidth": 1440,
+        "tab": "catalog"
+      },
+      {
+        "width": 1440,
+        "documentWidth": 1440,
+        "tab": "deploy"
+      },
+      {
+        "width": 1440,
+        "documentWidth": 1440,
+        "tab": "import"
+      },
+      {
+        "width": 1440,
+        "documentWidth": 1440,
+        "tab": "conflicts"
+      },
+      {
+        "width": 1024,
+        "documentWidth": 1024,
+        "tab": "catalog"
+      },
+      {
+        "width": 1024,
+        "documentWidth": 1024,
+        "tab": "deploy"
+      },
+      {
+        "width": 1024,
+        "documentWidth": 1024,
+        "tab": "import"
+      },
+      {
+        "width": 1024,
+        "documentWidth": 1024,
+        "tab": "conflicts"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "tab": "catalog"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "tab": "deploy"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "tab": "import"
+      },
+      {
+        "width": 768,
+        "documentWidth": 768,
+        "tab": "conflicts"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "tab": "catalog"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "tab": "deploy"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "tab": "import"
+      },
+      {
+        "width": 390,
+        "documentWidth": 390,
+        "tab": "conflicts"
+      },
+      {
+        "width": 320,
+        "documentWidth": 320,
+        "tab": "catalog"
+      },
+      {
+        "width": 320,
+        "documentWidth": 320,
+        "tab": "deploy"
+      },
+      {
+        "width": 320,
+        "documentWidth": 320,
+        "tab": "import"
+      },
+      {
+        "width": 320,
+        "documentWidth": 320,
+        "tab": "conflicts"
+      }
+    ]
+  },
+  "summary": {
+    "passed": 22,
+    "total": 22
+  }
+}

@@ -19,7 +19,7 @@
 
       --text-main: #fbf5ee;
       --text-secondary: #d5c8b8;
-      --text-muted: #968878;
+      --text-muted: #b5a794;
 
       --accent-amber: #f59e0b;
       --accent-amber-hover: #d97706;
@@ -63,14 +63,10 @@
 
     body {
       font-family: var(--font-sans);
-      font-size: 13px;
+      font-size: 14px;
       line-height: 1.5;
       color: var(--text-main);
       background-color: var(--bg-canvas);
-      background-image:
-        radial-gradient(ellipse 75% 45% at 50% -15%, rgba(245, 158, 11, 0.09), transparent 70%),
-        radial-gradient(ellipse 60% 40% at 85% 15%, rgba(234, 88, 12, 0.06), transparent 60%),
-        radial-gradient(circle at 10% 80%, rgba(16, 185, 129, 0.04), transparent 50%);
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
@@ -104,12 +100,12 @@
       width: 42px;
       height: 42px;
       border-radius: var(--radius-md);
-      background: linear-gradient(135deg, #d97706, #ea580c);
+      background: var(--accent-amber);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
-      box-shadow: 0 4px 16px rgba(234, 88, 12, 0.28);
+      color: var(--bg-canvas);
+      flex-shrink: 0;
     }
 
     .brand-logo svg {
@@ -172,7 +168,6 @@
     .status-dot.online {
       background: var(--accent-amber);
       box-shadow: 0 0 8px rgba(245, 158, 11, 0.6);
-      animation: pulse 2.5s infinite;
     }
 
     @keyframes pulse {
@@ -186,13 +181,13 @@
       align-items: center;
       gap: 7px;
       font-family: var(--font-sans);
-      font-size: 12.5px;
+      font-size: 13px;
       font-weight: 550;
       padding: 7px 14px;
       border-radius: var(--radius-sm);
       cursor: pointer;
       border: 1px solid transparent;
-      transition: all 0.16s var(--ease-out);
+      transition: background-color 0.16s var(--ease-out), border-color 0.16s var(--ease-out), transform 0.16s var(--ease-out);
       user-select: none;
       white-space: nowrap;
     }
@@ -208,14 +203,12 @@
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, #d97706, #ea580c);
-      color: #fff;
-      box-shadow: 0 2px 10px rgba(217, 119, 6, 0.28);
+      background: var(--accent-amber);
+      color: var(--bg-canvas);
     }
 
     .btn-primary:hover:not(:disabled) {
-      background: linear-gradient(135deg, #b45309, #c2410c);
-      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.38);
+      background: #fbbf24;
     }
 
     .btn-secondary {
@@ -319,7 +312,7 @@
     }
 
     .hud-card::after {
-      content: '';
+      content: none;
       position: absolute;
       top: 0;
       left: 0;
@@ -1281,6 +1274,100 @@
       .hud-grid { grid-template-columns: repeat(2, 1fr); }
       .deploy-grid { grid-template-columns: 1fr; }
     }
+
+    /* 操作控件共用焦点和尺寸，避免键盘操作依赖鼠标悬停。 */
+    [hidden] { display: none !important; }
+    :focus-visible { outline: 2px solid var(--accent-amber); outline-offset: 3px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .app-shell, .brand-text, .filter-group-left, .tab-content { min-width: 0; }
+    .btn, .category-pill, .filter-select { min-height: 36px; }
+    .category-pill { font: inherit; font-size: 12px; color: var(--text-secondary); }
+    .category-strip { flex-wrap: wrap; overflow: visible; }
+    .workbench-nav { flex-wrap: wrap; min-width: 0; }
+    .nav-tabs { min-width: 0; max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+    .nav-tab { flex-shrink: 0; white-space: nowrap; min-height: 44px; }
+    .filter-bar { flex-wrap: wrap; }
+    .filter-group-left .search-box { flex: 1 1 240px; min-width: 0; width: auto; }
+    .search-box input { min-height: 36px; font-size: 13px; }
+    .search-box input::placeholder, textarea::placeholder, input::placeholder { color: var(--text-muted); opacity: 1; }
+    .filter-select:not(select) { background-image: none; padding-right: 10px; }
+    .table-container { overflow-x: auto; }
+    .data-table { min-width: 780px; }
+    .skill-title { font: inherit; font-size: 14px; font-weight: 650; color: var(--text-main); background: none; border: 0; cursor: pointer; text-align: left; overflow-wrap: anywhere; }
+    .skill-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+    .skill-zh-desc { font-size: 12px; color: var(--text-secondary); }
+    button.badge-hash { font-family: var(--font-mono); background: var(--bg-surface-elevated); border: 1px solid var(--border-default); }
+    .row-actions { display: inline-flex; gap: 6px; align-items: center; }
+    .row-actions .btn { padding: 6px 9px; }
+    .section-toolbar > div { min-width: 0; }
+    .section-toolbar code, .modal code, #sourcePreviewLabel { overflow-wrap: anywhere; }
+    .service-notice { padding: 12px 16px; background: var(--bg-surface-elevated); border: 1px solid var(--border-strong); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .field-label { font-size: 12px; color: var(--text-secondary); }
+    .modal { max-height: calc(100dvh - 32px); display: flex; flex-direction: column; }
+    .modal-header, .modal-footer, .drawer-header, .drawer-footer { flex-shrink: 0; }
+    .modal-body { overflow-y: auto; min-height: 0; }
+    .drawer { width: min(560px, 100vw); max-width: 100%; height: 100dvh; }
+    .drawer-overlay:not(.open) { visibility: hidden; }
+    .drawer-close { min-width: 36px; min-height: 36px; }
+    .drawer-section-title { flex-wrap: wrap; gap: 6px; text-transform: none; letter-spacing: 0; }
+    .drawer-footer { flex-wrap: wrap; }
+    .conflict-card { min-width: 0; overflow-x: auto; }
+    .variants-table { min-width: 640px; }
+    .toast-container { max-width: calc(100vw - 32px); }
+    .toast { min-width: 0; max-width: 420px; }
+    @media (max-width: 900px) {
+      .app-header { flex-wrap: wrap; }
+      .header-actions { flex-wrap: wrap; }
+      .workbench-controls { width: 100%; }
+      .section-toolbar { flex-wrap: wrap; gap: 12px; }
+    }
+    @media (max-width: 680px) {
+      .app-shell { padding: 16px 16px 40px; gap: 16px; }
+      header.app-header { align-items: stretch; gap: 14px; }
+      .brand-text h1 { white-space: nowrap; }
+      .brand-text p { max-width: 36ch; line-height: 1.6; }
+      .header-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+      .header-actions .status-pill { grid-column: 1 / -1; justify-self: start; }
+      .header-actions .btn { justify-content: center; }
+      .btn, .category-pill, .filter-select, .drawer-close, button.badge-hash { min-height: 44px; }
+      .drawer-close { min-width: 44px; }
+      .hud-grid { gap: 10px; }
+      .hud-card { padding: 12px; }
+      .hud-card .hud-label { font-size: 12px; }
+      .hud-card .hud-sub { display: none; }
+      .category-strip { display: none; }
+      .category-pill { padding: 7px 10px; font-size: 12px; }
+      .roots-strip { padding: 10px; }
+      .workbench-nav { gap: 8px; }
+      .filter-bar { padding: 12px; gap: 12px; }
+      .filter-group-left { display: grid; grid-template-columns: 1fr 1fr; width: 100%; flex: 0 0 100%; }
+      .filter-group-left .search-box { grid-column: 1 / -1; }
+      .search-box input { min-height: 44px; font-size: 14px; }
+      .filter-select { min-width: 0; width: 100%; font-size: 14px; }
+      #tabCatalog .data-table { min-width: 0; display: block; }
+      #tabCatalog .data-table thead { display: none; }
+      #tabCatalog .data-table tbody { display: block; }
+      #tabCatalog .data-table tr { display: grid; grid-template-columns: 1fr 1fr; padding: 16px; gap: 12px; border-bottom: 1px solid var(--border-default); }
+      #tabCatalog .data-table td { display: block; padding: 0; border: 0; min-width: 0; }
+      #tabCatalog .data-table td:first-child, #tabCatalog .data-table td:last-child, #tabCatalog .data-table td[colspan] { grid-column: 1 / -1; }
+      #tabCatalog .data-table td.hash-cell { display: none; }
+      #tabCatalog td[data-label]::before { content: attr(data-label); display: block; color: var(--text-muted); font-size: 12px; margin-bottom: 5px; }
+      .skill-name-row { flex-wrap: wrap; }
+      .skill-title { font-size: 16px; min-height: 44px; }
+      .skill-zh-desc { font-size: 14px; line-height: 1.6; }
+      .section-toolbar { flex-direction: column; align-items: stretch !important; }
+      .section-toolbar > div:last-child { flex-wrap: wrap; }
+      .modal-overlay { padding: 12px; }
+      .modal-body, .drawer-body { padding: 16px; }
+      .drawer-footer { padding: 12px 16px; }
+      .toast-container { right: 16px; bottom: 16px; }
+      .service-notice { align-items: flex-start; flex-wrap: wrap; }
+      .source-candidate-row { grid-template-columns: auto minmax(0, 1fr) !important; }
+      .source-candidate-name { grid-column: 2; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+    }
   </style>
 </head>
 <body>
@@ -1301,17 +1388,17 @@
             Skill Shelf
             <span class="badge-ver">Console v0.3</span>
           </h1>
-          <p>跨 Agent 统一技能中枢 · 暖色雅致控制台与分类备注管理</p>
+          <p>统一管理本地技能，按需接入各个 Agent</p>
         </div>
       </div>
       <div class="header-actions">
         <div class="status-pill">
-          <span id="daemonDot" class="status-dot online"></span>
-          <span id="daemonText">守护监听活跃 (10s)</span>
+          <span id="daemonDot" class="status-dot"></span>
+          <span id="daemonText" role="status">正在连接本地服务…</span>
         </div>
         <button id="btnReconcile" class="btn btn-outline-amber" title="补建缺失的 Agent 目录联接">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-          一键协调补链
+          修复 Agent 入口
         </button>
         <button id="btnScan" class="btn btn-primary" title="重新读取已登记根目录并计算指纹">
           <svg id="scanIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
@@ -1319,6 +1406,11 @@
         </button>
       </div>
     </header>
+
+    <div id="serviceNotice" class="service-notice" role="status" hidden>
+      <span>数据读取失败，请确认本地服务运行后重试。已有内容可能不是最新状态。</span>
+      <button id="btnReconnect" class="btn btn-secondary" type="button">重新连接</button>
+    </div>
 
     <!-- Metrics HUD -->
     <section class="hud-grid">
@@ -1332,11 +1424,11 @@
       </div>
       <div class="hud-card hud-emerald">
         <div class="hud-label">
-          <span>活跃 Junction 软链</span>
+          <span>Agent 联接入口</span>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         </div>
         <div class="hud-value" id="metricJunctions">—</div>
-        <div class="hud-sub">跨 Agent 零拷贝极速分发</div>
+        <div class="hud-sub">各 Agent 使用统一库中的同一份文件</div>
       </div>
       <div class="hud-card hud-terracotta">
         <div class="hud-label">
@@ -1352,7 +1444,7 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         </div>
         <div class="hud-value" id="metricConflicts">—</div>
-        <div class="hud-sub">同名不同 SHA-256 冲突项</div>
+        <div class="hud-sub">需选择保留版本或融合内容</div>
       </div>
     </section>
 
@@ -1365,58 +1457,58 @@
     </section>
 
     <!-- Category Design Strip (全景分类标签栏) -->
-    <section class="category-strip" id="categoryStrip">
-      <div class="category-pill active" data-cat="all">
+    <section class="category-strip" id="categoryStrip" aria-label="按技能分类筛选">
+      <button type="button" class="category-pill active" data-cat="all" aria-pressed="true">
         <span>全部技能</span>
         <span class="cat-count" id="catCountAll">0</span>
-      </div>
-      <div class="category-pill" data-cat="前端与动效">
+      </button>
+      <button type="button" class="category-pill" data-cat="前端与动效" aria-pressed="false">
         <span>🎨 前端与动效</span>
         <span class="cat-count" id="catCountFrontend">0</span>
-      </div>
-      <div class="category-pill" data-cat="开发与调试">
+      </button>
+      <button type="button" class="category-pill" data-cat="开发与调试" aria-pressed="false">
         <span>💻 开发与调试</span>
         <span class="cat-count" id="catCountDev">0</span>
-      </div>
-      <div class="category-pill" data-cat="系统与运维">
+      </button>
+      <button type="button" class="category-pill" data-cat="系统与运维" aria-pressed="false">
         <span>🛠️ 系统与运维</span>
         <span class="cat-count" id="catCountOps">0</span>
-      </div>
-      <div class="category-pill" data-cat="文档与办公">
+      </button>
+      <button type="button" class="category-pill" data-cat="文档与办公" aria-pressed="false">
         <span>📄 文档与办公</span>
         <span class="cat-count" id="catCountDocs">0</span>
-      </div>
-      <div class="category-pill" data-cat="AI与写作规范">
+      </button>
+      <button type="button" class="category-pill" data-cat="AI与写作规范" aria-pressed="false">
         <span>🤖 AI与写作规范</span>
         <span class="cat-count" id="catCountAi">0</span>
-      </div>
-      <div class="category-pill" data-cat="安全与规范">
+      </button>
+      <button type="button" class="category-pill" data-cat="安全与规范" aria-pressed="false">
         <span>🔒 安全与规范</span>
         <span class="cat-count" id="catCountSec">0</span>
-      </div>
-      <div class="category-pill" data-cat="其他工具">
+      </button>
+      <button type="button" class="category-pill" data-cat="其他工具" aria-pressed="false">
         <span>📦 其他工具</span>
         <span class="cat-count" id="catCountOther">0</span>
-      </div>
+      </button>
     </section>
 
     <!-- Workbench Nav Tabs -->
     <div class="workbench-nav">
-      <div class="nav-tabs">
+      <div class="nav-tabs" role="tablist" aria-label="管理工作区">
         <button class="nav-tab active" data-tab="catalog">
-          技能全景看板
+          技能库
           <span class="tab-badge" id="badgeCatalogCount">0</span>
         </button>
         <button class="nav-tab" data-tab="deploy">
-          Agent 部署大盘
+          Agent 接入
           <span class="tab-badge" id="badgeDeployCount">4</span>
         </button>
         <button class="nav-tab" data-tab="import">
-          统一库导入规划
+          导入与新建
           <span class="tab-badge" id="badgeImportCount">0</span>
         </button>
         <button class="nav-tab" data-tab="conflicts">
-          冲突与例外仲裁
+          同名冲突
           <span class="tab-badge" id="badgeConflictCount">0</span>
         </button>
       </div>
@@ -1432,10 +1524,10 @@
         <div class="filter-group-left">
           <div class="search-box">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            <input type="text" id="searchInput" placeholder="搜索技能名称、中文描述、备注或路径...">
+            <input type="search" id="searchInput" aria-label="搜索技能名称、描述、备注或路径" placeholder="搜索技能、描述或备注…" autocomplete="off">
             <span class="kbd-hint">/</span>
           </div>
-          <select id="filterCategorySelect" class="filter-select">
+          <select id="filterCategorySelect" class="filter-select" aria-label="技能分类">
             <option value="all">全部分类</option>
             <option value="前端与动效">前端与动效</option>
             <option value="开发与调试">开发与调试</option>
@@ -1445,14 +1537,14 @@
             <option value="安全与规范">安全与规范</option>
             <option value="其他工具">其他工具</option>
           </select>
-          <select id="filterAgent" class="filter-select">
+          <select id="filterAgent" class="filter-select" aria-label="Agent 来源">
             <option value="all">所有 Agent 来源</option>
             <option value="Antigravity IDE">Antigravity IDE</option>
             <option value="Codex">Codex</option>
             <option value="Claude Code">Claude Code</option>
             <option value="DSH">DSH</option>
           </select>
-          <select id="filterStatus" class="filter-select">
+          <select id="filterStatus" class="filter-select" aria-label="技能状态">
             <option value="all">全部状态</option>
             <option value="managed">已汇入统一库</option>
             <option value="has_note">已有自定义备注</option>
@@ -1463,7 +1555,8 @@
             <option value="source_unregistered">来源待登记</option>
           </select>
         </div>
-        <div class="filter-stats">
+        <button id="btnClearFilters" class="btn btn-secondary" type="button" hidden>清除筛选</button>
+        <div class="filter-stats" role="status" aria-live="polite" aria-atomic="true">
           显示 <b id="filteredCount">0</b> / <span id="totalSkillsCount">0</span> 项
         </div>
       </div>
@@ -1475,9 +1568,9 @@
             <tr>
               <th style="width: 34%">技能 / 自动中文简介与备注</th>
               <th style="width: 13%">所属分类</th>
-              <th style="width: 13%">SHA-256 指纹</th>
-              <th style="width: 20%">已分发 Agent / 状态</th>
-              <th style="width: 10%">副本分布</th>
+              <th style="width: 13%">内容指纹</th>
+              <th style="width: 20%">已接入 Agent</th>
+              <th style="width: 10%">文件与联接</th>
               <th style="width: 10%; text-align: right">操作</th>
             </tr>
           </thead>
@@ -1495,7 +1588,7 @@
 
     <!-- TAB 2: Agent 部署大盘 -->
     <section class="tab-content" id="tabDeploy">
-      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
+      <div class="section-toolbar" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
         <div>
           <div style="font-weight:600; font-size:14px; color:#fff">Windows 目录联接 (Junctions) 部署拓扑</div>
           <div style="font-size:12px; color:var(--text-secondary); margin-top:2px">统一库源目录：<code id="deployLibraryPath" style="font-family:var(--font-mono); color:#fde68a">~/.skill-shelf/skills</code> · 独立 Junction 不影响各 Agent 自身文件</div>
@@ -1519,7 +1612,7 @@
 
     <!-- TAB 3: 统一库导入规划 -->
     <section class="tab-content" id="tabImport">
-      <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
+      <div class="section-toolbar" style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md);">
         <div>
           <div style="font-weight:600; font-size:14px; color:#fff">统一库安全导入计划 (Dry Run)</div>
           <div style="font-size:12px; color:var(--text-secondary); margin-top:2px">遵循 source_priority 优先级，复制后先校验 SHA-256 再重命名，绝不覆盖已有项。</div>
@@ -1533,23 +1626,28 @@
       <div style="margin:14px 0; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:12px">
         <div style="background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md); display:flex; flex-direction:column; gap:9px">
           <b style="color:#fff">从 Git 下载</b>
+          <label for="gitRepoUrl" class="field-label">仓库 HTTPS 地址</label>
           <input id="gitRepoUrl" class="filter-select" type="url" placeholder="https://github.com/owner/repo.git" autocomplete="url">
           <div style="display:flex;gap:8px">
-            <input id="gitBranch" class="filter-select" placeholder="分支（留空使用默认分支）">
+            <input id="gitBranch" class="filter-select" aria-label="Git 分支，留空使用默认分支" placeholder="分支（默认分支可留空）">
             <button id="btnGitPreview" class="btn btn-secondary">读取仓库</button>
           </div>
         </div>
         <div style="background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md); display:flex; flex-direction:column; gap:9px">
           <b style="color:#fff">导入本地压缩包</b>
           <div style="font-size:12px;color:var(--text-secondary)">支持 ZIP 和 .skill 文件，导入前会检查内容并列出候选。</div>
+          <label for="archiveFile" class="sr-only">选择 ZIP 或 .skill 压缩包</label>
           <input id="archiveFile" type="file" accept=".zip,.skill,application/zip" class="filter-select">
           <button id="btnArchivePreview" class="btn btn-secondary" style="align-self:flex-start">检查压缩包</button>
         </div>
         <form id="localSkillForm" style="background:var(--bg-surface); padding:14px 18px; border:1px solid var(--border-subtle); border-radius:var(--radius-md); display:flex; flex-direction:column; gap:9px">
           <b style="color:#fff">本地创建 Skill</b>
-          <input id="localSkillName" class="filter-select" placeholder="目录名，例如 my-skill" required maxlength="120">
-          <input id="localSkillDescription" class="filter-select" placeholder="用途说明（必填）" required maxlength="1000">
-          <textarea id="localSkillInstructions" class="drawer-note-input" rows="3" placeholder="技能指令内容（可留空）"></textarea>
+          <label for="localSkillName" class="field-label">技能目录名（必填）</label>
+          <input id="localSkillName" class="filter-select" placeholder="例如 my-skill" required maxlength="120">
+          <label for="localSkillDescription" class="field-label">用途说明（必填）</label>
+          <input id="localSkillDescription" class="filter-select" placeholder="这个技能可以帮助完成什么任务" required maxlength="1000">
+          <label for="localSkillInstructions" class="field-label">技能指令（选填）</label>
+          <textarea id="localSkillInstructions" class="drawer-note-input" rows="3" placeholder="具体工作步骤与使用边界"></textarea>
           <button class="btn btn-primary" type="submit" style="align-self:flex-start">创建到统一库</button>
         </form>
       </div>
@@ -1593,14 +1691,14 @@
   </div>
 
   <!-- Slide-out Drawer: Skill Inspector -->
-  <div class="drawer-overlay" id="drawerOverlay">
-    <div class="drawer" id="skillDrawer">
+  <div class="drawer-overlay" id="drawerOverlay" inert aria-hidden="true">
+    <div class="drawer" id="skillDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
       <div class="drawer-header">
         <h2>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/></svg>
           <span id="drawerTitle">技能详情与管理</span>
         </h2>
-        <button class="drawer-close" id="btnDrawerClose" title="关闭 (Esc)">
+        <button class="drawer-close" id="btnDrawerClose" title="关闭 (Esc)" aria-label="关闭技能详情">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
@@ -1609,12 +1707,12 @@
         <!-- Interactive Note Setting Port (备注与分类交互端口) -->
         <div class="drawer-section">
           <div class="drawer-section-title">
-            <span>我的中文备注与分类 (自定义设置端口)</span>
-            <span style="font-size:10px; color:var(--accent-amber)">支持云端/本地实时同步</span>
+            <span>备注与分类</span>
+            <span style="font-size:12px; color:var(--text-muted)">仅保存在本机</span>
           </div>
           <div class="drawer-note-card">
             <div class="drawer-note-row">
-              <label class="drawer-note-label">技能分类：</label>
+              <label class="drawer-note-label" for="drawerCategorySelect">技能分类：</label>
               <select id="drawerCategorySelect" class="filter-select" style="width:100%">
                 <option value="">自动分类</option>
                 <option value="前端与动效">🎨 前端与动效</option>
@@ -1627,7 +1725,7 @@
               </select>
             </div>
             <div class="drawer-note-row">
-              <label class="drawer-note-label">自定义中文描述 / 备注：</label>
+              <label class="drawer-note-label" for="drawerNoteText">自定义中文描述 / 备注：</label>
               <textarea id="drawerNoteText" class="drawer-note-input" placeholder="输入该 Skill 的自定义用途备注与心得..."></textarea>
             </div>
             <div style="display:flex; justify-content:flex-end; gap:8px">
@@ -1666,10 +1764,10 @@
         </div>
 
         <div class="drawer-section">
-          <div class="drawer-section-title">完整内容 SHA-256 指纹</div>
+          <div class="drawer-section-title">完整内容 内容指纹</div>
           <div style="background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:10px 12px; display:flex; align-items:center; justify-content:space-between; gap:10px;">
             <code id="drawerSkillHash" style="font-family:var(--font-mono); font-size:11.5px; color:#fde68a; overflow-wrap:anywhere;">—</code>
-            <button id="btnCopyHash" class="btn btn-secondary btn-icon-only" title="复制完整哈希">
+            <button id="btnCopyHash" class="btn btn-secondary btn-icon-only" title="复制完整内容指纹" aria-label="复制完整内容指纹">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
             </button>
           </div>
@@ -1691,6 +1789,7 @@
 
         <div class="drawer-section">
           <div class="drawer-section-title">危险操作区</div>
+          <p id="drawerReadOnlyHint" style="font-size:12px;color:var(--text-secondary)" hidden>这个版本不在统一库中，可查看和编辑备注；不能在此删除或重新部署。请在同名冲突中选择要统一的版本。</p>
           <div style="background:rgba(239, 68, 68, 0.05); border:1px solid rgba(239, 68, 68, 0.2); border-radius:var(--radius-sm); padding:12px; display:flex; flex-direction:column; gap:8px;">
             <div style="font-size:11.5px; color:#fca5a5">移入 Windows 回收站将首先自动卸载所有指向该 Skill 的 Junction 软链，随后将统一库源文件夹移入回收站。</div>
             <button id="btnDeleteSkill" class="btn btn-danger" style="align-self:flex-start;">
@@ -1712,11 +1811,11 @@
   </div>
 
   <!-- Quick Edit Remark Modal (快捷备注端口弹窗) -->
-  <div class="modal-overlay" id="quickRemarkModal">
-    <div class="modal">
+  <div class="modal-overlay" id="quickRemarkModal" inert aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="quickRemarkTitle">
       <div class="modal-header">
-        <h3>编辑技能备注与分类</h3>
-        <button class="drawer-close" id="btnQuickRemarkClose">
+        <h3 id="quickRemarkTitle">编辑技能备注与分类</h3>
+        <button class="drawer-close" id="btnQuickRemarkClose" aria-label="关闭备注编辑">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
@@ -1726,7 +1825,7 @@
           <b id="quickRemarkSkillName" style="color:#fff; font-size:14px">—</b>
         </div>
         <div style="display:flex; flex-direction:column; gap:5px">
-          <label style="font-size:12px; font-weight:550; color:var(--text-secondary)">归属分类：</label>
+          <label for="quickRemarkCatSelect" style="font-size:12px; font-weight:550; color:var(--text-secondary)">归属分类：</label>
           <select id="quickRemarkCatSelect" class="filter-select" style="width:100%">
             <option value="">自动分类</option>
             <option value="前端与动效">🎨 前端与动效</option>
@@ -1739,7 +1838,7 @@
           </select>
         </div>
         <div style="display:flex; flex-direction:column; gap:5px">
-          <label style="font-size:12px; font-weight:550; color:var(--text-secondary)">中文描述 / 备注：</label>
+          <label for="quickRemarkText" style="font-size:12px; font-weight:550; color:var(--text-secondary)">中文描述 / 备注：</label>
           <textarea id="quickRemarkText" class="drawer-note-input" rows="3" placeholder="在此输入自定义中文备注..."></textarea>
         </div>
       </div>
@@ -1751,11 +1850,11 @@
   </div>
 
   <!-- Confirm / Generic Modal -->
-  <div class="modal-overlay" id="genericModal">
-    <div class="modal">
+  <div class="modal-overlay" id="genericModal" inert aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-header">
         <h3 id="modalTitle">确认操作</h3>
-        <button class="drawer-close" id="btnModalClose">
+        <button class="drawer-close" id="btnModalClose" aria-label="关闭确认对话框">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
         </button>
       </div>
@@ -1770,7 +1869,7 @@
   </div>
 
   <!-- Sonner Toast Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <div class="toast-container" id="toastContainer" role="status" aria-live="polite" aria-relevant="additions text"></div>
 
   <script>
     // State Store
@@ -1834,20 +1933,70 @@
       loading(msg) { return this.show(msg, 'loading', 0); }
     };
 
+    // 叠加弹窗只保留最上层可操作，并在关闭后回到原入口。
+    const dialogStack = [];
+    const dialogIds = ['drawerOverlay', 'quickRemarkModal', 'genericModal'];
+    let previousOverflow = '';
+    function syncDialogLayers() {
+      const top = dialogStack.at(-1)?.id;
+      document.querySelector('.app-shell').inert = Boolean(top);
+      dialogIds.forEach(id => {
+        const hidden = !$(id).classList.contains('open') || top !== id;
+        $(id).inert = hidden;
+        $(id).setAttribute('aria-hidden', String(hidden));
+        if ($(id).classList.contains('open')) $(id).style.zIndex = 120 + dialogStack.findIndex(item => item.id === id) * 10;
+      });
+      document.body.style.overflow = top ? 'hidden' : previousOverflow;
+    }
+    function openDialog(id, focusId) {
+      if (!dialogStack.length) previousOverflow = document.body.style.overflow;
+      if (!dialogStack.some(item => item.id === id)) dialogStack.push({ id, opener: document.activeElement });
+      $(id).classList.add('open');
+      syncDialogLayers();
+      $(focusId)?.focus();
+    }
+    function closeDialog(id) {
+      const entry = dialogStack.find(item => item.id === id);
+      const wasTop = dialogStack.at(-1)?.id === id;
+      $(id).classList.remove('open');
+      const index = dialogStack.findIndex(item => item.id === id);
+      if (index !== -1) dialogStack.splice(index, 1);
+      syncDialogLayers();
+      if (!wasTop) return;
+      const opener = entry?.opener;
+      const top = dialogStack.at(-1)?.id;
+      if (opener?.isConnected && !opener.closest('[inert]') && !opener.disabled) opener.focus();
+      else if (top) $(top).querySelector('button:not(:disabled), input, select, textarea')?.focus();
+      else document.querySelector('.nav-tab.active')?.focus();
+    }
+    async function copyText(text, message) {
+      try {
+        await navigator.clipboard.writeText(text);
+        toast.success(message);
+      } catch (_) {
+        toast.error('无法访问剪贴板，请在技能详情中选择并复制指纹。');
+      }
+    }
+
     // Generic Modal Manager
     let modalConfirmHandler = null;
+    let modalSession = 0;
     function showModal({ title, bodyHtml, confirmText = '确定', confirmType = 'primary', onConfirm, wide = false }) {
+      modalSession++;
       $('modalTitle').textContent = title;
       $('modalBody').innerHTML = bodyHtml;
       $('genericModal').querySelector('.modal').classList.toggle('wide', wide);
       const confirmBtn = $('btnModalConfirm');
       confirmBtn.textContent = confirmText;
       confirmBtn.className = `btn btn-${confirmType}`;
+      confirmBtn.disabled = false;
+      $('btnModalCancel').textContent = '取消';
       modalConfirmHandler = onConfirm;
-      $('genericModal').classList.add('open');
+      openDialog('genericModal', 'btnModalCancel');
     }
     function closeModal() {
-      $('genericModal').classList.remove('open');
+      modalSession++;
+      closeDialog('genericModal');
       modalConfirmHandler = null;
     }
     $('btnModalClose').onclick = closeModal;
@@ -1855,15 +2004,30 @@
     $('btnModalConfirm').onclick = async () => {
       if (modalConfirmHandler) {
         const button = $('btnModalConfirm');
+        const session = modalSession;
+        const label = button.textContent;
+        const action = modalConfirmHandler;
         button.disabled = true;
+        button.textContent = '处理中…';
+        $('btnModalCancel').textContent = '关闭窗口';
+        const notice = document.createElement('p');
+        notice.textContent = '操作已开始，关闭窗口不会中断。';
+        notice.setAttribute('role', 'status');
+        $('modalBody').append(notice);
         try {
-          const keepOpen = await modalConfirmHandler();
+          const keepOpen = await action();
+          if (session !== modalSession) return;
           if (keepOpen === false) return;
         } catch (err) {
           toast.error(err.message || '操作失败');
           return;
         } finally {
-          button.disabled = false;
+          if (session === modalSession) {
+            button.disabled = false;
+            button.textContent = label;
+            $('btnModalCancel').textContent = '取消';
+            notice.remove();
+          }
         }
       }
       closeModal();
@@ -1876,10 +2040,10 @@
       const skill = state.scan?.skills?.find(item => item.name === skillName && item.content_hash === contentHash);
       setCategorySelect($('quickRemarkCatSelect'), skillName, skill);
       $('quickRemarkText').value = state.notes[skillName] || '';
-      $('quickRemarkModal').classList.add('open');
+      openDialog('quickRemarkModal', 'quickRemarkText');
     }
     function closeQuickRemarkModal() {
-      $('quickRemarkModal').classList.remove('open');
+      closeDialog('quickRemarkModal');
       state.editingSkillName = null;
     }
     $('btnQuickRemarkClose').onclick = closeQuickRemarkModal;
@@ -2042,6 +2206,11 @@
     // Render Skills Catalog Table
     function renderSkillsTable() {
       const tbody = $('skillsTableBody');
+      document.querySelectorAll('.category-pill').forEach(pill => {
+        const selected = pill.dataset.cat === state.activeCategory;
+        pill.classList.toggle('active', selected);
+        pill.setAttribute('aria-pressed', String(selected));
+      });
       if (!state.scan || !state.scan.skills) {
         tbody.innerHTML = '<tr><td colspan="6" class="empty-state">暂无数据</td></tr>';
         return;
@@ -2096,11 +2265,13 @@
 
       $('filteredCount').textContent = skills.length;
       $('totalSkillsCount').textContent = state.scan.skills.length;
+      $('btnClearFilters').hidden = !(q || state.activeCategory !== 'all' || state.filterAgent !== 'all' || state.filterStatus !== 'all');
 
       if (!skills.length) {
         tbody.innerHTML = `<tr><td colspan="6" class="empty-state">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <span>没有匹配的技能项</span>
+          <span>没有符合当前筛选的技能</span>
+          <span>可清除筛选，或换一个关键词重试。</span>
         </td></tr>`;
         return;
       }
@@ -2130,7 +2301,7 @@
             <td>
               <div class="skill-primary">
                 <div class="skill-name-row">
-                  <span class="skill-title">${esc(sk.name)}</span>
+                  <button type="button" class="skill-title" aria-label="查看 ${esc(sk.name)} 的详情">${esc(sk.name)}</button>
                   ${sk.name_conflict ? '<span class="badge tag-conflict">同名冲突</span>' : ''}
                   ${isManaged ? '<span class="badge chip-success" style="font-size:10px">已纳管</span>' : ''}
                   ${sourceBadge}
@@ -2141,30 +2312,30 @@
                 ${customNote ? `<div class="skill-zh-desc"><span class="skill-note-badge">备注</span><span>${esc(customNote)}</span></div>` : ''}
               </div>
             </td>
-            <td>
+            <td data-label="分类">
               ${getCategoryBadge(cat, isAutoCategory)}
             </td>
-            <td>
-              <span class="badge-hash" data-copy="${esc(sk.content_hash)}" title="点击复制完整哈希">${shortHash}…</span>
+            <td class="hash-cell">
+              <button type="button" class="badge-hash" data-copy="${esc(sk.content_hash)}" aria-label="复制 ${esc(sk.name)} 的完整内容指纹" title="复制完整内容指纹">${shortHash}…</button>
             </td>
-            <td>
+            <td data-label="已接入 Agent">
               <div class="agent-chips">
                 ${agents.length ? agents.map(getAgentChip).join('') : '<span style="color:var(--text-muted);font-size:11px">仅统一库</span>'}
               </div>
             </td>
-            <td>
+            <td data-label="文件分布">
               <span class="badge tag-dup">
-                ${sk.locations?.length || 0} 处副本
+                ${sk.physical_copy_count || 0} 份文件
                 ${sk.linked_location_count ? `(${sk.linked_location_count} 软链)` : ''}
               </span>
             </td>
             <td style="text-align: right">
-              <div style="display:inline-flex; gap:6px; align-items:center;">
-                <button class="btn btn-secondary btn-icon-only btn-edit-note" data-name="${esc(sk.name)}" data-hash="${esc(sk.content_hash)}" title="设置 / 编辑备注与分类">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+              <div class="row-actions">
+                <button class="btn btn-secondary btn-edit-note" data-name="${esc(sk.name)}" data-hash="${esc(sk.content_hash)}" aria-label="编辑 ${esc(sk.name)} 的备注与分类" title="编辑备注与分类">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><span>备注</span>
                 </button>
-                <button class="btn btn-secondary btn-icon-only btn-inspect" data-name="${esc(sk.name)}" data-hash="${esc(sk.content_hash)}" title="展开详情抽屉">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                <button class="btn btn-secondary btn-inspect" data-name="${esc(sk.name)}" data-hash="${esc(sk.content_hash)}" aria-label="查看 ${esc(sk.name)} 的详情" title="查看详情">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg><span>详情</span>
                 </button>
               </div>
             </td>
@@ -2174,11 +2345,10 @@
 
       // Bind row clicks
       tbody.querySelectorAll('tr').forEach(row => {
-        row.addEventListener('click', (e) => {
+        row.addEventListener('click', async (e) => {
           if (e.target.closest('.badge-hash')) {
             const h = e.target.closest('.badge-hash').getAttribute('data-copy');
-            navigator.clipboard.writeText(h);
-            toast.success(`已复制哈希: ${h.slice(0, 10)}…`);
+            await copyText(h, `已复制内容指纹: ${h.slice(0, 10)}…`);
             return;
           }
           if (e.target.closest('.btn-edit-note')) {
@@ -2473,6 +2643,9 @@
       $('drawerSkillHash').textContent = skill.content_hash;
       $('drawerLocCount').textContent = skill.locations?.length || 0;
       const libraryDirectory = selectedLibraryDirectory(skill);
+      $('btnDeleteSkill').disabled = !libraryDirectory;
+      $('btnRefreshSingle').disabled = !libraryDirectory;
+      $('drawerReadOnlyHint').hidden = Boolean(libraryDirectory);
       const source = sourceForSkill(skill);
       const sourceType = source?.type === 'git' ? `${isGithubSource(source) ? 'GitHub 下载' : 'Git 下载'} · ${source.repository_url}${source.branch ? ` · ${source.branch}` : ''}${source.relative_path && source.relative_path !== '.' ? ` · ${source.relative_path}` : ''}` : source?.type === 'archive' ? `压缩包 · ${source.file_name || '本地文件'}` : source?.type === 'local' ? '本地创建' : '历史 Skill（来源待登记）';
       $('drawerSkillSource').textContent = sourceType;
@@ -2495,11 +2668,11 @@
         </div>
       `).join('');
 
-      $('drawerOverlay').classList.add('open');
+      openDialog('drawerOverlay', 'btnDrawerClose');
     }
 
     function closeDrawer() {
-      $('drawerOverlay').classList.remove('open');
+      closeDialog('drawerOverlay');
       state.selectedSkill = null;
     }
 
@@ -2519,21 +2692,22 @@
     };
 
     // Copy hash in drawer
-    $('btnCopyHash').onclick = () => {
+    $('btnCopyHash').onclick = async () => {
       if (!state.selectedSkill) return;
-      navigator.clipboard.writeText(state.selectedSkill.content_hash);
-      toast.success('已复制完整 SHA-256 哈希');
+      await copyText(state.selectedSkill.content_hash, '已复制完整内容指纹');
     };
 
     // Single Skill Refresh in drawer
     $('btnRefreshSingle').onclick = async () => {
       if (!state.selectedSkill) return;
+      const directory = selectedLibraryDirectory(state.selectedSkill);
+      if (!directory) return toast.error('此版本不在统一库中，不能从这里重新部署。');
       const t = toast.loading(`正在重新校验 ${state.selectedSkill.name}…`);
       try {
         await apiFetch('/api/skills/refresh', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ directory: state.selectedSkill.name })
+          body: JSON.stringify({ directory })
         });
         t.dismiss();
         toast.success(`刷新成功: 指纹一致性已确认`);
@@ -2548,10 +2722,14 @@
     $('btnDeleteSkill').onclick = () => {
       if (!state.selectedSkill) return;
       const sName = state.selectedSkill.name;
+      const directory = selectedLibraryDirectory(state.selectedSkill);
+      const expectedHash = state.selectedSkill.content_hash;
+      if (!directory) return toast.error('此版本不在统一库中，不能从这里删除。');
       showModal({
         title: `移入回收站确认`,
         bodyHtml: `
           <p>您确定要将 <b>${esc(sName)}</b> 移入 Windows 回收站吗？</p>
+          <p>统一库目录：<code>${esc(directory)}</code> · 内容指纹：<code>${esc(expectedHash.slice(0, 12))}…</code></p>
           <p style="color:#fca5a5; font-size:12px; margin-top:8px;">
             此操作将自动先撤销所有 Agent 中指向该统一库 Skill 的 Junction 软链，随后将源文件夹移入回收站。
           </p>
@@ -2565,7 +2743,8 @@
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
-                directory: sName,
+                directory,
+                expected_hash: expectedHash,
                 confirm: 'MOVE_SKILL_TO_RECYCLE_BIN'
               })
             });
@@ -2576,6 +2755,7 @@
           } catch (err) {
             t.dismiss();
             toast.error(`删除失败: ${err.message}`);
+            return false;
           }
         }
       });
@@ -2666,7 +2846,10 @@
           body: JSON.stringify({ confirm: 'DEPLOY_AGENT_LINKS' })
         });
         t.dismiss();
-        toast.success(`部署完成！成功部署 ${res.summary?.applied_links || 0} 处联接`);
+        const summary = res.summary || {};
+        const message = `已新建 ${summary.linked || 0} 个联接，${summary.already_linked || 0} 个已就绪，${summary.failed || 0} 个失败`;
+        if (summary.failed) toast.error(`部署部分完成：${message}`);
+        else toast.success(`部署完成：${message}`);
         await loadAllData();
       } catch (err) {
         t.dismiss();
@@ -2697,12 +2880,12 @@
           : candidate.existing_status === 'name_conflict'
             ? '统一库已有同名不同内容，可改目录名后导入'
             : '新技能';
-        return `<label style="display:grid;grid-template-columns:auto minmax(120px,1fr) minmax(180px,1.5fr);align-items:center;gap:10px;background:var(--bg-surface-elevated);padding:9px 11px;border-radius:var(--radius-sm)">
-          <input class="source-candidate-select" type="checkbox" data-candidate-id="${esc(candidate.candidate_id)}" ${checked}>
+        return `<div class="source-candidate-row" style="display:grid;grid-template-columns:auto minmax(120px,1fr) minmax(180px,1.5fr);align-items:center;gap:10px;background:var(--bg-surface-elevated);padding:9px 11px;border-radius:var(--radius-sm)">
+          <input class="source-candidate-select" type="checkbox" aria-label="选择导入 ${esc(candidate.name)}" data-candidate-id="${esc(candidate.candidate_id)}" ${checked}>
           <span><b style="color:#fff">${esc(candidate.name)}</b><small style="display:block;color:var(--text-muted);margin-top:3px">${esc(status)}</small></span>
           <input class="filter-select source-candidate-name" data-candidate-id="${esc(candidate.candidate_id)}" value="${esc(candidate.name)}" maxlength="120" aria-label="统一库目录名">
           <span style="grid-column:2 / -1;color:var(--text-secondary);font-size:11px">${esc(candidate.description || candidate.relative_path)}</span>
-        </label>`;
+        </div>`;
       }).join('');
       $('btnApplySourcePreview').disabled = false;
       panel.style.display = '';
@@ -2787,7 +2970,8 @@
 
     $('localSkillForm').addEventListener('submit', async event => {
       event.preventDefault();
-      const button = event.currentTarget.querySelector('button[type="submit"]');
+      const form = event.currentTarget;
+      const button = form.querySelector('button[type="submit"]');
       button.disabled = true;
       const loading = toast.loading('正在创建本地 Skill…');
       try {
@@ -2801,7 +2985,7 @@
         });
         loading.dismiss();
         toast.success(`已创建 ${result.name} 并接入 Agent 目录`);
-        event.currentTarget.reset();
+        form.reset();
         await loadAllData();
       } catch (err) {
         loading.dismiss();
@@ -3021,11 +3205,35 @@
 
     // Tab Navigation
     document.querySelectorAll('.nav-tab').forEach(tab => {
+      const tabId = tab.dataset.tab;
+      const panel = $({ catalog: 'tabCatalog', deploy: 'tabDeploy', import: 'tabImport', conflicts: 'tabConflicts' }[tabId]);
+      tab.id = `nav-${tabId}`;
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-controls', panel.id);
+      tab.setAttribute('aria-selected', String(tab.classList.contains('active')));
+      tab.tabIndex = tab.classList.contains('active') ? 0 : -1;
+      panel.setAttribute('role', 'tabpanel');
+      panel.setAttribute('aria-labelledby', tab.id);
+      tab.addEventListener('keydown', event => {
+        if (!['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) return;
+        event.preventDefault();
+        const tabs = [...document.querySelectorAll('.nav-tab')];
+        const index = tabs.indexOf(tab);
+        const next = event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : (index + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+        tabs[next].focus();
+        tabs[next].click();
+      });
       tab.addEventListener('click', () => {
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(t => {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+          t.tabIndex = -1;
+        });
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
         tab.classList.add('active');
+        tab.setAttribute('aria-selected', 'true');
+        tab.tabIndex = 0;
         const tabId = tab.getAttribute('data-tab');
         state.activeTab = tabId;
 
@@ -3038,6 +3246,21 @@
 
     // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
+      const top = dialogStack.at(-1)?.id;
+      if (top) {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          if (top === 'genericModal') closeModal();
+          else if (top === 'quickRemarkModal') closeQuickRemarkModal();
+          else closeDrawer();
+        } else if (e.key === 'Tab') {
+          const controls = [...$(top).querySelectorAll('button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href], [tabindex="0"]')].filter(el => el.getClientRects().length && !el.closest('[inert]'));
+          const first = controls[0], last = controls.at(-1);
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last?.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first?.focus(); }
+        }
+        return;
+      }
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
         if (e.key === 'Escape') {
           document.activeElement.blur();
@@ -3059,10 +3282,12 @@
 
     // Initial Data Loader
     async function loadAllData() {
+      $('tabCatalog').setAttribute('aria-busy', 'true');
       try {
         await apiFetch('/api/health');
         $('daemonDot').className = 'status-dot online';
-        $('daemonText').textContent = '守护监听活跃 (10s)';
+        $('daemonText').textContent = '本地服务在线';
+        $('serviceNotice').hidden = true;
 
         // Load notes & categories
         try {
@@ -3092,8 +3317,11 @@
         $('quickSummaryText').textContent = state.scan.errors?.length ? `已就绪 · ${state.scan.skills?.length || 0} 项 · ${state.scan.errors.length} 处读取失败` : `已就绪 · ${state.scan.skills?.length || 0} 个技能已归类`;
       } catch (err) {
         $('daemonDot').className = 'status-dot';
-        $('daemonText').textContent = '服务离线';
+        $('daemonText').textContent = '连接或读取失败';
+        $('serviceNotice').hidden = false;
         toast.error(`无法连接本地 API 服务: ${err.message}。请运行 start-app.ps1（桌面版）或 start.ps1（本地端口版）。`);
+      } finally {
+        $('tabCatalog').setAttribute('aria-busy', 'false');
       }
     }
 
@@ -3102,12 +3330,16 @@
       state.pollBusy = true;
       try {
         const latest = await apiFetch('/api/skills');
-        if (latest.scanned_at && latest.scanned_at !== state.scan.scanned_at) await loadAllData();
+        if ((latest.scanned_at && latest.scanned_at !== state.scan.scanned_at) || !$('serviceNotice').hidden) {
+          await loadAllData();
+          return;
+        }
         $('daemonDot').className = 'status-dot online';
         $('daemonText').textContent = '本地服务在线';
       } catch (_) {
         $('daemonDot').className = 'status-dot';
-        $('daemonText').textContent = '服务离线';
+        $('daemonText').textContent = '连接暂不可用';
+        $('serviceNotice').hidden = false;
       } finally {
         state.pollBusy = false;
       }
@@ -3117,6 +3349,20 @@
       if (!document.hidden) pollForScanUpdates();
     });
     window.setInterval(pollForScanUpdates, 10000);
+
+    $('btnClearFilters').onclick = () => {
+      state.searchQuery = '';
+      state.activeCategory = 'all';
+      state.filterAgent = 'all';
+      state.filterStatus = 'all';
+      $('searchInput').value = '';
+      $('filterCategorySelect').value = 'all';
+      $('filterAgent').value = 'all';
+      $('filterStatus').value = 'all';
+      renderSkillsTable();
+      $('searchInput').focus();
+    };
+    $('btnReconnect').onclick = loadAllData;
 
     // Auto-boot
     loadAllData();

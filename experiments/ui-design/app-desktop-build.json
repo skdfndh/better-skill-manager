@@ -1,0 +1,7 @@
+{
+  "desktop_build": "passed",
+  "embedded_ui_matches_source": true,
+  "exe_sha256": "891b7aca944bd9dbc9e869c183b34d9a48d60a527c46adcb70d192d8dd6ea8b1",
+  "native_webview_interaction": "passed_9_smoke_checks",
+  "desktop_shortcut_updated": true
+}

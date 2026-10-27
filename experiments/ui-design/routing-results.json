@@ -1,0 +1,50 @@
+{
+  "baseline": {
+    "cases": [
+      {"id":"product-layout","skills":["emil-design-eng"],"command":null,"mode":"implementation","reason":"旧入口只有UI打磨与组件设计方向，没有更具体的表单布局路由；声明保留Vue、品牌和组件库。","missing_dependencies":[]},
+      {"id":"brand-page","skills":[],"command":null,"mode":"implementation","reason":"旧入口没有品牌网页或艺术方向专长的明确路由，不虚构规则或隐式启用Taste。","missing_dependencies":[]},
+      {"id":"campaign-structure","skills":[],"command":null,"mode":"read_only","reason":"只提供结构和CTA建议；旧入口没有营销落地页或文案结构的明确路由。","missing_dependencies":[]},
+      {"id":"single-prototype","skills":[],"command":null,"mode":"implementation","reason":"旧入口指向prototype，但子技能要求显式调用且核心是多方案；本次明确单方案，旧入口没有替代路径。","missing_dependencies":[]},
+      {"id":"explicit-prototype","skills":["prototype"],"command":null,"mode":"implementation","reason":"明确调用prototype，只制作三套删除按钮和选择器，等待用户选择后才整合。","missing_dependencies":[]},
+      {"id":"ordinary-no-taste","skills":["emil-design-eng"],"command":null,"mode":"read_only","reason":"按旧入口通用UI打磨方向评价，保留布局字体，不修改，不隐式启用Taste。","missing_dependencies":[]},
+      {"id":"explicit-taste","skills":["design-taste-frontend"],"command":null,"mode":"implementation","reason":"虽旧入口没有列出，用户明确点名且本地技能存在，允许走展览页面流程。","missing_dependencies":[]},
+      {"id":"motion-name","skills":["animation-vocabulary"],"command":null,"mode":"read_only","reason":"按明确术语路由解释阻尼回弹，不设计或实现。","missing_dependencies":[]},
+      {"id":"whole-motion-audit","skills":["improve-animations"],"command":null,"mode":"read_only","reason":"整个仓库动画审计、优先级和计划与旧入口路由一致，不转执行。","missing_dependencies":[]},
+      {"id":"motion-opportunities","skills":["find-animation-opportunities"],"command":null,"mode":"read_only","reason":"发现值得动和应保持静止的位置，只提供筛选后的建议。","missing_dependencies":[]},
+      {"id":"sonner-bug","skills":["ask-sonner"],"command":null,"mode":"implementation","reason":"Sonner重复和暗色主题故障有直接路由，保留现有Sonner。","missing_dependencies":[]},
+      {"id":"css-hover","skills":["animate"],"command":null,"mode":"implementation","reason":"按最低成本规则采用CSS透明度transition，不安装依赖。","missing_dependencies":[]},
+      {"id":"react-gsap-scroll","skills":["animate"],"command":null,"mode":"implementation","reason":"旧入口和该子技能缺GSAP、React接线与ScrollTrigger的专门路由，只能给通用动效原则，声明保留现有GSAP。","missing_dependencies":[]},
+      {"id":"nuxt-gsap","skills":[],"command":null,"mode":"implementation","reason":"Nuxt与GSAP挂载卸载不是新增动画或动效质量审阅，旧入口无对应路由。","missing_dependencies":[]},
+      {"id":"expo-sheet","skills":["animate-expo"],"command":null,"mode":"implementation","reason":"Expo手势底部面板有直接路由，保留SDK和依赖，不擅自升级。","missing_dependencies":[]},
+      {"id":"swift-non-ui","skills":["write-swift"],"command":null,"mode":"outside_ui","reason":"直接使用语言专长修actor，不扩展到界面和动画。","missing_dependencies":[]},
+      {"id":"backend-negative","skills":[],"command":null,"mode":"outside_ui","reason":"Python查询优化不属于UI、动画和Swift范围，不强行加载。","missing_dependencies":[]},
+      {"id":"explicit-motion-review","skills":["review-animations"],"command":null,"mode":"read_only","reason":"明确调用手动审阅专长，限定弹窗diff，只报告问题和证据。","missing_dependencies":[]},
+      {"id":"implicit-motion-review","skills":["emil-design-eng"],"command":null,"mode":"read_only","reason":"旧入口指review-animations但子技能禁止隐式调用，因此改用通用理念；缺完整键盘审计路由。","missing_dependencies":[]},
+      {"id":"preserve-motion","skills":["animate"],"command":null,"mode":"implementation","reason":"Web动效实施路由，沿用Motion和多步结构，不切GSAP或误转只读审计。","missing_dependencies":[]}
+    ]
+  },
+  "integrated": {
+    "cases": [
+      {"id":"product-layout","skills":["impeccable"],"command":"layout","mode":"implementation","reason":"产品后台表单间距与层次采用layout和product register，保留Vue、品牌和组件库。","missing_dependencies":[]},
+      {"id":"brand-page","skills":["frontend-design"],"command":null,"mode":"implementation","reason":"新品牌网页需要明确视觉概念，选择一个主视觉，保留响应式、键盘与可访问性要求。","missing_dependencies":[]},
+      {"id":"campaign-structure","skills":["landing-page-generator"],"command":null,"mode":"read_only","reason":"广告注册单一CTA属于转化结构，只给结构文案，不写文件，不虚构数字，无需增加视觉实施。","missing_dependencies":[]},
+      {"id":"single-prototype","skills":["impeccable"],"command":"craft","mode":"implementation","reason":"单方案后台构建用craft与product，不把普通原型扩展成prototype多方案选择器。","missing_dependencies":[]},
+      {"id":"explicit-prototype","skills":["prototype"],"command":null,"mode":"implementation","reason":"明确点名且授权三套方案；隔离探索，等待用户选择再整合，不提前改生产代码。","missing_dependencies":[]},
+      {"id":"ordinary-no-taste","skills":["impeccable"],"command":"critique","mode":"read_only","reason":"体验评价用critique，保留布局字体；不启用Taste、不修复、不持久化写入，本次不执行子代理或检测流程。","missing_dependencies":[]},
+      {"id":"explicit-taste","skills":["design-taste-frontend"],"command":null,"mode":"implementation","reason":"明确点名Taste，按展览页面流程及单一视觉规范；普通页面可继续，缺失scroll-scene分支不可执行，不声称浏览器已验证。","missing_dependencies":["design-taste-frontend/library/scenes.json","design-taste-frontend/assets/scenes/具体场景文件","design-taste-frontend/assets/scenes/demo/"]},
+      {"id":"motion-name","skills":["animation-vocabulary"],"command":null,"mode":"read_only","reason":"对应Rubber-banding术语，只解释不实现或选库。","missing_dependencies":[]},
+      {"id":"whole-motion-audit","skills":["improve-animations"],"command":null,"mode":"read_only","reason":"全库审计和优先级计划，保留既有技术，仅报告不执行execute；本评测不启动审计代理或写计划文件。","missing_dependencies":[]},
+      {"id":"motion-opportunities","skills":["find-animation-opportunities"],"command":null,"mode":"read_only","reason":"按目的、频率和成本寻找机会，允许无机会，只提建议不实施。","missing_dependencies":[]},
+      {"id":"sonner-bug","skills":["ask-sonner"],"command":null,"mode":"implementation","reason":"已选Sonner的故障，按版本检查Toaster、调用和主题，不迁移库或把合法多实例都当错。","missing_dependencies":[]},
+      {"id":"css-hover","skills":["animate"],"command":null,"mode":"implementation","reason":"简单透明度hover采用CSS transition，保留React与样式，不安装依赖或启用选库。","missing_dependencies":[]},
+      {"id":"react-gsap-scroll","skills":["gsap-react","gsap-scrolltrigger","gsap-core"],"command":null,"mode":"implementation","reason":"分别处理React清理、滚动绑定与reduced-motion，沿用既有GSAP版本，只清理组件自身，无多步需求无需timeline。","missing_dependencies":[]},
+      {"id":"nuxt-gsap","skills":["gsap-frameworks"],"command":null,"mode":"implementation","reason":"仅用非React生命周期模式，不迁移或加ScrollTrigger，不复制重复类型示例；缺可运行示例不阻断正文最小方案。","missing_dependencies":["gsap-frameworks/examples/nuxt/","gsap-frameworks/examples/vue/"]},
+      {"id":"expo-sheet","skills":["animate-expo"],"command":null,"mode":"implementation","reason":"原生手势路径，匹配既有SDK和依赖，不切DOM/GSAP或升级；设备release未跑就标未验证。","missing_dependencies":[]},
+      {"id":"swift-non-ui","skills":["write-swift"],"command":null,"mode":"outside_ui","reason":"服务层并发交回语言专长，保留工具链，不触发Apple视觉或UI动效。","missing_dependencies":[]},
+      {"id":"backend-negative","skills":[],"command":null,"mode":"outside_ui","reason":"后端查询性能超出UI入口，无已指定数据库专长，不虚构分派。","missing_dependencies":[]},
+      {"id":"explicit-motion-review","skills":["review-animations"],"command":null,"mode":"read_only","reason":"明确点名满足政策，限定弹窗diff，只审阅不修改。","missing_dependencies":[]},
+      {"id":"implicit-motion-review","skills":["impeccable"],"command":"audit","mode":"read_only","reason":"普通弹窗与键盘检查用audit，保持只读；未点名不隐式加载review-animations。","missing_dependencies":[]},
+      {"id":"preserve-motion","skills":["animate"],"command":null,"mode":"implementation","reason":"沿用Motion、既有弹簧和token优化中断退出，不切GSAP或附加Apple视觉规范。","missing_dependencies":[]}
+    ]
+  }
+}

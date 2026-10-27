@@ -1,0 +1,501 @@
+{
+  "schema_version": 1,
+  "started_on": "2026-10-27",
+  "completed_on": "2026-10-28",
+  "method": "static_review",
+  "confidence": "medium",
+  "notice": "分数反映本地指令、资源与边界的静态可用性，约有正负5分判断误差；不是实际UI作品质量、运行成功率或安全认证。",
+  "rubric": {
+    "trigger_scope": 20,
+    "workflow": 20,
+    "resources": 15,
+    "constraints_safety": 15,
+    "compatibility": 15,
+    "maintenance": 15
+  },
+  "score_order": [
+    "trigger_scope",
+    "workflow",
+    "resources",
+    "constraints_safety",
+    "compatibility",
+    "maintenance"
+  ],
+  "skills": [
+    {
+      "name": "frontend-design",
+      "scores": [
+        16,
+        14,
+        14,
+        10,
+        13,
+        14
+      ],
+      "total": 81,
+      "role": "新品牌视觉主专长",
+      "action": "保留；已有品牌优先，避免固定字体禁令扩散",
+      "entry_sha256": "b81e2ff87ed8fa4d6c377ccb127a7254c9e6a77e3ae94f21e6b514f7bb2945a0",
+      "entry_lines": 42,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 2,
+      "package_sha256": "53de259f0fef0fd16e083ed535269b491fff315eb4934c0a5dff09957c8b7609"
+    },
+    {
+      "name": "impeccable",
+      "scores": [
+        17,
+        19,
+        15,
+        12,
+        11,
+        10
+      ],
+      "total": 84,
+      "role": "产品UI和审查精修主专长",
+      "action": "保留；按子命令加载，脚本使用实际安装目录",
+      "entry_sha256": "68109f5d84fc84dd65d755dda7c42d46bbfc665b92da9aed002297065fcc2904",
+      "entry_lines": 175,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 102,
+      "package_sha256": "9c2f5bee6483d83f5e79dee907b14b4820c791c7f91f21421d604038f36c3cc6"
+    },
+    {
+      "name": "design-taste-frontend",
+      "scores": [
+        19,
+        18,
+        9,
+        12,
+        12,
+        9
+      ],
+      "total": 79,
+      "role": "显式Taste艺术方向",
+      "action": "保留显式政策；缺少资源的scroll-scene分支停用",
+      "entry_sha256": "18df789f2590ba30174c8fa1bfbc7d4fc2fb924432f3db11832361503c039943",
+      "entry_lines": 535,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 42,
+      "package_sha256": "b1a3a56560ef7669aeb8d8394753771656fb12232f31a7112f3fd0ea652360e4"
+    },
+    {
+      "name": "landing-page-generator",
+      "scores": [
+        17,
+        16,
+        11,
+        10,
+        13,
+        11
+      ],
+      "total": 78,
+      "role": "单目标转化结构",
+      "action": "保留；未证实转化数字不用于事实结论",
+      "entry_sha256": "68725377c21a369903b3a57662860f710e22203183360f5431583f2d03485a2c",
+      "entry_lines": 136,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "7ff4c109f89e7d320042ca56b1eec81f4f36a941e09dcb43e46b50c5336bcf68"
+    },
+    {
+      "name": "emil-frontend",
+      "scores": [
+        15,
+        13,
+        15,
+        11,
+        9,
+        12
+      ],
+      "total": 75,
+      "role": "原系列入口",
+      "action": "原文快照后改成ui-design兼容转接；本分数针对原版",
+      "entry_sha256": "c9ab9b2cae5b9157defffedd3843148089c67d4fb6783a540fd54a2907a1e96f",
+      "entry_lines": 65,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "1140f80592007074e355e1503076693400c7287c16383958c596393770555d44"
+    },
+    {
+      "name": "emil-design-eng",
+      "scores": [
+        13,
+        16,
+        15,
+        11,
+        11,
+        7
+      ],
+      "total": 73,
+      "role": "设计工程理念参考",
+      "action": "保留并按主题读；不作为每次任务的必载规范",
+      "entry_sha256": "defffff8bea4583897b001b9173ccd6fb6f8341fffc63a1891a38372137a1848",
+      "entry_lines": 674,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "19cb926da6e4fd95dc66389073d72abe752e222112351ec4bd81692c86927c15"
+    },
+    {
+      "name": "apple-design",
+      "scores": [
+        17,
+        17,
+        15,
+        13,
+        11,
+        10
+      ],
+      "total": 83,
+      "role": "指定风格与物理交互",
+      "action": "条件加载；区分Apple风格与Swift语言",
+      "entry_sha256": "da9581408c2b37a49565a9c7e32f26763f78b581c7e802dfa2357738e43ba7d5",
+      "entry_lines": 282,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "462aa3983499f6ebaf1b1653b248d01062f0ac0235c1bb52c48fd62f4208b9f6"
+    },
+    {
+      "name": "animate",
+      "scores": [
+        18,
+        18,
+        15,
+        12,
+        12,
+        12
+      ],
+      "total": 87,
+      "role": "Web动效实施",
+      "action": "保留；尊重已有库与token，禁止顺带隐式选库",
+      "entry_sha256": "58306092db4b965f050047791c94b91dad57d5ac612a6156773d4633f4697818",
+      "entry_lines": 199,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 2,
+      "package_sha256": "6a1b7184ad3056b6b46cd0a267950506bfea539ddb576fe0468d749065a3e5fa"
+    },
+    {
+      "name": "animate-expo",
+      "scores": [
+        19,
+        18,
+        15,
+        13,
+        10,
+        11
+      ],
+      "total": 86,
+      "role": "RN与Expo动效平台",
+      "action": "保留；先核SDK和架构，不默认升级",
+      "entry_sha256": "8893293d36b73e0ff998aa71ced0ac99c4e72bbcc0d7caab8666f6cad4475233",
+      "entry_lines": 255,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 2,
+      "package_sha256": "5766943e575ec1b11c418a4a3b84b0e87e1197f5945389c139f79bf718c3ec3a"
+    },
+    {
+      "name": "animation-vocabulary",
+      "scores": [
+        20,
+        18,
+        15,
+        14,
+        12,
+        12
+      ],
+      "total": 91,
+      "role": "动效术语查询",
+      "action": "保留短路径；英文术语配用户语言解释",
+      "entry_sha256": "de5828e11055239691504b288519b894fd4b355d6bfc418a88762e9d75568267",
+      "entry_lines": 173,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "d07e6ac43e6bd5845ca8f241562a0d97b457fe719293758590ccffefa33fe0a2"
+    },
+    {
+      "name": "ask-sonner",
+      "scores": [
+        20,
+        19,
+        15,
+        14,
+        12,
+        13
+      ],
+      "total": 93,
+      "role": "Sonner组件专长",
+      "action": "保留；已有或明确选择Sonner才进入",
+      "entry_sha256": "c3cd825fa863f15b11256a780c0c835f766c7bcdde3f456e873358dd8f2a7920",
+      "entry_lines": 80,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 2,
+      "package_sha256": "0f38a7d0d2806ad2a4d54b0279b736cb002adfcd65da1d95286110f006933808"
+    },
+    {
+      "name": "find-animation-opportunities",
+      "scores": [
+        19,
+        17,
+        15,
+        14,
+        12,
+        11
+      ],
+      "total": 88,
+      "role": "只读发现动效机会",
+      "action": "保留；不为凑数强加动画",
+      "entry_sha256": "38edd3c52f6fad37a27934b947c9e807736459ba0eeebf6ccf1fc869aadc01cc",
+      "entry_lines": 132,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "00952a18ee6a0f2e1698758aca7c4d1e6167cc1e3ffc2e0c4e8663f7c17db882"
+    },
+    {
+      "name": "improve-animations",
+      "scores": [
+        19,
+        18,
+        15,
+        10,
+        13,
+        12
+      ],
+      "total": 87,
+      "role": "全库动效审计与计划",
+      "action": "默认保持只读，实施转给对应实施专长",
+      "entry_sha256": "f7bcd002f28be07c3c4d53a57af59950cff80645a9b4b94f59fa1f4810b66d5b",
+      "entry_lines": 101,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 3,
+      "package_sha256": "a8c4f28f42d687c1e579ae023497f39b19aa19d7b0aac362dd096fb04d6ae43b"
+    },
+    {
+      "name": "review-animations",
+      "scores": [
+        16,
+        16,
+        15,
+        10,
+        11,
+        12
+      ],
+      "total": 80,
+      "role": "显式组件或diff动效审阅",
+      "action": "保留显式政策；用真实证据解释结论",
+      "entry_sha256": "9b9766965a0d9ca2afd0a1b44e74386810008a1afdd968c62b6aa84c150cc20f",
+      "entry_lines": 112,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 2,
+      "package_sha256": "3cd68ef794113a888d17b31756f3b3813b849235a792d65ced6a1e0d4c28c52c"
+    },
+    {
+      "name": "pick-ui-library",
+      "scores": [
+        19,
+        17,
+        15,
+        13,
+        10,
+        12
+      ],
+      "total": 86,
+      "role": "显式前端选库",
+      "action": "保留显式政策，检查框架及用户已有选择",
+      "entry_sha256": "26c7dc79e9f38550076bd2643f591bbbd2b839895e4861fdd3e8354af4f0775d",
+      "entry_lines": 77,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "a5e938c69cdd92540aec3a397bcce138639d4ddc95152bf6033ce77e1405735b"
+    },
+    {
+      "name": "prototype",
+      "scores": [
+        19,
+        19,
+        15,
+        13,
+        13,
+        12
+      ],
+      "total": 91,
+      "role": "显式多方案原型",
+      "action": "保留显式政策；单方案需求不扩展成选择器",
+      "entry_sha256": "848a67552f2df8cd61cdcbacdbf7eb6f59567ae0bb79dfbb56ba7e762793a88a",
+      "entry_lines": 90,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 2,
+      "package_sha256": "90412450a610783937b2055688355fb758438663155d2191d519ad49ad321f0c"
+    },
+    {
+      "name": "write-swift",
+      "scores": [
+        19,
+        18,
+        14,
+        13,
+        9,
+        8
+      ],
+      "total": 81,
+      "role": "Swift平台技术附属",
+      "action": "保留；纯语言任务直接处理，不经UI入口",
+      "entry_sha256": "116c408d987ac387e54f96557b80c2fa1cc7bed853ade1b165cdc561016e6c95",
+      "entry_lines": 388,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "92721e3ef2d733246c46302b24b04eadb69576a22ffa9cd59235c0641c010c25"
+    },
+    {
+      "name": "gsap-core",
+      "scores": [
+        16,
+        18,
+        14,
+        13,
+        13,
+        13
+      ],
+      "total": 87,
+      "role": "GSAP基础与响应式",
+      "action": "选择GSAP后按需读；不代替用户选库",
+      "entry_sha256": "3887b47e050ab5afbe2a9a820f23d39fa02ab785e06a343be44c6f91d84d12b3",
+      "entry_lines": 254,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "e21b6ea38a87db00a2dfcd07dbe4992f64b4e7d5253f20eff9be33325845fcc7"
+    },
+    {
+      "name": "gsap-frameworks",
+      "scores": [
+        17,
+        12,
+        9,
+        13,
+        12,
+        10
+      ],
+      "total": 73,
+      "role": "GSAP非React框架接入",
+      "action": "登记缺失示例与重复type问题，避免直接复制",
+      "entry_sha256": "842d9d3659ec3ddc8abbdc524708f8facf81f468ac25d0577f48c759c4fa31e6",
+      "entry_lines": 266,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "482c6c85fe96f0675a7d7b9f7d23355d6a0234c1be0c5a9cc630127f70de5014"
+    },
+    {
+      "name": "gsap-performance",
+      "scores": [
+        16,
+        16,
+        13,
+        11,
+        13,
+        14
+      ],
+      "total": 83,
+      "role": "GSAP性能优化",
+      "action": "先定位瓶颈再用；补监听器生命周期检查",
+      "entry_sha256": "cb5408d6fba707aabcbfe3320317a14c1f8fca6070074e5261047930f50d441e",
+      "entry_lines": 79,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "6c6972e67a7e6db840fe49fd948baca55099e134dd56222dfa236e4af365b32f"
+    },
+    {
+      "name": "gsap-plugins",
+      "scores": [
+        17,
+        16,
+        13,
+        12,
+        11,
+        10
+      ],
+      "total": 79,
+      "role": "GSAP插件参考",
+      "action": "按插件章节读，实际安装与授权核对官方资料",
+      "entry_sha256": "5838b856c74c07fbc9fa99b6dfd1eee34ea554c3e530c30e0d58014b707d70a4",
+      "entry_lines": 433,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "34794fc80d3b9aa07bb64eff876b24ef58bbf41c314613a93621c75c05486ea3"
+    },
+    {
+      "name": "gsap-react",
+      "scores": [
+        17,
+        18,
+        14,
+        13,
+        13,
+        13
+      ],
+      "total": 88,
+      "role": "GSAP与React生命周期",
+      "action": "选择GSAP后使用；先看现有依赖",
+      "entry_sha256": "88e2a5312b45e8cc7b3c496637ff5bc9af2ae9c925b555c8b235b34cbc989d74",
+      "entry_lines": 136,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "f999fb66f9b974df639cdf77e813615bb1e2e05e34421f913e020c1cfe8dcb92"
+    },
+    {
+      "name": "gsap-scrolltrigger",
+      "scores": [
+        16,
+        12,
+        12,
+        11,
+        12,
+        10
+      ],
+      "total": 73,
+      "role": "GSAP滚动联动",
+      "action": "登记横向滚动示例和全局清理问题",
+      "entry_sha256": "9351b6666a4749c0740406ea363aaccb99a087ff45cc5e8b99a0f367facf3ef4",
+      "entry_lines": 296,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "6a0b5bc7066f521382b03e23b95019dd469059e486b050a5d489e59acc619f87"
+    },
+    {
+      "name": "gsap-timeline",
+      "scores": [
+        18,
+        18,
+        14,
+        12,
+        14,
+        14
+      ],
+      "total": 90,
+      "role": "GSAP多步编排",
+      "action": "多步任务加载，单tween无需读",
+      "entry_sha256": "1a8b0f39cc4be3ed3d834b89672e4ae2f151b901dc3450bebf10bbc45379fe02",
+      "entry_lines": 107,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "619e1bb92da73c0d3c4612cb008d7edeb5489db44a0d724cd4b6f263e2c73220"
+    },
+    {
+      "name": "gsap-utils",
+      "scores": [
+        18,
+        14,
+        13,
+        12,
+        12,
+        12
+      ],
+      "total": 81,
+      "role": "GSAP工具函数参考",
+      "action": "unitize和shuffle示例实际使用前核对",
+      "entry_sha256": "1927bcc4ea95b38203404ad5ea1d060b15c4a886c65ae53e885ff1793aabe0ba",
+      "entry_lines": 284,
+      "files_review_scope": "entry_and_relevant_references",
+      "package_file_count": 1,
+      "package_sha256": "d30c566bacbf7220bb65e1974d86bdc24ac4f9648edf0809c220c0328a564223"
+    }
+  ]
+}

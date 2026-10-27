@@ -2,7 +2,7 @@
 
 Skill Shelf 是面向 Windows 的本地 Agent Skill 管理工具。它把 Codex、Claude Code、Antigravity IDE 和 DSH 中的技能放在一个统一库里管理，并通过目录联接让各 Agent 使用同一份文件。
 
-![Skill Shelf 界面预览，使用虚构的演示技能数据](docs/images/skill-shelf-demo.png)
+![Skill Shelf 界面预览，使用虚构的演示技能数据](docs/images/ui-evaluation-after.png)
 
 ## 功能
 
@@ -71,7 +71,16 @@ Copy-Item roots.example.json roots.json
 
 ## 开发与持续集成
 
-依赖清单为 `requirements-app.txt` 和 `requirements-desktop.txt`。贡献方式见 [CONTRIBUTING.md](CONTRIBUTING.md)。GitHub Actions 会在 Windows 环境检查 Python 语法并打包桌面程序，生成的 EXE 作为短期构建产物提供下载。目前没有独立自动化测试套件。
+依赖清单为 `requirements-app.txt` 和 `requirements-desktop.txt`。贡献方式见 [CONTRIBUTING.md](CONTRIBUTING.md)。GitHub Actions 会在 Windows 环境检查 Python 语法并打包桌面程序，生成的 EXE 作为短期构建产物提供下载。另外提供使用合成隔离数据的界面回归脚本，以及技能整合的文件与路由检查；复现方法和验证边界见下方实验记录。
+
+## 技能整合与验证记录
+
+- [UI 设计技能评价与整合方案](docs/skill-evaluation-and-ui-integration.md)：25 个原始入口的初评、专长关系和 20 条路由对照。
+- [界面优化与实测记录](docs/ui-design-real-world-evaluation.md)：前后截图、22 项浏览器回归、9 项原生桌面检查及未验证范围。
+- [ui-design](skills/ui-design/SKILL.md)：按任务分派的 UI 总入口，[emil-frontend](skills/emil-frontend/SKILL.md) 保留旧名称兼容；24 个第三方专长需另外安装，本仓库不包含其全文。
+- [skill-curator](skills/skill-curator/SKILL.md)：复用本次技能评价、整理、入口整合与实测的方法，包含评分口径及验证指导。
+
+`skills/` 保存自有入口源文件，不会随管理器启动自动安装。使用时按各 Agent 的技能目录约定安装相应文件夹；统一库的安装和联接可由 Skill Shelf 管理。UI 优化没有给前端新增评分面板。
 
 ## 许可证
 

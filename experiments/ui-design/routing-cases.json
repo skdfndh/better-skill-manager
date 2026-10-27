@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "description": "只检查入口的选择与范围控制，不执行UI实现。提示词与评分条件分开交给评估者。",
+  "cases": [
+    {"id":"product-layout","prompt":"现有 Vue 后台的筛选表单太挤，帮我调整间距和层次；保留现有品牌、框架和组件库。","require_all":["impeccable"],"forbid":["design-taste-frontend","prototype","pick-ui-library"],"mode":"implementation","command":"layout"},
+    {"id":"brand-page","prompt":"为一个独立图书展会新建品牌展示网页，需要明确的视觉概念，没有既有设计系统。","require_any":["frontend-design","impeccable"],"forbid":["design-taste-frontend","prototype","pick-ui-library"],"mode":"implementation"},
+    {"id":"campaign-structure","prompt":"给广告带来的活动注册落地页梳理信息结构和CTA，只需要文案结构建议，本次不要实现或改文件。","require_all":["landing-page-generator"],"forbid":["prototype","design-taste-frontend"],"mode":"read_only"},
+    {"id":"single-prototype","prompt":"做一个单方案后台页面原型，能展示列表和筛选就行，不需要多个版本或方案选择器。","require_any":["impeccable","frontend-design"],"forbid":["prototype","design-taste-frontend"],"mode":"implementation"},
+    {"id":"explicit-prototype","prompt":"请使用 $prototype 给删除按钮制作三套差异明显的交互方案，放到可切换的选择器里，等我选定后再整合。","require_all":["prototype"],"forbid":["design-taste-frontend"],"mode":"implementation"},
+    {"id":"ordinary-no-taste","prompt":"已有管理工具想做得更好看一点，保留当前布局和字体，先给我一次只读的体验评价。","require_all":["impeccable"],"forbid":["design-taste-frontend","prototype","review-animations"],"mode":"read_only","command":"critique"},
+    {"id":"explicit-taste","prompt":"这次明确使用 design-taste-frontend，给新展览做一个艺术方向鲜明的页面，按它的页面流程来。","require_all":["design-taste-frontend"],"forbid":["frontend-design","impeccable"],"mode":"implementation"},
+    {"id":"motion-name","prompt":"手机列表拉到底再放手后像橡皮筋一样回去，这个效果叫什么？只解释术语。","require_all":["animation-vocabulary"],"forbid":["animate","animate-expo","apple-design","gsap-core"],"mode":"read_only"},
+    {"id":"whole-motion-audit","prompt":"请审计整个前端仓库的动画质量，给优先级和改进计划，先不要修改代码。","require_all":["improve-animations"],"forbid":["prototype","review-animations"],"mode":"read_only"},
+    {"id":"motion-opportunities","prompt":"帮我看看现在这些页面哪里值得加动效，哪些地方不该动，先提建议不实施。","require_all":["find-animation-opportunities"],"forbid":["review-animations","prototype"],"mode":"read_only"},
+    {"id":"sonner-bug","prompt":"React 项目已有 Sonner，toast 现在会重复显示且暗色主题不对，帮我定位并修复。","require_all":["ask-sonner"],"forbid":["pick-ui-library","design-taste-frontend"],"mode":"implementation"},
+    {"id":"css-hover","prompt":"已有 React 按钮，只增加一个CSS hover透明度过渡，不安装新依赖。","require_all":["animate"],"forbid":["gsap-core","gsap-react","gsap-scrolltrigger","pick-ui-library"],"mode":"implementation"},
+    {"id":"react-gsap-scroll","prompt":"Next.js 项目已经用 GSAP 和 @gsap/react，做一个随滚动进度移动的组件，卸载时只清理自己，尊重减少动态效果设置。","require_all":["gsap-react","gsap-scrolltrigger"],"forbid":["gsap-frameworks","prototype","pick-ui-library"],"mode":"implementation"},
+    {"id":"nuxt-gsap","prompt":"Nuxt 项目已经用 GSAP，需要解决组件挂载和卸载清理，不要迁移框架，也没有滚动动效。","require_all":["gsap-frameworks"],"forbid":["gsap-react","gsap-scrolltrigger","pick-ui-library"],"mode":"implementation"},
+    {"id":"expo-sheet","prompt":"现有 Expo React Native 应用增加能随手指拖动的底部面板，保持当前SDK和依赖版本。","require_all":["animate-expo"],"forbid":["gsap-core","gsap-react","gsap-frameworks"],"mode":"implementation"},
+    {"id":"swift-non-ui","prompt":"Swift 服务层的 actor 有数据竞争，只修并发逻辑，没有界面和动画工作。","require_any":["write-swift"],"forbid":["apple-design","animate","impeccable","frontend-design"],"mode":"outside_ui"},
+    {"id":"backend-negative","prompt":"优化后端Python接口的数据库查询性能，没有页面、布局和动效需求。","require_all":[],"forbid_all_ui":true,"mode":"outside_ui"},
+    {"id":"explicit-motion-review","prompt":"使用 $review-animations 审阅这个弹窗进退场的diff，只给问题和证据，不修改。","require_all":["review-animations"],"forbid":["prototype","design-taste-frontend"],"mode":"read_only"},
+    {"id":"implicit-motion-review","prompt":"检查一下这个弹窗的动效和键盘行为有没有问题，只读即可。我没有点名任何特定审阅技能。","require_any":["impeccable","animate"],"forbid":["review-animations","prototype","pick-ui-library"],"mode":"read_only"},
+    {"id":"preserve-motion","prompt":"React 项目已经用 Motion 做多步骤弹簧动画，请沿用 Motion 优化中断和退出，不要改用GSAP。","require_all":["animate"],"forbid":["gsap-core","gsap-react","gsap-timeline","pick-ui-library"],"mode":"implementation"}
+  ]
+}

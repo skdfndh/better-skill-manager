@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-28",
+  "library": "${USERPROFILE}/.skill-shelf/skills",
+  "runtimes": [
+    {
+      "mode": "source",
+      "targets": [
+        "antigravity-ide",
+        "claude-code",
+        "codex",
+        "dsh"
+      ],
+      "verified_junctions": 8,
+      "skills": {
+        "emil-frontend": {
+          "physical_copy_count": 1,
+          "linked_location_count": 4,
+          "name_conflict": false
+        },
+        "ui-design": {
+          "physical_copy_count": 1,
+          "linked_location_count": 4,
+          "name_conflict": false
+        }
+      },
+      "scan_error_count": 0
+    },
+    {
+      "mode": "desktop",
+      "targets": [
+        "antigravity-ide",
+        "claude-code",
+        "codex",
+        "dsh"
+      ],
+      "verified_junctions": 8,
+      "skills": {
+        "emil-frontend": {
+          "physical_copy_count": 1,
+          "linked_location_count": 4,
+          "name_conflict": false
+        },
+        "ui-design": {
+          "physical_copy_count": 1,
+          "linked_location_count": 4,
+          "name_conflict": false
+        }
+      },
+      "scan_error_count": 0
+    }
+  ]
+}
